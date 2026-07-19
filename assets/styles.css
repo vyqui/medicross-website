@@ -169,7 +169,7 @@
       background-size: 26px 26px;
     }
     .page-hero .container { position: relative; }
-    .page-hero h1 { font-family: "Playfair Display", serif; font-size: clamp(30px, 4.5vw, 46px); line-height: 1.15; margin: 14px 0 16px; }
+    .page-hero h1 { font-family: "Playfair Display", serif; font-size: clamp(30px, 4.5vw, 46px); line-height: 1.15; margin: 14px 0 16px; color: #fff; }
     .page-hero .lead { max-width: 720px; font-size: 16.5px; line-height: 1.75; color: rgba(255,255,255,.85); }
     .breadcrumbs { font-size: 13px; color: rgba(255,255,255,.65); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; }
     .breadcrumbs a { color: rgba(255,255,255,.85); font-weight: 600; }
@@ -188,7 +188,7 @@
       font-size: 11px; font-weight: 800; display: grid; place-items: center;
     }
     .article figure { margin: 26px 0; }
-    .article figure img { border-radius: var(--radius); box-shadow: var(--shadow-soft); width: 100%; object-fit: cover; }
+    .article figure img { border-radius: var(--radius); box-shadow: var(--shadow-soft); width: 100%; max-height: 480px; object-fit: contain; background: #fff; border: 1px solid var(--line); }
     .article figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; }
     .page-sidebar { position: sticky; top: 96px; display: grid; gap: 22px; }
     .sidebar-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; box-shadow: var(--shadow-soft); }
@@ -208,7 +208,62 @@
     .fact-row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
     .fact-row:last-child { border-bottom: none; }
     .fact-row .k { color: var(--muted); }
-    .fact-row .v { font-weight: 700; color: var(--navy); text-align: right; }
+    .fact-row .v { font-weight: 700; color: var(--navy); text-align: right; white-space: nowrap; }
+    .sidebar-card.navy .fact-row { border-color: rgba(255,255,255,.16); }
+    .sidebar-card.navy .fact-row .k { color: rgba(255,255,255,.78); }
+    .sidebar-card.navy .fact-row .v { color: #7FD6DD; }
+
+    .pack-list { list-style: none; }
+    .pack-list li {
+      display: flex; align-items: flex-start; gap: 10px; padding: 9px 0;
+      border-bottom: 1px solid var(--line); font-size: 14px; color: var(--muted); line-height: 1.5;
+    }
+    .pack-list li:last-child { border-bottom: none; }
+    .pack-list .pk {
+      flex: none; width: 20px; height: 20px; border-radius: 50%; margin-top: 1px;
+      background: var(--teal-light); color: var(--teal-dark); display: grid; place-items: center;
+    }
+
+    /* ---- Price chip (subpage hero) ---- */
+    .price-chip {
+      display: inline-flex; align-items: baseline; gap: 12px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.28);
+      border-radius: 14px; padding: 12px 22px; margin-top: 24px;
+    }
+    .price-chip strong { font-family: "Playfair Display", serif; font-size: 27px; color: #7FD6DD; }
+    .price-chip span { font-size: 11.5px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,.85); }
+
+    /* ---- Before/after gallery ---- */
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 26px 0 10px; }
+    .gallery-grid figure { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow-soft); margin: 0; }
+    .gallery-grid img { width: 100%; height: 200px; object-fit: cover; transition: transform .3s; }
+    .gallery-grid figure:hover img { transform: scale(1.05); }
+
+    /* ---- Photo procedure cards (homepage + related) ---- */
+    .proc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 44px; }
+    .proc-card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--shadow-soft); display: block;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .proc-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .proc-card img { width: 100%; height: 215px; object-fit: cover; }
+    .proc-card .pc-body { padding: 20px 22px 24px; }
+    .proc-card h3 { font-size: 18px; color: var(--navy); margin-bottom: 8px; }
+    .proc-card p { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+    .proc-card .pc-link { font-size: 13.5px; font-weight: 700; color: var(--teal-dark); }
+    .proc-card:hover .pc-link { color: var(--red); }
+
+    /* ---- Partner rows ---- */
+    .partner-row { display: grid; grid-template-columns: 460px 1fr; gap: 44px; align-items: center; padding: 34px 0; border-bottom: 1px solid var(--line); }
+    .partner-row:last-child { border-bottom: none; }
+    .partner-row img { border-radius: var(--radius); box-shadow: var(--shadow); width: 100%; height: 300px; object-fit: cover; }
+    .partner-row.flip img { order: 2; }
+    .partner-row h3 { font-family: "Playfair Display", serif; font-size: 25px; color: var(--navy); margin-bottom: 12px; }
+    .partner-row p { color: var(--muted); line-height: 1.8; margin-bottom: 12px; }
+
+    /* ---- About panel photo ---- */
+    .about-panel > img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ============ Hero ============ */
     .hero {
@@ -501,6 +556,10 @@
       .burger { display: block; }
       .article-layout { grid-template-columns: 1fr; }
       .page-sidebar { position: static; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .proc-grid { grid-template-columns: 1fr 1fr; }
+      .partner-row { grid-template-columns: 1fr; gap: 24px; }
+      .partner-row.flip img { order: 0; }
     }
     @media (max-width: 640px) {
       section { padding: 68px 0; }
@@ -512,6 +571,7 @@
       .stat:nth-child(even) { border-left: 1px solid var(--line); }
       .spec-grid { grid-template-columns: 1fr; }
       .steps-grid, .inc-grid, .offer-grid, .partner-grid, .t-track { grid-template-columns: 1fr; }
+      .proc-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .insurance-inner { padding: 36px 28px; }
       .footer-grid { grid-template-columns: 1fr; gap: 36px; }
