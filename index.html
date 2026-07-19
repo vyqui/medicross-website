@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Tratamente Turcia by Medicross — Tratamente medicale în Turcia, Istanbul</title>
+  <meta name="description" content="Acces exclusiv la spitale de top din Istanbul: oncologie, cardiologie, ortopedie, chirurgie estetică și peste 30 de specialități. Opinie medicală gratuită, transport cu limuzină Mercedes, hotel 5★, translator dedicat și asistență 24/7." />
+  <link rel="canonical" href="https://tratamente-turcia.ro" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Tratamente Turcia by Medicross" />
+  <meta property="og:locale" content="ro_RO" />
+  <meta property="og:title" content="Tratamente Turcia by Medicross — Excelență medicală în Istanbul" />
+  <meta property="og:description" content="Spitale partenere de top, plan de tratament personalizat, costuri estimate gratuit. Totul organizat pentru tine: zbor, transfer, cazare, translator, asistență 24/7." />
+  <meta property="og:url" content="https://tratamente-turcia.ro" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --navy: #0A2A43;
+      --navy-2: #0F3A5C;
+      --teal: #0E9DA9;
+      --teal-dark: #0A7E88;
+      --teal-light: #E4F4F5;
+      --red: #E23B43;
+      --red-dark: #C42D35;
+      --ink: #142633;
+      --muted: #5C6E7A;
+      --line: #E3EBEF;
+      --bg: #FFFFFF;
+      --bg-soft: #F4F9FA;
+      --shadow: 0 18px 45px rgba(10, 42, 67, 0.10);
+      --shadow-soft: 0 10px 30px rgba(10, 42, 67, 0.07);
+      --radius: 14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Manrope", system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, .serif { font-family: "Playfair Display", Georgia, serif; color: var(--navy); }
+
+    img, svg { max-width: 100%; display: block; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    section { padding: 92px 0; }
+
+    /* ============ Helpers ============ */
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      text-transform: uppercase; letter-spacing: 3.5px;
+      font-size: 12px; font-weight: 700; color: var(--teal-dark);
+      margin-bottom: 16px;
+    }
+    .eyebrow::before {
+      content: ""; width: 34px; height: 2px; background: var(--red); display: inline-block;
+    }
+    .section-title { font-size: clamp(30px, 4vw, 42px); line-height: 1.18; font-weight: 600; margin-bottom: 18px; }
+    .section-lead { color: var(--muted); font-size: 17px; max-width: 640px; }
+    .center { text-align: center; }
+    .center .eyebrow::after { content: ""; width: 34px; height: 2px; background: var(--red); display: inline-block; }
+    .center .section-lead { margin-left: auto; margin-right: auto; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      font-family: "Manrope", sans-serif; font-weight: 700; font-size: 15px;
+      padding: 15px 28px; border-radius: 999px; border: 2px solid transparent;
+      cursor: pointer; transition: all .25s ease; white-space: nowrap;
+    }
+    .btn-primary { background: var(--red); color: #fff; box-shadow: 0 10px 24px rgba(226, 59, 67, .30); }
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
+    .btn-teal { background: var(--teal); color: #fff; box-shadow: 0 10px 24px rgba(14, 157, 169, .30); }
+    .btn-teal:hover { background: var(--teal-dark); transform: translateY(-2px); }
+    .btn-outline { border-color: rgba(255,255,255,.55); color: #fff; background: transparent; }
+    .btn-outline:hover { background: rgba(255,255,255,.12); border-color: #fff; }
+    .btn-outline-navy { border-color: var(--navy); color: var(--navy); background: transparent; }
+    .btn-outline-navy:hover { background: var(--navy); color: #fff; }
+
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ============ Topbar ============ */
+    .topbar { background: var(--navy); color: rgba(255,255,255,.85); font-size: 13px; }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 9px 0; }
+    .topbar-group { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+    .topbar a { display: inline-flex; align-items: center; gap: 7px; transition: color .2s; }
+    .topbar a:hover { color: #fff; }
+    .topbar svg { width: 14px; height: 14px; flex: none; }
+    .topbar .accent { color: #7FD6DD; font-weight: 700; }
+
+    /* ============ Header ============ */
+    .header {
+      position: sticky; top: 0; z-index: 90; background: #fff;
+      border-bottom: 1px solid var(--line); transition: box-shadow .25s ease;
+    }
+    .header.scrolled { box-shadow: 0 6px 24px rgba(10,42,67,.08); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 78px; }
+
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-mark {
+      width: 46px; height: 46px; border-radius: 12px; flex: none;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      display: grid; place-items: center; color: #fff;
+      box-shadow: 0 6px 16px rgba(14,157,169,.35);
+    }
+    .logo-mark svg { width: 24px; height: 24px; }
+    .logo-text { line-height: 1.15; }
+    .logo-text strong { display: block; font-family: "Playfair Display", serif; font-size: 19px; letter-spacing: .5px; color: var(--navy); font-weight: 700; }
+    .logo-text span { font-size: 11px; text-transform: uppercase; letter-spacing: 2.2px; color: var(--red); font-weight: 700; }
+
+    .nav { display: flex; align-items: center; gap: 20px; }
+    .nav a { font-size: 14px; font-weight: 600; color: var(--navy); position: relative; padding: 6px 0; white-space: nowrap; }
+    .nav a::after {
+      content: ""; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
+      background: var(--red); transition: width .25s ease;
+    }
+    .nav a:hover::after { width: 100%; }
+    .header .btn { padding: 12px 22px; font-size: 14px; }
+
+    .burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+    .burger span { display: block; width: 26px; height: 3px; background: var(--navy); border-radius: 2px; margin: 5px 0; transition: all .3s; }
+
+    .mobile-nav { display: none; background: #fff; border-bottom: 1px solid var(--line); }
+    .mobile-nav.open { display: block; }
+    .mobile-nav a { display: block; padding: 14px 24px; font-weight: 600; color: var(--navy); border-top: 1px solid var(--line); }
+    .mobile-nav .btn { margin: 14px 24px 20px; display: inline-flex; }
+
+    /* ============ Hero ============ */
+    .hero {
+      position: relative; overflow: hidden; color: #fff; padding: 100px 0 110px;
+      background:
+        radial-gradient(900px 500px at 85% -10%, rgba(14,157,169,.35) 0%, transparent 60%),
+        radial-gradient(700px 420px at -10% 110%, rgba(226,59,67,.22) 0%, transparent 55%),
+        linear-gradient(140deg, var(--navy) 0%, var(--navy-2) 55%, #0C4A66 100%);
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; opacity: .5; pointer-events: none;
+      background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+      background-size: 26px 26px;
+    }
+    .hero-inner { position: relative; display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: center; }
+    .hero .eyebrow { color: #7FD6DD; }
+    .hero h1 { color: #fff; font-size: clamp(36px, 5vw, 56px); line-height: 1.12; font-weight: 600; margin-bottom: 22px; }
+    .hero h1 em { font-style: italic; color: #8FE0E6; }
+    .hero p.lead { color: rgba(255,255,255,.82); font-size: 18px; max-width: 560px; margin-bottom: 34px; }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
+
+    .hero-badges { display: flex; gap: 26px; flex-wrap: wrap; }
+    .hero-badge { display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,.88); }
+    .hero-badge svg { width: 20px; height: 20px; flex: none; color: #7FD6DD; }
+
+    .hero-card {
+      background: #fff; border-radius: 18px; padding: 34px 32px; color: var(--ink);
+      box-shadow: 0 30px 70px rgba(4, 18, 30, .45);
+    }
+    .hero-card h3 { font-size: 23px; margin-bottom: 6px; }
+    .hero-card .sub { font-size: 14px; color: var(--muted); margin-bottom: 22px; }
+    .hero-card .sub strong { color: var(--red); }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12.5px; font-weight: 700; letter-spacing: .4px; color: var(--navy); margin-bottom: 6px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 10px;
+      font-family: inherit; font-size: 14.5px; color: var(--ink); background: #fff;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(14,157,169,.15);
+    }
+    .hero-card .btn { width: 100%; margin-top: 6px; }
+    .hero-card .note { font-size: 12px; color: var(--muted); margin-top: 12px; text-align: center; }
+
+    /* ============ Stats strip ============ */
+    .stats { background: #fff; padding: 0; }
+    .stats-inner {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: var(--shadow-soft); margin-top: -58px; position: relative; z-index: 5;
+      overflow: hidden;
+    }
+    .stat { padding: 30px 26px; text-align: center; border-left: 1px solid var(--line); }
+    .stat:first-child { border-left: none; }
+    .stat .num { font-family: "Playfair Display", serif; font-size: 34px; font-weight: 700; color: var(--teal-dark); line-height: 1.1; }
+    .stat .lbl { font-size: 13.5px; color: var(--muted); font-weight: 600; margin-top: 6px; }
+
+    /* ============ About ============ */
+    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+    .about-visual { position: relative; }
+    .about-panel {
+      border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 4 / 4.6;
+      background:
+        radial-gradient(400px 300px at 80% 15%, rgba(255,255,255,.25) 0%, transparent 60%),
+        linear-gradient(160deg, var(--teal) 0%, var(--teal-dark) 45%, var(--navy-2) 100%);
+      position: relative;
+    }
+    .about-panel svg.skyline { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; opacity: .95; }
+    .about-float {
+      position: absolute; right: -26px; bottom: 42px; background: #fff; border-radius: 14px;
+      box-shadow: var(--shadow); padding: 18px 22px; display: flex; gap: 14px; align-items: center; max-width: 280px;
+    }
+    .about-float .icon {
+      width: 46px; height: 46px; border-radius: 12px; background: var(--red); color: #fff;
+      display: grid; place-items: center; flex: none;
+    }
+    .about-float .icon svg { width: 24px; height: 24px; }
+    .about-float strong { display: block; font-size: 15px; color: var(--navy); }
+    .about-float span { font-size: 12.5px; color: var(--muted); }
+
+    .features { margin-top: 30px; display: grid; gap: 18px; }
+    .feature { display: flex; gap: 16px; }
+    .feature .fi {
+      width: 46px; height: 46px; flex: none; border-radius: 12px;
+      background: var(--teal-light); color: var(--teal-dark); display: grid; place-items: center;
+    }
+    .feature .fi svg { width: 23px; height: 23px; }
+    .feature strong { display: block; font-size: 16px; color: var(--navy); margin-bottom: 3px; }
+    .feature p { font-size: 14.5px; color: var(--muted); }
+
+    /* ============ Specialties ============ */
+    .specialties { background: var(--bg-soft); }
+    .spec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; margin-bottom: 48px; flex-wrap: wrap; }
+    .spec-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+    .spec-card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 28px 24px; transition: transform .25s ease, box-shadow .25s ease, border-color .25s;
+    }
+    .spec-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: transparent; }
+    .spec-icon {
+      width: 54px; height: 54px; border-radius: 14px; margin-bottom: 18px;
+      background: var(--teal-light); color: var(--teal-dark); display: grid; place-items: center;
+      transition: background .25s, color .25s;
+    }
+    .spec-card:hover .spec-icon { background: var(--teal); color: #fff; }
+    .spec-icon svg { width: 27px; height: 27px; }
+    .spec-card h3 { font-family: "Manrope", sans-serif; font-size: 16.5px; font-weight: 700; color: var(--navy); margin-bottom: 7px; }
+    .spec-card p { font-size: 13.5px; color: var(--muted); }
+
+    /* ============ Steps ============ */
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; margin-top: 54px; }
+    .step { position: relative; padding: 30px 26px 26px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+    .step .n {
+      font-family: "Playfair Display", serif; font-size: 44px; font-weight: 700;
+      color: var(--teal); opacity: .28; line-height: 1; margin-bottom: 12px;
+    }
+    .step h3 { font-family: "Manrope", sans-serif; font-size: 16.5px; font-weight: 800; margin-bottom: 8px; }
+    .step p { font-size: 14px; color: var(--muted); }
+    .step::after {
+      content: "→"; position: absolute; top: 50%; right: -22px; transform: translateY(-50%);
+      color: var(--red); font-size: 20px; font-weight: 800; z-index: 2;
+    }
+    .step:last-child::after { display: none; }
+
+    /* ============ Included / all-inclusive ============ */
+    .included { background: linear-gradient(140deg, var(--navy) 0%, var(--navy-2) 70%, #0C4A66 100%); color: #fff; }
+    .included .eyebrow { color: #7FD6DD; }
+    .included .section-title { color: #fff; }
+    .included .section-lead { color: rgba(255,255,255,.75); }
+    .inc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 54px; }
+    .inc-card {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--radius); padding: 28px 24px; transition: background .25s, transform .25s;
+    }
+    .inc-card:hover { background: rgba(255,255,255,.11); transform: translateY(-5px); }
+    .inc-card .ii { width: 50px; height: 50px; border-radius: 13px; background: rgba(127,214,221,.16); color: #7FD6DD; display: grid; place-items: center; margin-bottom: 18px; }
+    .inc-card .ii svg { width: 26px; height: 26px; }
+    .inc-card h3 { color: #fff; font-family: "Manrope", sans-serif; font-size: 16.5px; font-weight: 700; margin-bottom: 8px; }
+    .inc-card p { font-size: 13.5px; color: rgba(255,255,255,.72); }
+
+    /* ============ Partners ============ */
+    .partner-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 54px; }
+    .partner-card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 28px;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .partner-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .partner-logo {
+      font-family: "Playfair Display", serif; font-size: 21px; font-weight: 700; color: var(--navy);
+      display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+    }
+    .partner-logo .dot { width: 12px; height: 12px; border-radius: 4px; background: var(--teal); flex: none; }
+    .partner-card p { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+    .partner-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .partner-tags span {
+      font-size: 11.5px; font-weight: 700; letter-spacing: .4px; color: var(--teal-dark);
+      background: var(--teal-light); border-radius: 999px; padding: 5px 12px;
+    }
+
+    /* ============ Offers ============ */
+    .offers { background: var(--bg-soft); }
+    .offer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 54px; }
+    .offer-card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 30px 26px; text-align: center; position: relative; overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .offer-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .offer-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--teal), var(--red)); }
+    .offer-card .tag { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 10px; display: block; }
+    .offer-card h3 { font-family: "Manrope", sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 14px; }
+    .offer-price { font-family: "Playfair Display", serif; font-size: 38px; font-weight: 700; color: var(--teal-dark); line-height: 1; }
+    .offer-price small { font-size: 14px; font-family: "Manrope", sans-serif; font-weight: 600; color: var(--muted); display: block; margin-top: 6px; }
+    .offer-card ul { list-style: none; margin: 20px 0 24px; text-align: left; }
+    .offer-card li { font-size: 13.5px; color: var(--muted); padding: 6px 0 6px 26px; position: relative; }
+    .offer-card li::before {
+      content: "✓"; position: absolute; left: 2px; color: var(--teal); font-weight: 800;
+    }
+    .offer-card .btn { width: 100%; padding: 12px 18px; font-size: 14px; }
+    .offers .note { text-align: center; margin-top: 30px; color: var(--muted); font-size: 14px; }
+    .offers .note strong { color: var(--red); }
+
+    /* ============ Insurance banner ============ */
+    .insurance { padding: 0 0 92px; }
+    .insurance-inner {
+      border-radius: 20px; padding: 46px 52px; color: #fff;
+      background: linear-gradient(120deg, var(--red) 0%, #B8262E 100%);
+      display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap;
+      box-shadow: 0 22px 50px rgba(226,59,67,.35);
+    }
+    .insurance-inner h3 { color: #fff; font-size: clamp(22px, 2.6vw, 30px); margin-bottom: 8px; }
+    .insurance-inner p { color: rgba(255,255,255,.88); font-size: 15.5px; max-width: 560px; }
+    .insurance-inner .btn { background: #fff; color: var(--red-dark); flex: none; }
+    .insurance-inner .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0,0,0,.18); }
+
+    /* ============ Testimonials ============ */
+    .testimonials { background: #fff; }
+    .t-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 54px; }
+    .t-card {
+      background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 32px 28px; display: flex; flex-direction: column; gap: 18px;
+    }
+    .t-stars { color: #F2B01E; letter-spacing: 3px; font-size: 15px; }
+    .t-card blockquote { font-size: 15px; color: var(--ink); font-style: italic; flex: 1; border: none; }
+    .t-who { display: flex; align-items: center; gap: 13px; }
+    .t-avatar {
+      width: 44px; height: 44px; border-radius: 50%; flex: none; color: #fff;
+      display: grid; place-items: center; font-weight: 800; font-size: 16px;
+      background: linear-gradient(135deg, var(--teal), var(--navy-2));
+    }
+    .t-who strong { display: block; font-size: 14.5px; color: var(--navy); }
+    .t-who span { font-size: 12.5px; color: var(--muted); }
+
+    /* ============ FAQ ============ */
+    .faq { background: var(--bg-soft); }
+    .faq-list { max-width: 820px; margin: 48px auto 0; }
+    .faq-item { background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 14px; overflow: hidden; }
+    .faq-q {
+      width: 100%; background: none; border: none; cursor: pointer; text-align: left;
+      display: flex; align-items: center; justify-content: space-between; gap: 18px;
+      padding: 20px 24px; font-family: "Manrope", sans-serif; font-size: 16px; font-weight: 700; color: var(--navy);
+    }
+    .faq-q .chev { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--teal-light); color: var(--teal-dark); display: grid; place-items: center; transition: transform .3s, background .3s, color .3s; }
+    .faq-q .chev svg { width: 14px; height: 14px; }
+    .faq-item.open .chev { transform: rotate(180deg); background: var(--teal); color: #fff; }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+    .faq-a p { padding: 0 24px 22px; font-size: 14.5px; color: var(--muted); }
+
+    /* ============ Contact ============ */
+    .contact-inner { display: grid; grid-template-columns: .9fr 1.1fr; gap: 60px; align-items: start; }
+    .c-item { display: flex; gap: 16px; margin-top: 26px; }
+    .c-item .ci {
+      width: 48px; height: 48px; flex: none; border-radius: 12px;
+      background: var(--teal-light); color: var(--teal-dark); display: grid; place-items: center;
+    }
+    .c-item .ci svg { width: 23px; height: 23px; }
+    .c-item strong { display: block; font-size: 15.5px; color: var(--navy); margin-bottom: 2px; }
+    .c-item a, .c-item span { font-size: 14.5px; color: var(--muted); }
+    .c-item a:hover { color: var(--teal-dark); }
+
+    .contact-form {
+      background: #fff; border: 1px solid var(--line); border-radius: 18px;
+      padding: 38px 36px; box-shadow: var(--shadow-soft);
+    }
+    .contact-form h3 { font-size: 24px; margin-bottom: 6px; }
+    .contact-form .sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .contact-form .note { font-size: 12px; color: var(--muted); margin-top: 14px; }
+
+    /* ============ Footer ============ */
+    .footer { background: var(--navy); color: rgba(255,255,255,.75); padding: 74px 0 0; font-size: 14px; }
+    .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.2fr; gap: 48px; padding-bottom: 54px; }
+    .footer h4 { color: #fff; font-family: "Manrope", sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+    .footer ul { list-style: none; }
+    .footer li { margin-bottom: 11px; }
+    .footer a { transition: color .2s; }
+    .footer a:hover { color: #7FD6DD; }
+    .footer .logo-text strong { color: #fff; }
+    .footer p.desc { margin-top: 16px; line-height: 1.7; color: rgba(255,255,255,.65); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.12); padding: 22px 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      font-size: 13px; color: rgba(255,255,255,.55);
+    }
+
+    /* ============ WhatsApp float ============ */
+    .wa-float {
+      position: fixed; right: 22px; bottom: 22px; z-index: 95;
+      width: 58px; height: 58px; border-radius: 50%;
+      background: #25D366; color: #fff; display: grid; place-items: center;
+      box-shadow: 0 12px 30px rgba(37, 211, 102, .45);
+      transition: transform .25s;
+    }
+    .wa-float:hover { transform: scale(1.08); }
+    .wa-float svg { width: 30px; height: 30px; }
+
+    /* ============ Responsive ============ */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .spec-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .steps-grid, .inc-grid, .offer-grid { grid-template-columns: repeat(2, 1fr); }
+      .step::after { display: none; }
+      .partner-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+      .about-float { right: 8px; }
+      .nav { display: none; }
+      .header .btn-cta { display: none; }
+      .burger { display: block; }
+    }
+    @media (max-width: 640px) {
+      section { padding: 68px 0; }
+      .topbar-inner { justify-content: center; }
+      .topbar-group.right { display: none; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .stat { border-left: none; border-top: 1px solid var(--line); }
+      .stat:nth-child(-n+2) { border-top: none; }
+      .stat:nth-child(even) { border-left: 1px solid var(--line); }
+      .spec-grid { grid-template-columns: 1fr; }
+      .steps-grid, .inc-grid, .offer-grid, .partner-grid, .t-track { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .insurance-inner { padding: 36px 28px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+      .hero { padding: 72px 0 96px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= TOPBAR ================= -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="topbar-group">
+        <a href="tel:+40746992222">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+          <span class="accent">+40 746 992 222</span>
+        </a>
+        <a href="mailto:office@tratamente-turcia.ro">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+          office@tratamente-turcia.ro
+        </a>
+      </div>
+      <div class="topbar-group right">
+        <a href="#contact">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+          Str. Gheorghe Grigore Cantacuzino 46, Ploiești
+        </a>
+        <span>
+          <svg style="width:14px;height:14px;vertical-align:-2px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          L–V: 09:00 – 16:00 · WhatsApp non-stop
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="Tratamente Turcia by Medicross">
+        <span class="logo-mark">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        </span>
+        <span class="logo-text">
+          <strong>Tratamente Turcia</strong>
+          <span>by Medicross</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Meniu principal">
+        <a href="#despre">Despre noi</a>
+        <a href="#specialitati">Specialități</a>
+        <a href="#proces">Cum funcționează</a>
+        <a href="#parteneri">Parteneri</a>
+        <a href="#oferte">Oferte</a>
+        <a href="#testimoniale">Testimoniale</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <a class="btn btn-primary btn-cta" href="#contact">Evaluare gratuită</a>
+
+      <button class="burger" id="burger" aria-label="Deschide meniul" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#despre">Despre noi</a>
+      <a href="#specialitati">Specialități</a>
+      <a href="#proces">Cum funcționează</a>
+      <a href="#parteneri">Parteneri</a>
+      <a href="#oferte">Oferte</a>
+      <a href="#testimoniale">Testimoniale</a>
+      <a href="#contact">Contact</a>
+      <a class="btn btn-primary" href="#contact">Evaluare gratuită</a>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="top">
+    <div class="container hero-inner">
+      <div>
+        <span class="eyebrow">Turism medical premium · Istanbul</span>
+        <h1>Tratamente medicale în Turcia, <em>organizate impecabil</em> pentru tine</h1>
+        <p class="lead">
+          Acces la inovație medicală, îngrijire personalizată și rezultate superioare, în inima
+          excelenței medicale din Turcia. Medici renumiți internațional, spitale de top și o echipă
+          dedicată care te însoțește la fiecare pas — de acasă până acasă.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#contact">Solicită o opinie medicală gratuită</a>
+          <a class="btn btn-outline" href="https://wa.me/40746992222" target="_blank" rel="noopener">
+            <svg style="width:18px;height:18px" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Scrie-ne pe WhatsApp
+          </a>
+        </div>
+        <div class="hero-badges">
+          <span class="hero-badge">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+            Spitale acreditate internațional
+          </span>
+          <span class="hero-badge">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Asistență dedicată 24/7
+          </span>
+          <span class="hero-badge">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"/></svg>
+            Translator român inclus
+          </span>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <h3 class="serif">Primește planul tău de tratament</h3>
+        <p class="sub">Trimite-ne datele tale și primești <strong>gratuit</strong> opinia medicală și costul estimat, direct de la specialiștii din Istanbul.</p>
+        <form id="heroForm">
+          <div class="field">
+            <label for="hf-nume">Nume și prenume</label>
+            <input id="hf-nume" name="nume" type="text" placeholder="Numele tău" required />
+          </div>
+          <div class="field">
+            <label for="hf-tel">Telefon</label>
+            <input id="hf-tel" name="telefon" type="tel" placeholder="07xx xxx xxx" required />
+          </div>
+          <div class="field">
+            <label for="hf-spec">Specialitatea care te interesează</label>
+            <select id="hf-spec" name="specialitate">
+              <option>Oncologie</option>
+              <option>Cardiologie</option>
+              <option>Ortopedie</option>
+              <option>Neurologie / Neurochirurgie</option>
+              <option>Chirurgie bariatrică</option>
+              <option>Chirurgie estetică și plastică</option>
+              <option>Oftalmologie</option>
+              <option>Obstetrică – Ginecologie / FIV</option>
+              <option>Transplant de păr</option>
+              <option>Stomatologie</option>
+              <option>Altă specialitate</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-teal">Trimite solicitarea</button>
+          <p class="note">Fără costuri, fără obligații. Îți răspundem în cel mai scurt timp.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATS ================= -->
+  <div class="stats">
+    <div class="container">
+      <div class="stats-inner">
+        <div class="stat reveal">
+          <div class="num">10+</div>
+          <div class="lbl">Spitale partenere de top în Istanbul</div>
+        </div>
+        <div class="stat reveal">
+          <div class="num">30+</div>
+          <div class="lbl">Specialități medicale disponibile</div>
+        </div>
+        <div class="stat reveal">
+          <div class="num">24/7</div>
+          <div class="lbl">Asistență înainte și după tratament</div>
+        </div>
+        <div class="stat reveal">
+          <div class="num">100%</div>
+          <div class="lbl">Pacienți însoțiți de translator dedicat</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DESPRE ================= -->
+  <section id="despre">
+    <div class="container about-inner">
+      <div class="about-visual reveal">
+        <div class="about-panel">
+          <svg class="skyline" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g fill="#0A2A43" opacity=".85">
+              <rect x="0" y="150" width="400" height="70"/>
+              <rect x="18" y="110" width="26" height="60"/>
+              <rect x="52" y="128" width="20" height="42"/>
+              <rect x="96" y="96" width="30" height="74"/>
+              <rect x="140" y="120" width="22" height="50"/>
+              <path d="M200 40 l6 18 h-12 z"/>
+              <rect x="197" y="56" width="6" height="34"/>
+              <ellipse cx="200" cy="112" rx="46" ry="24"/>
+              <rect x="154" y="112" width="92" height="58"/>
+              <rect x="163" y="70" width="7" height="52"/>
+              <rect x="230" y="70" width="7" height="52"/>
+              <path d="M166.5 62 l5 12 h-10 z M233.5 62 l5 12 h-10 z"/>
+              <rect x="278" y="104" width="26" height="66"/>
+              <rect x="316" y="122" width="20" height="48"/>
+              <rect x="348" y="92" width="30" height="78"/>
+            </g>
+            <g fill="#FFFFFF" opacity=".28">
+              <rect x="22" y="118" width="5" height="6"/><rect x="31" y="118" width="5" height="6"/>
+              <rect x="100" y="104" width="6" height="7"/><rect x="112" y="104" width="6" height="7"/>
+              <rect x="283" y="112" width="5" height="6"/><rect x="292" y="112" width="5" height="6"/>
+              <rect x="352" y="100" width="6" height="7"/><rect x="364" y="100" width="6" height="7"/>
+            </g>
+          </svg>
+        </div>
+        <div class="about-float">
+          <span class="icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
+          </span>
+          <div>
+            <strong>Îngrijire orientată spre pacient</strong>
+            <span>Un singur partener, de acasă până acasă</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <span class="eyebrow">Despre Tratamente Turcia</span>
+        <h2 class="section-title">Puntea ta către excelența medicală din Istanbul</h2>
+        <p class="section-lead">
+          Tratamente Turcia by Medicross îți oferă o experiență transformatoare: o echipă de elită de
+          medici renumiți internațional și profesioniști dedicați, care îți oferă soluții medicale
+          personalizate, avansate și eficiente — fără cozi, fără incertitudini, fără bariere de limbă.
+        </p>
+        <div class="features">
+          <div class="feature">
+            <span class="fi">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg>
+            </span>
+            <div>
+              <strong>Acces exclusiv la spitale de top</strong>
+              <p>Colaborăm cu cele mai prestigioase lanțuri spitalicești din Turcia și cu medici renumiți, pentru servicii medicale sigure și de înaltă calitate.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="fi">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+            </span>
+            <div>
+              <strong>Plan de tratament personalizat</strong>
+              <p>Planuri adaptate nevoilor tale, pentru o îngrijire eficientă, orientată spre pacient — cu opinie medicală și cost estimat gratuit, înainte de orice decizie.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="fi">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/></svg>
+            </span>
+            <div>
+              <strong>Tehnologii de ultimă generație</strong>
+              <p>Chirurgie robotică daVinci, MAKOplasty, radioterapie TrueBeam și tratamente inovatoare, pentru recuperare rapidă și rezultate superioare.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="fi">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+            </span>
+            <div>
+              <strong>Îngrijire completă, de la A la Z</strong>
+              <p>Spitalizare, cazare la hotel, translator și transferuri private — un pachet integrat, cu profesionalism, grijă și responsabilitate.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SPECIALITATI ================= -->
+  <section class="specialties" id="specialitati">
+    <div class="container">
+      <div class="spec-head reveal">
+        <div>
+          <span class="eyebrow">Specialități medicale</span>
+          <h2 class="section-title">Acces la o gamă largă de specialități</h2>
+          <p class="section-lead">
+            Combinăm servicii medicale integrate cu profesionalismul, grija și responsabilitatea
+            personalului medical din cele mai bune spitale din Istanbul.
+          </p>
+        </div>
+        <a class="btn btn-outline-navy" href="#contact">Întreabă despre cazul tău</a>
+      </div>
+
+      <div class="spec-grid">
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12a3 3 0 106 0 3 3 0 00-6 0zM12 3v2m0 14v2M3 12h2m14 0h2"/></svg></span>
+          <h3>Oncologie</h3>
+          <p>Medicină preventivă, diagnostic și tratament pentru toate tipurile de cancer, cu tehnologii la standarde mondiale.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg></span>
+          <h3>Cardiologie</h3>
+          <p>Servicii complete pentru afecțiuni cardiovasculare, de la investigații avansate la chirurgie cardiacă.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v4.5A2.25 2.25 0 0110.5 9.75h3A2.25 2.25 0 0115.75 7.5V3M9 12.75c0 3 .75 8.25 3 8.25s3-5.25 3-8.25M8.25 3h1.5m4.5 0h1.5"/></svg></span>
+          <h3>Ortopedie</h3>
+          <p>Asistență de înaltă calitate pentru afecțiuni ortopedice, inclusiv protezare robotică MAKOplasty.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75a3.75 3.75 0 117.5 0v2.5c0 .55.196 1.082.554 1.5.94 1.096 1.446 2.116 1.446 3.5 0 3.038-2.462 5.5-5.75 5.5S6.25 17.288 6.25 14.25c0-1.384.507-2.404 1.446-3.5.358-.418.554-.95.554-1.5v-2.5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75h4.5M9.75 13.5h4.5"/></svg></span>
+          <h3>Neurologie & Neurochirurgie</h3>
+          <p>Tratament specializat pentru afecțiuni complexe ale creierului și coloanei vertebrale.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 1115 0 7.5 7.5 0 01-15 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3-3v6"/></svg></span>
+          <h3>Chirurgie bariatrică</h3>
+          <p>Gastric sleeve, bypass gastric și alte proceduri pentru scădere în greutate, cu echipe multidisciplinare.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/></svg></span>
+          <h3>Chirurgie estetică & plastică</h3>
+          <p>Rinoplastie, lifting facial, implant mamar, liposucție, abdominoplastie — pachete all-inclusive.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></span>
+          <h3>Oftalmologie</h3>
+          <p>Chirurgie refractivă, cataractă și tratamente pentru afecțiuni oculare complexe.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.97 0-9-3.582-9-8s4.03-8 9-8 9 3.582 9 8-4.03 8-9 8z" opacity=".4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5zM12 4.5v1.5m0 12v1.5"/></svg></span>
+          <h3>Obstetrică – Ginecologie & FIV</h3>
+          <p>Sănătatea femeii în toate etapele vieții și servicii complete de fertilizare in vitro.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-4.5-3.36-8.25-7.5-8.25S4.5 7.5 4.5 12c0 2.53 1.06 4.78 2.73 6.28.44.4.99.62 1.58.62.9 0 1.69-.55 2.02-1.38l.42-1.06c.13-.32.44-.53.78-.53s.62.21.75.53l.42 1.06c.33.83 1.12 1.38 2.02 1.38.59 0 1.14-.22 1.58-.62 1.67-1.5 2.73-3.75 2.73-6.28z"/></svg></span>
+          <h3>Urologie & Nefrologie</h3>
+          <p>Diagnostic și tratament pentru afecțiuni renale și urologice, inclusiv chirurgie robotică daVinci.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 4.5c-1.5 2.25-2.25 4.5-2.25 6.75 0 4.142 3.358 7.5 7.5 7.5s7.5-3.358 7.5-7.5c0-2.25-.75-4.5-2.25-6.75-.75 1.5-1.875 2.25-3 2.25.375-1.5 0-3-1.125-4.5-.75 1.875-2.25 3-3.375 3.75-1.125.75-2.25 1.5-3 3-.375-1.5-.375-3 0-4.5z"/></svg></span>
+          <h3>Gastroenterologie</h3>
+          <p>Prevenție, diagnostic și tratament pentru afecțiunile aparatului digestiv, cu specialiști de top.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.75c-2.5 0-4 1.5-4.5 3.25-.5 1.75 0 3.5.75 5s1.25 3.25 1 4.75c1-.5 1.75-.5 2.75-.5s1.75 0 2.75.5c-.25-1.5.25-3.25 1-4.75s1.25-3.25.75-5c-.5-1.75-2-3.25-4.5-3.25z"/><path stroke-linecap="round" stroke-linejoin="round" d="M10 19.25c.5 1 1 1.5 2 1.5s1.5-.5 2-1.5"/></svg></span>
+          <h3>Transplant de păr</h3>
+          <p>FUE, DHI și transplant de sprâncene, realizate de echipe cu experiență internațională.</p>
+        </div>
+        <div class="spec-card reveal">
+          <span class="spec-icon"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5.25c-1.5-1.5-4.5-2-6 0s-1 5.5.5 8 3 5.5 4 5.5 1-1.5 1.5-3.5c.5 2 .5 3.5 1.5 3.5s2.5-3 4-5.5 2-6 .5-8-4.5-1.5-6 0z"/></svg></span>
+          <h3>Stomatologie</h3>
+          <p>Implant dentar, All-on-4, coroane Emax și Hollywood Smile, la standarde premium.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROCES ================= -->
+  <section id="proces">
+    <div class="container">
+      <div class="center reveal">
+        <span class="eyebrow">Cum funcționează</span>
+        <h2 class="section-title">Patru pași simpli până la tratament</h2>
+        <p class="section-lead">
+          Tu te concentrezi pe sănătatea ta. Noi ne ocupăm de absolut tot restul —
+          de la documente și programări, până la zbor, cazare și recuperare.
+        </p>
+      </div>
+      <div class="steps-grid">
+        <div class="step reveal">
+          <div class="n">01</div>
+          <h3>Trimiți documentele medicale</h3>
+          <p>Ne contactezi telefonic, pe WhatsApp sau prin formular și ne trimiți investigațiile pe care le ai deja.</p>
+        </div>
+        <div class="step reveal">
+          <div class="n">02</div>
+          <h3>Primești gratuit opinia medicală</h3>
+          <p>Dosarul tău este evaluat de specialiștii din Istanbul: primești planul de tratament și costul estimat, fără nicio obligație.</p>
+        </div>
+        <div class="step reveal">
+          <div class="n">03</div>
+          <h3>Organizăm călătoria completă</h3>
+          <p>Programare la clinică, rezervare hotel partener, transfer gratuit aeroport–hotel–spital și translator dedicat.</p>
+        </div>
+        <div class="step reveal">
+          <div class="n">04</div>
+          <h3>Tratament & monitorizare</h3>
+          <p>Ești tratat în spitalul ales, iar după întoarcerea acasă rămânem alături de tine pentru controale și recuperare.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INCLUSE ================= -->
+  <section class="included">
+    <div class="container">
+      <div class="center reveal">
+        <span class="eyebrow">Experiența all-inclusive</span>
+        <h2 class="section-title">Totul este inclus, totul este organizat</h2>
+        <p class="section-lead">
+          Pachetul tău cuprinde toate serviciile necesare unui sejur medical confortabil
+          și fără griji — ca și cum ai veni într-o vacanță.
+        </p>
+      </div>
+      <div class="inc-grid">
+        <div class="inc-card reveal">
+          <span class="ii"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg></span>
+          <h3>Transport cu limuzină Mercedes</h3>
+          <p>Transferuri private în Turcia între aeroport, spital și hotel, pe toată durata șederii tale în Istanbul.</p>
+        </div>
+        <div class="inc-card reveal">
+          <span class="ii"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></span>
+          <h3>Condiții de hotel 5★</h3>
+          <p>Trei mese pe zi, baie privată, Wi-Fi, produse cosmetice, papuci, halat și uscător — atât la hotel, cât și în spital.</p>
+        </div>
+        <div class="inc-card reveal">
+          <span class="ii"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"/></svg></span>
+          <h3>Translator dedicat</h3>
+          <p>Știm cât de importantă este comunicarea: un translator român te însoțește la consultații, internare și externare.</p>
+        </div>
+        <div class="inc-card reveal">
+          <span class="ii"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>
+          <h3>Asistență 24/7</h3>
+          <p>Suntem disponibili non-stop, înainte și după intervenție — de la prima întrebare până la ultimul control.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTENERI ================= -->
+  <section id="parteneri">
+    <div class="container">
+      <div class="center reveal">
+        <span class="eyebrow">Parteneri medicali</span>
+        <h2 class="section-title">Spitale de renume din Istanbul</h2>
+        <p class="section-lead">
+          Colaborăm cu cele mai prestigioase lanțuri spitalicești din Turcia,
+          garantând pacienților acces la servicii medicale de top.
+        </p>
+      </div>
+      <div class="partner-grid">
+        <div class="partner-card reveal">
+          <div class="partner-logo"><span class="dot"></span>Liv Hospital</div>
+          <p>Abordare modernă, centrată pe pacient: 154 de paturi, 8 săli de operație, 50 de departamente și 30.000 m². Acreditat Joint Commission International și TÜV.</p>
+          <div class="partner-tags"><span>Chirurgie robotică daVinci</span><span>MAKOplasty</span><span>TrueBeam</span></div>
+        </div>
+        <div class="partner-card reveal">
+          <div class="partner-logo"><span class="dot"></span>Medical Park Bahçelievler</div>
+          <p>Unul dintre cele mai moderne spitale private din Istanbul: 19 etaje, 33.000 m², 242 de paturi, 89 de cabinete de consultație și 10 săli de operație moderne.</p>
+          <div class="partner-tags"><span>Pacienți internaționali</span><span>Multidisciplinar</span></div>
+        </div>
+        <div class="partner-card reveal">
+          <div class="partner-logo"><span class="dot"></span>VM Medical Park Florya</div>
+          <p>Spital universitar modern, inaugurat în 2017, care combină tehnologia medicală avansată cu confort hotelier și servicii personalizate pentru pacienții internaționali.</p>
+          <div class="partner-tags"><span>Spital universitar</span><span>Tehnologie avansată</span></div>
+        </div>
+        <div class="partner-card reveal">
+          <div class="partner-logo"><span class="dot"></span>Avrasya Hospital International</div>
+          <p>În inima Istanbulului, recunoscut internațional pentru servicii medicale de înaltă calitate și echipe specializate care oferă soluții complete pentru tratamente complexe.</p>
+          <div class="partner-tags"><span>Tratamente complexe</span><span>Echipe specializate</span></div>
+        </div>
+        <div class="partner-card reveal">
+          <div class="partner-logo"><span class="dot"></span>Academic Hospital Istanbul</div>
+          <p>Excelență academică și practică medicală de vârf, cu medici renumiți internațional și protocoale la standarde europene.</p>
+          <div class="partner-tags"><span>Medici renumiți</span><span>Standarde europene</span></div>
+        </div>
+        <div class="partner-card reveal" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;background:var(--teal-light);border-color:transparent;">
+          <div class="partner-logo" style="margin-bottom:8px;">Și mulți alții</div>
+          <p style="margin-bottom:18px;">Rețeaua noastră de parteneri acoperă marile lanțuri spitalicești din Turcia. Spune-ne cazul tău și îți recomandăm spitalul potrivit.</p>
+          <a class="btn btn-teal" href="#contact" style="padding:12px 22px;font-size:14px;">Întreabă-ne despre parteneri</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OFERTE ================= -->
+  <section class="offers" id="oferte">
+    <div class="container">
+      <div class="center reveal">
+        <span class="eyebrow">Oferte promoționale</span>
+        <h2 class="section-title">Pachete all-inclusive, prețuri transparente</h2>
+        <p class="section-lead">
+          Prețul include intervenția, spitalizarea, cazarea, transferurile și translatorul.
+          Fără costuri ascunse — totul decurge exact ca în contract.
+        </p>
+      </div>
+      <div class="offer-grid">
+        <div class="offer-card reveal">
+          <span class="tag">Chirurgie estetică</span>
+          <h3>Rinoplastie</h3>
+          <div class="offer-price">€2.900 <small>de la · all-inclusive</small></div>
+          <ul>
+            <li>Consultație gratuită</li>
+            <li>Hotel 5★ & transferuri incluse</li>
+            <li>Translator dedicat</li>
+          </ul>
+          <a class="btn btn-primary" href="#contact">Cere detalii</a>
+        </div>
+        <div class="offer-card reveal">
+          <span class="tag">Chirurgie estetică</span>
+          <h3>Implant mamar</h3>
+          <div class="offer-price">€2.900 <small>de la · all-inclusive</small></div>
+          <ul>
+            <li>Consultație gratuită</li>
+            <li>Implanturi premium</li>
+            <li>Asistență 24/7</li>
+          </ul>
+          <a class="btn btn-primary" href="#contact">Cere detalii</a>
+        </div>
+        <div class="offer-card reveal">
+          <span class="tag">Chirurgie estetică</span>
+          <h3>Abdominoplastie</h3>
+          <div class="offer-price">€3.000 <small>de la · all-inclusive</small></div>
+          <ul>
+            <li>Consultație gratuită</li>
+            <li>Spitalizare inclusă</li>
+            <li>Monitorizare post-operatorie</li>
+          </ul>
+          <a class="btn btn-primary" href="#contact">Cere detalii</a>
+        </div>
+        <div class="offer-card reveal">
+          <span class="tag">Chirurgie estetică</span>
+          <h3>Liposucție 360° + BBL</h3>
+          <div class="offer-price">€3.500 <small>de la · all-inclusive</small></div>
+          <ul>
+            <li>Consultație gratuită</li>
+            <li>Hotel 5★ & transferuri incluse</li>
+            <li>Recuperare asistată</li>
+          </ul>
+          <a class="btn btn-primary" href="#contact">Cere detalii</a>
+        </div>
+      </div>
+      <p class="note">
+        <strong>Consultația este gratuită</strong> pentru toate procedurile. Pentru alte specialități
+        (oncologie, cardiologie, ortopedie etc.) primești costul estimat gratuit, pe baza dosarului medical.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= BANNER ASIGURARE ================= -->
+  <section class="insurance">
+    <div class="container">
+      <div class="insurance-inner reveal">
+        <div>
+          <h3 class="serif">Ai asigurare medicală privată?</h3>
+          <p>Beneficiază de opinia medicală gratuită oferită de Tratamente Turcia! Trimite-ne dosarul tău medical și afli pașii de tratament și costurile estimate, fără nicio obligație.</p>
+        </div>
+        <a class="btn" href="#contact">Solicită opinia gratuită</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TESTIMONIALE ================= -->
+  <section class="testimonials" id="testimoniale">
+    <div class="container">
+      <div class="center reveal">
+        <span class="eyebrow">Testimoniale</span>
+        <h2 class="section-title">Ce spun pacienții noștri</h2>
+        <p class="section-lead">
+          Recenziile pacienților noștri reflectă experiențe pozitive — de la primul telefon
+          până la controalele de după întoarcerea acasă.
+        </p>
+      </div>
+      <div class="t-track">
+        <div class="t-card reveal">
+          <div class="t-stars" aria-hidden="true">★★★★★</div>
+          <blockquote>„Totul la superlativ! De la amabilitatea personalului, atât din țară cât și din Istanbul, până la serviciile medicale oferite! Condițiile din spital și de la hotel — impecabile."</blockquote>
+          <div class="t-who">
+            <span class="t-avatar">M</span>
+            <div><strong>Maria</strong><span>Pacientă, Istanbul</span></div>
+          </div>
+        </div>
+        <div class="t-card reveal">
+          <div class="t-stars" aria-hidden="true">★★★★★</div>
+          <blockquote>„Fără umflături, fără vânătăi, fără durere după operație. A fost ca și cum aș fi venit într-o vacanță. Echipa a fost disponibilă 24/7 și mi-a câștigat încrederea din prima zi."</blockquote>
+          <div class="t-who">
+            <span class="t-avatar">A</span>
+            <div><strong>Andreea</strong><span>Rinoplastie all-inclusive</span></div>
+          </div>
+        </div>
+        <div class="t-card reveal">
+          <div class="t-stars" aria-hidden="true">★★★★★</div>
+          <blockquote>„La 3 luni de la operație mă simt foarte bine. Totul a decurs exact ca în contract, fără costuri suplimentare, deși spitalizarea a durat mai mult. Recomand cu încredere colaborarea!"</blockquote>
+          <div class="t-who">
+            <span class="t-avatar">V</span>
+            <div><strong>Vasile</strong><span>Pacient, chirurgie</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="center reveal">
+        <span class="eyebrow">Întrebări frecvente</span>
+        <h2 class="section-title">Tot ce trebuie să știi</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">
+            Cât costă evaluarea dosarului meu medical?
+            <span class="chev"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span>
+          </button>
+          <div class="faq-a"><p>Nimic. Opinia medicală și costul estimat al tratamentului sunt gratuite și nu implică nicio obligație. Trimiți documentele, iar specialiștii din Istanbul îți evaluează cazul.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">
+            Cine mă însoțește pe durata tratamentului?
+            <span class="chev"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span>
+          </button>
+          <div class="faq-a"><p>Un translator român dedicat te însoțește la consultații, internare și externare, iar echipa noastră îți este alături 24/7, atât înainte, cât și după intervenție.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">
+            Ce include pachetul all-inclusive?
+            <span class="chev"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span>
+          </button>
+          <div class="faq-a"><p>Spitalizarea, cazarea la hotel cu condiții de 5 stele (3 mese pe zi, baie privată, Wi-Fi, halat, papuci, uscător), transferurile private cu limuzină Mercedes între aeroport, hotel și spital, plus translatorul dedicat.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">
+            Există costuri ascunse?
+            <span class="chev"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span>
+          </button>
+          <div class="faq-a"><p>Nu. Totul decurge exact ca în contract — pacienții noștri confirmă că nu au plătit costuri suplimentare nici atunci când spitalizarea a durat mai mult decât era estimat.</p></div>
+        </div>
+        <div class="faq-item reveal">
+          <button class="faq-q" aria-expanded="false">
+            Cum vă pot contacta?
+            <span class="chev"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span>
+          </button>
+          <div class="faq-a"><p>Telefonic între orele 9:00–16:00 la +40 746 992 222, oricând pe WhatsApp sau prin formularul de pe site. Îți preluăm mesajul în cel mai scurt timp și găsim împreună soluția potrivită pentru tine.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact">
+    <div class="container contact-inner">
+      <div class="reveal">
+        <span class="eyebrow">Contact</span>
+        <h2 class="section-title">Hai să vorbim despre sănătatea ta</h2>
+        <p class="section-lead">
+          Ne poți contacta telefonic între orele 9:00–16:00, oricând pe WhatsApp
+          sau prin formular. Îți răspundem în cel mai scurt timp.
+        </p>
+        <div class="c-item">
+          <span class="ci"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></span>
+          <div>
+            <strong>Telefon & WhatsApp</strong>
+            <a href="tel:+40746992222">+40 746 992 222</a>
+          </div>
+        </div>
+        <div class="c-item">
+          <span class="ci"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg></span>
+          <div>
+            <strong>E-mail</strong>
+            <a href="mailto:office@tratamente-turcia.ro">office@tratamente-turcia.ro</a>
+          </div>
+        </div>
+        <div class="c-item">
+          <span class="ci"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg></span>
+          <div>
+            <strong>Sediu</strong>
+            <span>Strada Gheorghe Grigore Cantacuzino Nr. 46, Ploiești, România</span>
+          </div>
+        </div>
+        <div class="c-item">
+          <span class="ci"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>
+          <div>
+            <strong>Program telefonic</strong>
+            <span>Luni – Vineri: 09:00 – 16:00 · WhatsApp: non-stop</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form reveal">
+        <h3 class="serif">Solicită evaluarea gratuită</h3>
+        <p class="sub">Completează formularul, iar un consultant Medicross te contactează pentru pașii următori.</p>
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="field">
+              <label for="cf-nume">Nume și prenume</label>
+              <input id="cf-nume" name="nume" type="text" placeholder="Numele tău" required />
+            </div>
+            <div class="field">
+              <label for="cf-tel">Telefon</label>
+              <input id="cf-tel" name="telefon" type="tel" placeholder="07xx xxx xxx" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="cf-email">E-mail</label>
+            <input id="cf-email" name="email" type="email" placeholder="adresa@email.ro" />
+          </div>
+          <div class="field">
+            <label for="cf-spec">Specialitatea</label>
+            <select id="cf-spec" name="specialitate">
+              <option>Oncologie</option>
+              <option>Cardiologie</option>
+              <option>Ortopedie</option>
+              <option>Neurologie / Neurochirurgie</option>
+              <option>Chirurgie bariatrică</option>
+              <option>Chirurgie estetică și plastică</option>
+              <option>Oftalmologie</option>
+              <option>Obstetrică – Ginecologie / FIV</option>
+              <option>Urologie / Nefrologie</option>
+              <option>Gastroenterologie</option>
+              <option>Transplant de păr</option>
+              <option>Stomatologie</option>
+              <option>Altă specialitate</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cf-msg">Mesajul tău</label>
+            <textarea id="cf-msg" name="mesaj" rows="4" placeholder="Descrie pe scurt situația medicală sau întrebarea ta…"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Trimite prin WhatsApp</button>
+          <p class="note">Apăsând „Trimite", mesajul se deschide în WhatsApp către echipa noastră — cel mai rapid mod de a primi un răspuns. Datele tale rămân confidențiale.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="logo" href="#top" aria-label="Tratamente Turcia by Medicross">
+            <span class="logo-mark">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+            </span>
+            <span class="logo-text">
+              <strong>Tratamente Turcia</strong>
+              <span>by Medicross</span>
+            </span>
+          </a>
+          <p class="desc">
+            Acces la inovație medicală, îngrijire personalizată și rezultate superioare,
+            în inima excelenței medicale din Turcia. Un singur partener, de acasă până acasă.
+          </p>
+        </div>
+        <div>
+          <h4>Navigare</h4>
+          <ul>
+            <li><a href="#despre">Despre noi</a></li>
+            <li><a href="#specialitati">Specialități</a></li>
+            <li><a href="#proces">Cum funcționează</a></li>
+            <li><a href="#parteneri">Parteneri</a></li>
+            <li><a href="#oferte">Oferte & Tarife</a></li>
+            <li><a href="#testimoniale">Testimoniale</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Specialități</h4>
+          <ul>
+            <li><a href="#specialitati">Oncologie</a></li>
+            <li><a href="#specialitati">Cardiologie</a></li>
+            <li><a href="#specialitati">Ortopedie</a></li>
+            <li><a href="#specialitati">Chirurgie estetică</a></li>
+            <li><a href="#specialitati">Chirurgie bariatrică</a></li>
+            <li><a href="#specialitati">Transplant de păr</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="tel:+40746992222">+40 746 992 222</a></li>
+            <li><a href="mailto:office@tratamente-turcia.ro">office@tratamente-turcia.ro</a></li>
+            <li>Str. Gheorghe Grigore Cantacuzino Nr. 46, Ploiești, România</li>
+            <li>L–V: 09:00 – 16:00 · WhatsApp non-stop</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Tratamente Turcia by Medicross. Toate drepturile rezervate.</span>
+        <span>Politica de confidențialitate · Termeni și condiții</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= WHATSAPP FLOAT ================= -->
+  <a class="wa-float" href="https://wa.me/40746992222" target="_blank" rel="noopener" aria-label="Scrie-ne pe WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    // Sticky header shadow
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+
+    // Mobile nav
+    const burger = document.getElementById('burger');
+    const mobileNav = document.getElementById('mobileNav');
+    burger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open);
+    });
+    mobileNav.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => mobileNav.classList.remove('open'))
+    );
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const answer = item.querySelector('.faq-a');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(o => {
+          o.classList.remove('open');
+          o.querySelector('.faq-a').style.maxHeight = null;
+          o.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Forms → WhatsApp handoff
+    function toWhatsApp(fields) {
+      const lines = [
+        'Bună ziua! Doresc o evaluare gratuită.',
+        'Nume: ' + (fields.nume || '-'),
+        'Telefon: ' + (fields.telefon || '-'),
+        fields.email ? 'E-mail: ' + fields.email : null,
+        'Specialitate: ' + (fields.specialitate || '-'),
+        fields.mesaj ? 'Mesaj: ' + fields.mesaj : null
+      ].filter(Boolean);
+      window.open('https://wa.me/40746992222?text=' + encodeURIComponent(lines.join('\n')), '_blank');
+    }
+    ['heroForm', 'contactForm'].forEach(id => {
+      const form = document.getElementById(id);
+      if (!form) return;
+      form.addEventListener('submit', ev => {
+        ev.preventDefault();
+        const data = Object.fromEntries(new FormData(form).entries());
+        toWhatsApp(data);
+      });
+    });
+  </script>
+</body>
+</html>
