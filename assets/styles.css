@@ -95,6 +95,10 @@
     .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 78px; }
 
     .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-img { height: 66px; width: auto; display: block; }
+    @media (max-width: 640px) { .logo-img { height: 52px; } }
+    .footer .logo-chip { display: inline-block; background: #fff; border-radius: 12px; padding: 8px 14px; }
+    .footer .logo-img { height: 48px; }
     .logo-mark {
       width: 46px; height: 46px; border-radius: 12px; flex: none;
       background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
@@ -302,10 +306,8 @@
     .hero {
       position: relative; overflow: hidden; color: #fff; padding: 100px 0 110px;
       background:
-        radial-gradient(900px 500px at 85% -10%, rgba(14,157,169,.35) 0%, transparent 60%),
-        radial-gradient(700px 420px at -10% 110%, rgba(226,59,67,.22) 0%, transparent 55%),
-        linear-gradient(140deg, rgba(10,42,67,.95) 0%, rgba(15,58,92,.90) 55%, rgba(12,74,102,.86) 100%),
-        url('https://tratamente-turcia.ro/wp-content/uploads/okn_8026-scaled.jpg') center/cover no-repeat;
+        linear-gradient(100deg, rgba(10,42,67,.96) 0%, rgba(10,42,67,.88) 42%, rgba(10,42,67,.55) 72%, rgba(10,42,67,.35) 100%),
+        url('https://tratamente-turcia.ro/wp-content/uploads/hero_parteneri.webp') center 30%/cover no-repeat;
     }
     .hero::before {
       content: ""; position: absolute; inset: 0; opacity: .5; pointer-events: none;
