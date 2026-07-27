@@ -100,14 +100,14 @@ body.portal button { font-family: inherit; }
 .oprow.active-row { border-color: color-mix(in srgb, var(--brand) 30%, transparent); background: color-mix(in srgb, var(--brand) 5%, #fff); }
 .oprow.done-row { opacity: .85; }
 .op-idx { width: 44px; height: 44px; flex: none; border-radius: 12px; display: grid; place-items: center; font-family: var(--font-display); font-weight: 600; background: var(--chip); color: var(--muted); }
-.oprow.active-row .op-idx { background: color-mix(in srgb, var(--brand) 12%, #fff); color: var(--brand); }
+.oprow.active-row .op-idx { background: color-mix(in srgb, var(--brand) 12%, #fff); color: var(--brand-dark); }
 .op-idx.done { background: var(--success-bg); color: var(--success); }
 .op-body { flex: 1; min-width: 0; }
 .op-body .t { font-weight: 700; font-size: 14.5px; }
 .op-body .d { font-size: 12px; color: var(--muted); }
 .op-meta { text-align: right; flex: none; }
 .op-pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 999px; }
-.op-pill.programata { color: var(--brand); background: color-mix(in srgb, var(--brand) 12%, #fff); }
+.op-pill.programata { color: var(--brand-dark); background: color-mix(in srgb, var(--brand) 12%, #fff); }
 .op-pill.evaluare { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, #fff); }
 .op-pill.finalizata { color: var(--success); background: var(--success-bg); }
 .op-date { font-size: 11px; color: var(--muted); margin-top: 4px; }
@@ -159,7 +159,8 @@ body.portal button { font-family: inherit; }
 .doc-row { display: flex; align-items: center; gap: 11px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 12px; transition: transform .25s ease, box-shadow .25s ease; }
 .doc-row:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -14px rgba(33,30,26,.25); }
 .doc-row .ic { color: var(--brand); flex: none; }
-.doc-row .t { font-weight: 700; font-size: 13px; }
+.doc-row > div:last-child { min-width: 0; }
+.doc-row .t { font-weight: 700; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .doc-row .m { font-size: 11px; color: var(--muted); }
 .doc-drop {
   display: flex; align-items: center; gap: 11px; padding: 11px 13px;
@@ -167,7 +168,11 @@ body.portal button { font-family: inherit; }
   transition: border-color .2s ease, background .2s ease;
 }
 .doc-drop.dragover { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 4%, #fff); }
-.doc-drop input { display: none; }
+.doc-drop input {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.doc-drop:focus-within { outline: 2px solid var(--brand); outline-offset: 2px; }
 
 .referral-card { padding: 18px 20px 20px; background: linear-gradient(150deg, #211E1A, #3a332c); color: #fff; border: none; }
 .referral-card h2 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin-bottom: 6px; }
@@ -184,6 +189,19 @@ body.portal button { font-family: inherit; }
 @media (max-width: 1024px) {
   .row-2, .row-2b { grid-template-columns: 1fr; }
   .ph-nav { display: none; }
+
+  /* Stacked order matches the handoff's phone mockup: welcome → body map →
+     discounts → operations (schedule + docs/referral follow, not covered
+     by the mockup). .row-2/.row-2b drop their box so their children can be
+     reordered as direct flex items of .pmain. */
+  .pmain { display: flex; flex-direction: column; }
+  .row-2, .row-2b { display: contents; }
+  .welcome { order: 1; }
+  .bodymap-card { order: 2; margin-bottom: 18px; }
+  .disc-card { order: 3; margin-bottom: 18px; }
+  #operatii { order: 4; margin-bottom: 18px; }
+  .schedule-card { order: 5; }
+  .side-col { order: 6; }
 }
 @media (max-width: 720px) {
   .pwrap, .pmain { padding-left: 18px; padding-right: 18px; }

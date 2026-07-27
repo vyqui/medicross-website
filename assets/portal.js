@@ -62,7 +62,6 @@
 
   // ---------------- body map wiring ----------------
   var frames = Array.prototype.slice.call(document.querySelectorAll('[data-bodymap]'));
-  var bodyMapReady = frames.map(function () { return false; });
 
   function pushBody() {
     var regions = REGION_MAP[state.activeOp] || REGION_MAP.mommy;
@@ -78,12 +77,16 @@
 
   function syncOpChips() {
     document.querySelectorAll('.opchip').forEach(function (btn) {
-      btn.classList.toggle('active', btn.dataset.opKey === state.activeOp);
+      var on = btn.dataset.opKey === state.activeOp;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', String(on));
     });
   }
   function syncModeSeg() {
     document.querySelectorAll('[data-mode-btn]').forEach(function (btn) {
-      btn.classList.toggle('active', btn.dataset.modeBtn === state.mode);
+      var on = btn.dataset.modeBtn === state.mode;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', String(on));
     });
   }
 
