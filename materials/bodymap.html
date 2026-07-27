@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medicross · Body Map</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.184.0/build/three.module.js",
+    "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js",
+    "three/addons/exporters/OBJExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js",
+    "three/addons/exporters/GLTFExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/GLTFExporter.js"
+  },
+  "integrity": {
+    "https://unpkg.com/three@0.184.0/build/three.module.js": "sha384-8FCZ1eVO6it4+pbec2aDtnTrwjWXZLJRC+MAGCIPDgsYnUrl/E0A2YlF8ioMKI/J",
+    "https://unpkg.com/three@0.184.0/build/three.core.js": "sha384-dw2ooPewaEIrAgl6oFDBmmBWCE9oW9LxRGcfwZ0hLvEprzo202wXl7vCYHRlSnOT",
+    "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js": "sha384-4rziNxOBZKQ69i+w+f89KJ55TCYquwchVbByQwmaOeIOXdOU2PLDn3kOfXHwIJC9",
+    "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js": "sha384-nbwtoZENJD3Vq+ACK0CuGQdPMuDWHkamC2KJD70EV5nfg6jQjfppKOea07YJN+N3",
+    "https://unpkg.com/three@0.184.0/examples/jsm/exporters/GLTFExporter.js": "sha384-VofkvpG6HERhFCYbsUOHeNXBCqID2nfqkQqnVzE1jc/oPcz+qJ13ADdXH08hE+cQ"
+  }
+}
+</script>
+<style>
+  html,body{margin:0;height:100%;background:transparent;overflow:hidden;font-family:system-ui,sans-serif}
+  #c{display:block;width:100%;height:100%;touch-action:none}
+  #hint{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);font-size:11px;color:rgba(33,30,26,.5);pointer-events:none;letter-spacing:.02em}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hint">trage pentru rotire</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, preserveDrawingBuffer:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+camera.position.set(0.9, 1.15, 3.4);
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 0.98, 0);
+controls.minDistance = 2.2;
+controls.maxDistance = 5.5;
+controls.minPolarAngle = 0.5;
+controls.maxPolarAngle = Math.PI * 0.62;
+controls.enablePan = false;
+
+// lighting — soft studio
+scene.add(new THREE.HemisphereLight(0xffffff, 0xe7ddd2, 0.85));
+const key = new THREE.DirectionalLight(0xffffff, 1.5);
+key.position.set(2.2, 3.4, 2.6);
+key.castShadow = true;
+key.shadow.mapSize.set(1024,1024);
+key.shadow.camera.near = 0.5; key.shadow.camera.far = 12;
+key.shadow.camera.left=-2; key.shadow.camera.right=2; key.shadow.camera.top=3; key.shadow.camera.bottom=-1;
+key.shadow.bias = -0.0004;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xdbe7ff, 0.6);
+rim.position.set(-2.4, 2.0, -2.2);
+scene.add(rim);
+const fill = new THREE.DirectionalLight(0xffffff, 0.4);
+fill.position.set(-1.5, 1.2, 2.5);
+scene.add(fill);
+
+// shadow catcher
+const shadowMat = new THREE.ShadowMaterial({ opacity:0.18 });
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(6,6), shadowMat);
+ground.rotation.x = -Math.PI/2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// ---- palette ----
+const SKIN = 0xEDE7DE, ORGAN = 0xD9A38F, INTEST = 0xE0B49F, HILITE = 0xE0362F;
+
+function mkMat(color, opts={}){ return new THREE.MeshStandardMaterial(Object.assign({color, roughness:0.66, metalness:0.02}, opts)); }
+
+// ============ BODY BUILDER (smooth lathe profiles) ============
+function capsule(r,l){ return new THREE.CapsuleGeometry(r,l,8,24); }
+function sphere(r){ return new THREE.SphereGeometry(r,32,24); }
+
+// radius(y) piecewise-linear from ordered [y,r] control points
+function rAtFactory(profile){
+  return (y)=>{
+    if(y<=profile[0][0]) return profile[0][1];
+    for(let i=0;i<profile.length-1;i++){ const [a,ra]=profile[i],[b,rb]=profile[i+1]; if(y>=a&&y<=b){ const t=(y-a)/(b-a); return ra+(rb-ra)*t; } }
+    return profile[profile.length-1][1];
+  };
+}
+// a revolved band between y0..y1 using rAt — adjacent bands share boundary radius => seamless
+function band(rAt, y0, y1){
+  const steps=Math.max(10, Math.round((y1-y0)/0.008));
+  const pts=[]; for(let i=0;i<=steps;i++){ const y=y0+(y1-y0)*i/steps; pts.push(new THREE.Vector2(Math.max(rAt(y),0.002), y)); }
+  const g=new THREE.LatheGeometry(pts,64); g.computeVertexNormals(); return g;
+}
+// a full revolved limb from a [r,y] profile (y local, from 0 up)
+function limb(profile){
+  const pts=profile.map(p=>new THREE.Vector2(Math.max(p[0],0.002),p[1]));
+  const g=new THREE.LatheGeometry(pts,40); g.computeVertexNormals(); return g;
+}
+
+function buildBody(sex){
+  const g = new THREE.Group();
+  const regions = {};
+  const F = sex==='f';
+  const add=(name, geo, x,y,z, scale, rot)=>{
+    const m=new THREE.Mesh(geo, mkMat(SKIN,{roughness:0.5}));
+    m.position.set(x,y,z);
+    if(scale) m.scale.set(scale[0],scale[1],scale[2]);
+    if(rot) m.rotation.set(rot[0]||0,rot[1]||0,rot[2]||0);
+    m.castShadow=true; m.receiveShadow=true; m.name=name;
+    g.add(m); (regions[name]=regions[name]||[]).push(m); return m;
+  };
+
+  // torso profile (y,r) — hourglass for F, straighter for M
+  const torso = F ? [
+    [0.86,0.150],[0.92,0.181],[1.00,0.150],[1.06,0.113],[1.13,0.123],
+    [1.21,0.150],[1.28,0.130],[1.35,0.116],[1.405,0.128],[1.45,0.070],[1.50,0.049],[1.55,0.051]
+  ] : [
+    [0.86,0.150],[0.92,0.158],[1.00,0.150],[1.06,0.138],[1.13,0.145],
+    [1.21,0.150],[1.28,0.150],[1.35,0.150],[1.405,0.165],[1.45,0.074],[1.50,0.052],[1.55,0.054]
+  ];
+  const rAt = rAtFactory(torso);
+  const zT = 0.70; // flatten front-back
+  // seamless bands (shared boundaries) — each separately colorable
+  add('hip',     band(rAt,0.855,1.025), 0,0,0, [1,1,zT]);
+  add('abdomen', band(rAt,1.025,1.170), 0,0,0, [1,1,zT]);
+  add('chest',   band(rAt,1.170,1.418), 0,0,0, [1,1,zT]);
+  add('neck',    band(rAt,1.418,1.552), 0,0,0, [1,1,0.9]);
+  // rounded shoulder caps (part of chest region)
+  add('chest', sphere(0.062), -0.108,1.405,0, [1,0.9,zT+0.05]);
+  add('chest', sphere(0.062),  0.108,1.405,0, [1,0.9,zT+0.05]);
+  // buttocks (back)
+  add('buttocks', sphere(0.075), -0.062,0.935,-0.075, [1,0.98,0.82]);
+  add('buttocks', sphere(0.075),  0.062,0.935,-0.075, [1,0.98,0.82]);
+  if(F){
+    add('breast', sphere(0.055), -0.052,1.238,0.070, [1.05,0.92,1.0]);
+    add('breast', sphere(0.055),  0.052,1.238,0.070, [1.05,0.92,1.0]);
+  }
+  // head + face
+  add('head', sphere(0.10), 0,1.618,0, [0.86,1.05,0.92]);
+  add('jaw',  sphere(0.066), 0,1.566,0.012, [0.9,0.68,0.95]);
+  add('nose', new THREE.ConeGeometry(0.016,0.036,18), 0,1.60,0.086, null, [Math.PI/2,0,0]);
+
+  // legs (smooth tapered lathe): profile [r, yLocal] ankle->hip
+  const legP = [[0.036,0.02],[0.055,0.09],[0.062,0.22],[0.050,0.44],[0.083,0.60],[0.095,0.70],[0.086,0.80]];
+  for(const s of [-1,1]){
+    add('thigh', limb(legP), s*0.082,0.0,0, [0.95,1,0.92]);
+    add('foot', sphere(0.05), s*0.086,0.035,0.055, [0.9,0.55,1.7]);
+  }
+  // arms (smooth tapered lathe): shoulder->wrist, hung with slight A-pose
+  const armP = [[0.030,0.0],[0.036,0.08],[0.041,0.26],[0.047,0.44],[0.052,0.54]];
+  const sx = F?0.135:0.155;
+  for(const s of [-1,1]){
+    add('arm', limb(armP), s*(sx+0.035),0.86,0, [0.95,1,0.92], [0,0,s*0.05]);
+    add('hand', sphere(0.045), s*(sx+0.055),0.83,0, [0.8,1.15,0.7]);
+  }
+
+  g.userData.regions = regions;
+  return g;
+}
+
+// ============ ORGANS (bariatric) ============
+function buildOrgans(sex){
+  const g = new THREE.Group();
+  const regions = {};
+  const F = sex==='f';
+  // translucent torso shell
+  const shellMat = new THREE.MeshStandardMaterial({ color:SKIN, transparent:true, opacity:0.10, roughness:0.9, depthWrite:false });
+  const shell=(geo,x,y,z,scale)=>{ const m=new THREE.Mesh(geo,shellMat.clone()); m.position.set(x,y,z); if(scale)m.scale.set(...scale); g.add(m); };
+  shell(capsule(F?0.135:0.155,0.12),0,1.30,0,[F?1.02:1.12,1,0.62]);
+  shell(capsule(F?0.112:0.132,0.14),0,1.06,0,[F?1.0:1.05,1,0.6]);
+  shell(capsule(F?0.145:0.115,0.09),0,0.90,0,[F?1.28:1.06,1,0.64]);
+  const addO=(name,geo,mat,x,y,z,scale,rot)=>{ const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); if(scale)m.scale.set(...scale); if(rot)m.rotation.set(rot[0]||0,rot[1]||0,rot[2]||0); m.castShadow=true; m.name=name; g.add(m); (regions[name]=regions[name]||[]).push(m); return m; };
+  // esophagus
+  addO('esophagus', new THREE.CylinderGeometry(0.018,0.02,0.16,16), mkMat(INTEST), -0.02,1.28,0.03);
+  // stomach (sleeve pouch) — curved via scaled sphere
+  addO('stomach', sphere(0.075), mkMat(ORGAN,{roughness:0.5}), -0.045,1.16,0.05, [0.75,1.15,0.8], [0,0,0.35]);
+  // duodenum
+  addO('stomach', new THREE.TorusGeometry(0.035,0.016,12,20,Math.PI*1.2), mkMat(ORGAN,{roughness:0.5}), 0.02,1.09,0.05,[1,1,1],[0.4,0,-0.6]);
+  // small intestine coil
+  addO('intestine', new THREE.TorusKnotGeometry(0.06,0.019,90,10,2,3), mkMat(INTEST,{roughness:0.55}), 0,1.0,0.03,[1.05,0.8,0.7]);
+  // large intestine frame
+  addO('intestine', new THREE.TorusGeometry(0.095,0.022,14,28,Math.PI*1.5), mkMat(INTEST,{roughness:0.6}), 0,1.02,0.02,[1,1,0.7],[0,0,Math.PI*0.15]);
+  g.userData.regions = regions;
+  return g;
+}
+
+// ============ state + API ============
+let sex='f', mode='surface', highlight=[];
+let bodies={}, organs={};
+const root = new THREE.Group();
+scene.add(root);
+
+function ensure(){
+  if(!bodies[sex]) { bodies[sex]=buildBody(sex); root.add(bodies[sex]); }
+  if(!organs[sex]) { organs[sex]=buildOrgans(sex); root.add(organs[sex]); }
+}
+
+// group aliases → region names
+const ALIAS = {
+  face:['head','jaw','nose'], rinoplastie:['nose'], nas:['nose'],
+  facelift:['head','jaw'], 'lifting facial':['head','jaw'],
+  san:['breast','chest'], mamare:['breast','chest'], breast:['breast','chest'],
+  abdomen:['abdomen'], abdominoplastie:['abdomen'], 'tummy tuck':['abdomen'],
+  'mommy makeover':['abdomen','breast','chest'],
+  bbl:['buttocks'], fesieri:['buttocks'], buttocks:['buttocks'],
+  brate:['arm'], arms:['arm'], coapse:['thigh'], thighs:['thigh'],
+  flancuri:['abdomen','hip'], liposuctie:['abdomen','hip'],
+  stomac:['stomach'], 'gastric sleeve':['stomach'], 'gastric bypass':['stomach','intestine'],
+  intestin:['intestine']
+};
+
+let pulseMeshes=[];
+function applyHighlight(){
+  ensure();
+  const showOrgans = mode==='internal';
+  if(bodies[sex]) bodies[sex].visible=!showOrgans;
+  if(organs[sex]) organs[sex].visible=showOrgans;
+  for(const s in bodies){ if(s!==sex) bodies[s].visible=false; }
+  for(const s in organs){ if(s!==sex) organs[s].visible=false; }
+
+  const active = showOrgans ? organs[sex] : bodies[sex];
+  const regions = active.userData.regions;
+  // reset all
+  pulseMeshes=[];
+  for(const name in regions){
+    for(const m of regions[name]){
+      const base = showOrgans ? (name==='stomach'?ORGAN:(name==='intestine'||name==='esophagus'?INTEST:SKIN)) : SKIN;
+      m.material.color.setHex(base);
+      m.material.emissive.setHex(0x000000);
+      m.material.emissiveIntensity=0;
+    }
+  }
+  // expand aliases
+  const want = new Set();
+  highlight.forEach(h=>{ const k=(h||'').toLowerCase(); (ALIAS[k]||[k]).forEach(r=>want.add(r)); });
+  want.forEach(name=>{
+    (regions[name]||[]).forEach(m=>{
+      m.material.color.setHex(HILITE);
+      m.material.emissive.setHex(HILITE);
+      m.material.emissiveIntensity=0.35;
+      pulseMeshes.push(m);
+    });
+  });
+}
+
+function setState(d){
+  if(d.sex && d.sex!==sex) sex=d.sex;
+  if(d.mode) mode=d.mode;
+  if(Array.isArray(d.regions)) highlight=d.regions;
+  applyHighlight();
+  render();
+}
+
+// initial from hash: #f/surface/nose,abdomen
+(function initHash(){
+  const h=decodeURIComponent(location.hash.replace('#','')).trim();
+  if(h){ const [sx,md,rg]=h.split('/'); setState({sex:sx||'f',mode:md||'surface',regions:(rg||'').split(',').filter(Boolean)}); }
+  else setState({sex:'f',mode:'surface',regions:['abdomen','breast']});
+})();
+
+window.addEventListener('message', e=>{ if(e.data && e.data.type==='bodymap') setState(e.data); });
+try{ parent.postMessage({type:'bodymap-ready'}, '*'); }catch(_){}
+
+// resize + render (function declarations — hoisted, safe to call from setState above)
+function resize(){
+  const w=canvas.clientWidth||300, h=canvas.clientHeight||300, r=renderer.getPixelRatio();
+  if(Math.abs(canvas.width-Math.floor(w*r))>1 || Math.abs(canvas.height-Math.floor(h*r))>1){
+    renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
+  }
+}
+function render(){ resize(); renderer.render(scene,camera); }
+new ResizeObserver(()=>render()).observe(canvas);
+// re-render when the tab/iframe becomes visible (rAF may be paused while hidden)
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) render(); });
+
+let t=0, raf=0;
+function frame(){
+  t+=0.02;
+  const p=0.28+Math.sin(t*2.4)*0.22;
+  pulseMeshes.forEach(m=>{ m.material.emissiveIntensity=p; });
+  if(!controls.__interacted) root.rotation.y += 0.0035;
+  controls.update();
+  renderer.render(scene,camera);
+  raf=requestAnimationFrame(frame);
+}
+// guaranteed first paint (independent of rAF scheduling), then start the loop
+resize(); renderer.render(scene,camera);
+requestAnimationFrame(()=>{ resize(); render(); });
+raf=requestAnimationFrame(frame);
+controls.addEventListener('start',()=>{ controls.__interacted=true; const hint=document.getElementById('hint'); if(hint) hint.style.opacity=0; });
+</script>
+</body>
+</html>
