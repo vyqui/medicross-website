@@ -1,28 +1,5 @@
-// Sticky header shadow
-const header = document.getElementById('header');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 10);
-}, { passive: true });
-
-// Mobile nav
-const burger = document.getElementById('burger');
-const mobileNav = document.getElementById('mobileNav');
-burger.addEventListener('click', () => {
-  const open = mobileNav.classList.toggle('open');
-  burger.setAttribute('aria-expanded', open);
-});
-mobileNav.querySelectorAll('a').forEach(a =>
-  a.addEventListener('click', () => mobileNav.classList.remove('open'))
-);
-
-// Mobile nav groups (Chirurgie Estetică / Bariatrică)
-document.querySelectorAll('.mobile-group-toggle').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const group = btn.parentElement;
-    const open = group.classList.toggle('open');
-    btn.setAttribute('aria-expanded', open);
-  });
-});
+// The header (sticky behaviour, mobile menu, accordion groups) is owned by
+// assets/header.js — it is shared by every page.
 
 // FAQ accordion
 document.querySelectorAll('.faq-q').forEach(btn => {
