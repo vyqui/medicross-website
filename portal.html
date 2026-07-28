@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Contul meu — Medicross</title>
+  <meta name="description" content="Panoul de control al pacientului Medicross: harta 3D a corpului, operațiile tale, programul călătoriei în Istanbul, reducerile și documentele tale." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/portal.css" />
+</head>
+<body class="portal" id="top">
+
+  <!-- ================= HEADER ================= -->
+  <header class="ph">
+    <div class="ph-inner">
+      <div class="ph-left">
+        <a class="ph-logo" href="index.html" aria-label="Medicross — înapoi la site">
+          <span class="dot"></span>Medicross
+        </a>
+        <nav class="ph-nav" aria-label="Meniu portal">
+          <a href="#panou" class="active">Panou</a>
+          <a href="#operatii">Operațiile mele</a>
+          <a href="#reduceri">Reduceri</a>
+          <a href="#documente">Documente</a>
+        </nav>
+      </div>
+      <div class="ph-right">
+        <a class="ph-back" href="index.html">← Înapoi la site</a>
+        <span class="ph-bell" aria-label="Notificări">
+          <svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M14.85 18.6a3 3 0 01-5.7 0m8.36-4.03V11a5.5 5.5 0 10-11 0v3.57c0 .58-.23 1.13-.64 1.54l-.9.9h14.7l-.9-.9a2.18 2.18 0 01-.65-1.54z"/></svg>
+          <span class="dotred"></span>
+        </span>
+        <div class="ph-user">
+          <div class="ph-user-txt"><div class="name">Andreea M.</div><div class="role">Cont client</div></div>
+          <span class="ph-avatar">AM</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="pmain" id="panou">
+
+    <!-- welcome -->
+    <div class="welcome">
+      <div>
+        <span class="eyebrow">Bine ai revenit</span>
+        <h1>Bună, Andreea.</h1>
+      </div>
+      <div class="card next-card">
+        <span class="next-ic">
+          <svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0V11.25A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+        </span>
+        <div class="next-txt"><div class="lbl">Următoarea intervenție</div><div class="val">Mommy Makeover · <span class="cnt" id="countdown">în 19 zile</span></div></div>
+      </div>
+    </div>
+
+    <!-- row: body map + operations -->
+    <div class="row-2">
+      <!-- body map -->
+      <div class="card bodymap-card" style="overflow:hidden;display:flex;flex-direction:column">
+        <div class="card-head">
+          <div><h2>Harta corpului</h2><div class="sub">Zonele evidențiate sunt cele planificate</div></div>
+          <div class="seg" id="modeSeg">
+            <button data-mode-btn="surface" class="active">Suprafață</button>
+            <button data-mode-btn="internal">Organe interne</button>
+          </div>
+        </div>
+        <div class="bodymap-frame">
+          <iframe data-bodymap title="Harta 3D a corpului" src="materials/bodymap.html#f/surface/abdomen,breast" loading="lazy"></iframe>
+        </div>
+        <div class="opchips" id="opChips">
+          <button class="opchip active" data-op-key="mommy" data-mode="surface" data-regions="abdomen,breast">Mommy Makeover</button>
+          <button class="opchip" data-op-key="bbl" data-mode="surface" data-regions="bbl">BBL</button>
+          <button class="opchip" data-op-key="rino" data-mode="surface" data-regions="nose">Rinoplastie</button>
+          <button class="opchip" data-op-key="sleeve" data-mode="internal" data-regions="stomach">Gastric Sleeve</button>
+        </div>
+      </div>
+
+      <!-- operations list -->
+      <div class="card oplist" id="operatii">
+        <h2 style="font-family:var(--font-display);font-weight:600;font-size:20px;margin-bottom:4px">Operațiile mele</h2>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+          <div class="oprow active-row">
+            <span class="op-idx">01</span>
+            <div class="op-body"><div class="t">Mommy Makeover</div><div class="d">Abdominoplastie + Mamare · Liv Hospital</div></div>
+            <div class="op-meta"><span class="op-pill programata">Programată</span><div class="op-date">12 Aug 2026</div></div>
+          </div>
+          <div class="oprow">
+            <span class="op-idx">02</span>
+            <div class="op-body"><div class="t">Gastric Sleeve</div><div class="d">Chirurgie bariatrică · în discuție</div></div>
+            <div class="op-meta"><span class="op-pill evaluare">În evaluare</span><div class="op-date">—</div></div>
+          </div>
+          <div class="oprow done-row">
+            <span class="op-idx done"><svg viewBox="0 0 24 24" width="20" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></span>
+            <div class="op-body"><div class="t">Rinoplastie</div><div class="d">Finalizată · control la 6 luni</div></div>
+            <div class="op-meta"><span class="op-pill finalizata">Finalizată</span><div class="op-date">02 Mar 2026</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- schedule -->
+    <div class="card schedule-card">
+      <h2>Călătoria mea · Istanbul</h2>
+      <div class="sub">Mommy Makeover · 11–16 August 2026 · totul organizat de echipa Medicross</div>
+      <div class="timeline">
+        <div class="tnode">
+          <span class="dot"><svg viewBox="0 0 24 24" width="18" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.3 6.6A.6.6 0 014 5.8l8 3.2 3.5-1.4a1.8 1.8 0 011.4 3.3L6 16.5"/></svg></span>
+          <div class="date">11 Aug</div><div class="desc">Zbor București→Istanbul<br>+ transfer privat</div>
+        </div>
+        <div class="tnode">
+          <span class="dot"><svg viewBox="0 0 24 24" width="18" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg></span>
+          <div class="date">11 Aug</div><div class="desc">Cazare hotel 5★</div>
+        </div>
+        <div class="tnode">
+          <span class="dot"><svg viewBox="0 0 24 24" width="18" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12.6l-7 7a2 2 0 01-2.8 0l-5.3-5.3a2 2 0 010-2.8l7-7A2 2 0 0110 4h4.5A2 2 0 0116 5.5V10a2 2 0 01-.6 1.4z"/></svg></span>
+          <div class="date">12 Aug</div><div class="desc">Consultație + analize</div>
+        </div>
+        <div class="tnode surgery">
+          <span class="dot"><svg viewBox="0 0 24 24" width="18" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18"/></svg></span>
+          <div class="date">12 Aug</div><div class="desc">Intervenție</div>
+        </div>
+        <div class="tnode">
+          <span class="dot"><svg viewBox="0 0 24 24" width="18" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.5a.6.6 0 011.04 0l2.6 5.27 5.8.84a.6.6 0 01.33 1l-4.2 4.1 1 5.78a.6.6 0 01-.87.63L12 18.5l-5.2 2.73a.6.6 0 01-.87-.63l1-5.78-4.2-4.1a.6.6 0 01.32-1l5.8-.84z"/></svg></span>
+          <div class="date">13–15 Aug</div><div class="desc">Recuperare &amp; control</div>
+        </div>
+        <div class="tnode">
+          <span class="dot"><svg viewBox="0 0 24 24" width="18" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.95-8.95a1.13 1.13 0 011.6 0L21.75 12M4.5 9.75V21h5.25v-6h4.5v6h5.25V9.75"/></svg></span>
+          <div class="date">16 Aug</div><div class="desc">Întoarcere acasă</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- row: discounts + docs/referral -->
+    <div class="row-2b">
+      <!-- discounts -->
+      <div class="card disc-card" id="reduceri">
+        <div class="disc-head">
+          <div><h2>Reducerea ta la următoarea operație</h2><div class="sub">Completează acțiunile de mai jos. Reducerile se adună — plafon <strong>25%</strong>.</div></div>
+          <div class="ring-wrap">
+            <div class="ring" id="discRing"></div>
+            <div class="ring-inner"><span class="ring-num" id="discNum">0%</span><span class="ring-lbl">DIN 25%</span></div>
+          </div>
+        </div>
+        <div class="actions" id="actions">
+          <div class="arow" data-action="google">
+            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 20.5l1.4-6.8L2.2 9l6.9-.7z"/></svg></span>
+            <div class="a-body"><div class="t">Recenzie Google verificată <span class="pct">+4%</span></div><div class="status" data-status>—</div></div>
+            <button class="a-btn" data-toggle>—</button>
+          </div>
+          <div class="arow" data-action="video">
+            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h8.25a1.5 1.5 0 001.5-1.5V6.75a1.5 1.5 0 00-1.5-1.5H4.5a1.5 1.5 0 00-1.5 1.5v10.5a1.5 1.5 0 001.5 1.5z"/></svg></span>
+            <div class="a-body">
+              <div class="t">Video de mulțumire <span class="pct">+10%</span></div>
+              <div class="status" data-status>—</div>
+              <label class="a-consent"><input type="checkbox" data-consent />Sunt de acord să folosiți acest material în scop de marketing</label>
+            </div>
+            <button class="a-btn" data-toggle>—</button>
+          </div>
+          <div class="arow" data-action="photos">
+            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.16-5.16a2.25 2.25 0 013.18 0l5.16 5.16m-1.5-1.5l1.41-1.41a2.25 2.25 0 013.18 0l2.16 2.16M2.25 18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V6A2.25 2.25 0 0019.5 3.75h-15A2.25 2.25 0 002.25 6v12z"/></svg></span>
+            <div class="a-body">
+              <div class="t">Poze înainte / după <span class="pct">+5%</span></div>
+              <div class="status" data-status>—</div>
+              <label class="a-consent"><input type="checkbox" data-consent />Sunt de acord să folosiți acest material în scop de marketing</label>
+            </div>
+            <button class="a-btn" data-toggle>—</button>
+          </div>
+          <div class="arow" data-action="referral">
+            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.1 9.1 0 003.74-.48 3 3 0 00-4.68-3.09M18 18.72V16.5a5.97 5.97 0 00-.94-3.19M18 18.72H6m0 0a9.1 9.1 0 01-3.74-.48 3 3 0 014.68-3.09M6 18.72V16.5c0-1.17.34-2.27.94-3.19m0 0a6 6 0 0110.12 0M12 6.38a3 3 0 11-6 0 3 3 0 016 0zm7.5 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg></span>
+            <div class="a-body"><div class="t">Recomandă un prieten <span class="pct">+3% / prieten</span></div><div class="status" data-status>—</div></div>
+            <button class="a-btn outline-btn" data-toggle>Invită</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- docs + referral code -->
+      <div class="side-col" id="documente">
+        <div class="card docs-card">
+          <h2>Documente</h2>
+          <div class="doclist">
+            <a class="doc-row" href="#" download>
+              <span class="ic"><svg viewBox="0 0 24 24" width="20" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.6c0-1.1-.9-2-2-2h-11c-1.1 0-2 .9-2 2v2.6M12 3v10.5m0 0l3.75-3.75M12 13.5L8.25 9.75"/></svg></span>
+              <div><div class="t">Analize pre-operatorii</div><div class="m">PDF · 1.2 MB</div></div>
+            </a>
+            <a class="doc-row" href="#" download>
+              <span class="ic"><svg viewBox="0 0 24 24" width="20" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.6c0-1.1-.9-2-2-2h-11c-1.1 0-2 .9-2 2v2.6M12 3v10.5m0 0l3.75-3.75M12 13.5L8.25 9.75"/></svg></span>
+              <div><div class="t">Plan de tratament</div><div class="m">PDF · 640 KB</div></div>
+            </a>
+            <label class="doc-drop" id="dropZone">
+              <span><svg viewBox="0 0 24 24" width="20" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.78 5.25 5.25 0 0110.34-1.9 4.5 4.5 0 011.82 8.68"/></svg></span>
+              <div><div class="t" id="dropLabel">Încarcă investigații</div><div class="m">trage fișierul aici</div></div>
+              <input type="file" id="fileInput" multiple />
+            </label>
+          </div>
+        </div>
+        <div class="card referral-card">
+          <h2>Codul tău de invitație</h2>
+          <p>Prietenii primesc consultație gratuită, tu primești +3% la următoarea intervenție.</p>
+          <div class="ref-row">
+            <div class="ref-code">MEDI-ANDREEA-2K6</div>
+            <button class="ref-copy" id="copyBtn">Copiază</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- mobile bottom tabs -->
+  <nav class="ptabs" aria-label="Navigare rapidă">
+    <a href="#top" class="active"><svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.95-8.95a1.13 1.13 0 011.6 0L21.75 12M4.5 9.75V21h15V9.75"/></svg>Panou</a>
+    <a href="#operatii"><svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.75A2.25 2.25 0 018.25 4.5h7.5A2.25 2.25 0 0118 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-7.5A2.25 2.25 0 016 17.25V6.75z"/></svg>Operații</a>
+    <a href="#reduceri"><svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Reduceri</a>
+    <a href="index.html"><svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0"/></svg>Cont</a>
+  </nav>
+
+  <script src="assets/portal.js"></script>
+</body>
+</html>

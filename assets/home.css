@@ -243,6 +243,7 @@ body.home a { text-decoration: none; color: inherit; }
   .wrap { padding: 0 28px; }
   .hh-inner { padding: 12px 28px; }
   .hh-nav, .hh-phone { display: none; }
+  .hh-right .btn-ghost { display: none; } /* "Cont client" moves into the mobile nav below */
   .hh-burger { display: block; }
   .hero-grid { grid-template-columns: 1fr; gap: 40px; }
   .hero h1 { font-size: 52px; }
