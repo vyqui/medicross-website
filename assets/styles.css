@@ -314,7 +314,7 @@
       position: relative; overflow: hidden; color: #fff; padding: 100px 0 110px;
       background:
         linear-gradient(100deg, rgba(10,42,67,.96) 0%, rgba(10,42,67,.88) 42%, rgba(10,42,67,.55) 72%, rgba(10,42,67,.35) 100%),
-        url('https://tratamente-turcia.ro/wp-content/uploads/hero_parteneri.webp') center 30%/cover no-repeat;
+        url('materials/images/hero_parteneri.webp') center 30%/cover no-repeat;
     }
     .hero::before {
       content: ""; position: absolute; inset: 0; opacity: .5; pointer-events: none;
@@ -436,7 +436,7 @@
     .included {
       background:
         linear-gradient(140deg, rgba(10,42,67,.95) 0%, rgba(15,58,92,.92) 70%, rgba(12,74,102,.90) 100%),
-        url('https://tratamente-turcia.ro/wp-content/uploads/king-suit_007-scaled.jpg') center/cover no-repeat fixed;
+        url('materials/images/king-suit_007-scaled.jpg') center/cover no-repeat fixed;
       color: #fff;
     }
     .included .eyebrow { color: var(--brand-soft); }
