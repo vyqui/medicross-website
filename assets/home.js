@@ -1,16 +1,7 @@
 // Medicross homepage interactions
 document.documentElement.classList.add('js');
 
-// ---- mobile nav ----
-const burger = document.getElementById('burger');
-const mnav = document.getElementById('mnav');
-if (burger) {
-  burger.addEventListener('click', () => {
-    const open = mnav.classList.toggle('open');
-    burger.setAttribute('aria-expanded', open);
-  });
-  mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mnav.classList.remove('open')));
-}
+// The header (mobile menu, dropdowns) is owned by assets/header.js — shared by every page.
 
 // ---- hero operation switcher ----
 const OPS = [

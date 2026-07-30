@@ -11,116 +11,84 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="assets/header.css" />
 </head>
 <body>
 
 <!-- ================= TOPBAR ================= -->
-  <div class="topbar">
-    <div class="container topbar-inner">
-      <div class="topbar-group">
-        <a href="tel:+40746992222">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
-          <span class="accent">+40 746 992 222</span>
-        </a>
-        <a href="mailto:office@tratamente-turcia.ro">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
-          office@tratamente-turcia.ro
-        </a>
-      </div>
-      <div class="topbar-group right">
-        <a href="contact.html">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-          Str. Gheorghe Grigore Cantacuzino 46, Ploiești
-        </a>
-        <span>
-          <svg style="width:14px;height:14px;vertical-align:-2px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          L–V: 09:00 – 16:00 · WhatsApp non-stop
-        </span>
-      </div>
-    </div>
-  </div>
 
   
-<!-- ================= HEADER ================= -->
-  <header class="header" id="header">
-    <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="Tratamente Turcia by Medicross">
-        <img class="logo-img" src="https://tratamente-turcia.ro/wp-content/uploads/bleurmarin-by-medicross-logo-new-500-x-206-px.png" alt="Tratamente Turcia by Medicross — Caring for You" />
+  <!-- ================= HEADER (shared — assets/header.css) ================= -->
+  <header class="mh" id="top">
+    <div class="mh-inner">
+      <a class="mh-logo" href="index.html" aria-label="Tratamente Turcia by Medicross — acasă">
+        <img src="materials/images/bleurmarin-by-medicross-logo-new-500-x-206-px.png" alt="Tratamente Turcia by Medicross — Caring for You" />
       </a>
 
-      <nav class="nav" aria-label="Meniu principal">
-        <div class="has-sub">
-          <a href="despre.html">Despre
-            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
-          </a>
-          <div class="sub">
-            <div class="sub-inner">
-              <a href="despre.html">Despre noi &amp; Misiune</a>
-              <a href="testimoniale.html">Testimoniale</a>
-              <a href="parteneri.html">Parteneri</a>
-            </div>
+      <nav class="mh-nav" aria-label="Meniu principal">
+        <div class="mh-item">
+          <a href="despre.html">Despre <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></a>
+          <div class="mh-sub">
+            <a href="despre.html">Despre noi & Misiune</a>
+            <a href="parteneri.html">Spitale partenere</a>
+            <a href="testimoniale.html">Testimoniale</a>
           </div>
         </div>
-        <div class="has-sub">
-          <a href="index.html#specialitati">Chirurgie Estetică
-            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
-          </a>
-          <div class="sub">
-            <div class="sub-inner">
-              <a href="rinoplastie.html">Rinoplastie</a>
-              <a href="interventii-mamare.html">Intervenții Mamare</a>
-              <a href="transplant-de-par.html">Transplant de păr</a>
-              <a href="abdominoplastie.html">Abdominoplastie</a>
-              <a href="brazilian-butt-lift.html">Brazilian Butt Lift (BBL)</a>
-              <a href="lifting-facial-si-gat.html">Lifting facial și gât</a>
-              <a href="liposuctie.html">Liposucție</a>
-              <a href="transplant-de-sprancene.html">Transplant de Sprâncene</a>
-            </div>
+        <div class="mh-item">
+          <a href="chirurgie-estetica.html">Chirurgie Estetică <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></a>
+          <div class="mh-sub">
+            <a href="rinoplastie.html">Rinoplastie</a>
+            <a href="interventii-mamare.html">Intervenții Mamare</a>
+            <a href="transplant-de-par.html">Transplant de păr</a>
+            <a href="abdominoplastie.html">Abdominoplastie</a>
+            <a href="brazilian-butt-lift.html">Brazilian Butt Lift (BBL)</a>
+            <a href="lifting-facial-si-gat.html">Lifting facial și gât</a>
+            <a href="liposuctie.html">Liposucție</a>
+            <a href="transplant-de-sprancene.html">Transplant de Sprâncene</a>
           </div>
         </div>
-        <div class="has-sub">
-          <a href="index.html#specialitati">Chirurgie Bariatrică
-            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
-          </a>
-          <div class="sub">
-            <div class="sub-inner">
-              <a href="gastric-sleeve.html">Gastric Sleeve</a>
-              <a href="gastric-bypass.html">Gastric Bypass</a>
-              <a href="balon-gastric.html">Balon Gastric</a>
-            </div>
+        <div class="mh-item">
+          <a href="chirurgie-bariatrica.html">Chirurgie Bariatrică <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></a>
+          <div class="mh-sub">
+            <a href="gastric-sleeve.html">Gastric Sleeve</a>
+            <a href="gastric-bypass.html">Gastric Bypass</a>
+            <a href="balon-gastric.html">Balon Gastric</a>
           </div>
         </div>
         <a href="specialitati.html">Specialități</a>
-        <div class="has-sub">
-          <a href="oferte.html">Oferte &amp; Tarife
-            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
-          </a>
-          <div class="sub">
-            <div class="sub-inner">
-              <a href="oferte.html">Oferte</a>
-              <a href="tarife.html">Tarife</a>
-            </div>
+        <div class="mh-item">
+          <a href="oferte.html">Oferte &amp; Tarife <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></a>
+          <div class="mh-sub">
+            <a href="oferte.html">Oferte</a>
+            <a href="tarife.html">Tarife</a>
+            <a href="plata-in-rate.html">Plata în rate</a>
           </div>
         </div>
         <a href="contact.html">Contact</a>
-        <a href="portal.html">Cont client</a>
       </nav>
 
-      <a class="btn btn-primary btn-cta" href="contact.html">Evaluare gratuită</a>
-
-      <button class="burger" id="burger" aria-label="Deschide meniul" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-    <div class="mobile-nav" id="mobileNav">
-      <a href="despre.html">Despre noi</a>
-      <a href="specialitati.html">Specialități</a>
-      <div class="mobile-group">
-        <button class="mobile-group-toggle" type="button" aria-expanded="false">
-          Chirurgie Estetică
-          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+      <div class="mh-right">
+        <a class="mh-phone" href="tel:+40746992222">+40 746 992 222</a>
+        <a class="mh-btn mh-btn-ghost" href="portal.html">Cont client</a>
+        <a class="mh-btn mh-btn-primary" href="contact.html">Evaluare gratuită</a>
+        <button class="mh-burger" id="mhBurger" aria-label="Deschide meniul" aria-expanded="false" aria-controls="mhMobile">
+          <span></span><span></span><span></span>
         </button>
-        <div class="mobile-group-items">
+      </div>
+    </div>
+
+    <div class="mh-mobile" id="mhMobile">
+      <div class="mh-group">
+        <button type="button" aria-expanded="false">Despre <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></button>
+        <div class="mh-group-items">
+          <a href="despre.html">Despre noi & Misiune</a>
+          <a href="parteneri.html">Spitale partenere</a>
+          <a href="testimoniale.html">Testimoniale</a>
+        </div>
+      </div>
+      <div class="mh-group">
+        <button type="button" aria-expanded="false">Chirurgie Estetică <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></button>
+        <div class="mh-group-items">
           <a href="rinoplastie.html">Rinoplastie</a>
           <a href="interventii-mamare.html">Intervenții Mamare</a>
           <a href="transplant-de-par.html">Transplant de păr</a>
@@ -131,35 +99,38 @@
           <a href="transplant-de-sprancene.html">Transplant de Sprâncene</a>
         </div>
       </div>
-      <div class="mobile-group">
-        <button class="mobile-group-toggle" type="button" aria-expanded="false">
-          Chirurgie Bariatrică
-          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
-        </button>
-        <div class="mobile-group-items">
+      <div class="mh-group">
+        <button type="button" aria-expanded="false">Chirurgie Bariatrică <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></button>
+        <div class="mh-group-items">
           <a href="gastric-sleeve.html">Gastric Sleeve</a>
           <a href="gastric-bypass.html">Gastric Bypass</a>
           <a href="balon-gastric.html">Balon Gastric</a>
         </div>
       </div>
-      <a href="parteneri.html">Parteneri</a>
-      <a href="oferte.html">Oferte</a>
-      <a href="tarife.html">Tarife</a>
-      <a href="testimoniale.html">Testimoniale</a>
+      <a href="specialitati.html">Specialități</a>
+      <div class="mh-group">
+        <button type="button" aria-expanded="false">Oferte &amp; Tarife <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></button>
+        <div class="mh-group-items">
+          <a href="oferte.html">Oferte</a>
+          <a href="tarife.html">Tarife</a>
+          <a href="plata-in-rate.html">Plata în rate</a>
+        </div>
+      </div>
       <a href="contact.html">Contact</a>
       <a href="portal.html">Cont client</a>
-      <a class="btn btn-primary" href="contact.html">Evaluare gratuită</a>
+      <a href="tel:+40746992222">+40 746 992 222</a>
+      <a class="mh-btn mh-btn-primary" href="contact.html">Evaluare gratuită</a>
     </div>
   </header>
 
   
   <!-- ================= PAGE HERO ================= -->
-  <section class="page-hero has-bg" style="--hero-img:url('https://tratamente-turcia.ro/wp-content/uploads/ameliyathane-davinci_009-scaled.jpg')">
+  <section class="page-hero has-bg" style="--hero-img:url('materials/images/ameliyathane-davinci_009-scaled.jpg')">
     <div class="container">
       <div class="breadcrumbs">
         <a href="index.html">Acasă</a> <span>›</span> <span>Specialități</span>
       </div>
-      <span class="eyebrow" style="color:#7FD6DD">Specialități medicale</span>
+      <span class="eyebrow" style="color:var(--brand-soft)">Specialități medicale</span>
       <h1>Suntem pregătiți pentru orice situație</h1>
       <p class="lead">Pentru a veni în întâmpinarea pacienților, oferim acces la o gamă largă de specialități medicale, cu profesionalism, grijă și responsabilitate.</p>
     </div>
@@ -173,7 +144,7 @@
         <p class="section-lead">Îmbinăm serviciile medicale integrate cu profesionalismul, grija și responsabilitatea personalului medical. 24/24 suntem alături de tine.</p>
       </div>
       <div class="proc-grid">
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="analize-si-investigatii.html">
           <img src="materials/images/analize-si-investigatii.jpg" alt="Analize și Investigații" loading="lazy" />
           <div class="pc-body">
             <h3>Analize și Investigații</h3>
@@ -181,7 +152,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="cardiologie.html">
           <img src="materials/images/cat-cardiologie.webp" alt="Cardiologie" loading="lazy" />
           <div class="pc-body">
             <h3>Cardiologie</h3>
@@ -205,7 +176,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="chirurgie-generala.html">
           <img src="materials/images/cat-chirurgie-generala.webp" alt="Chirurgie generală" loading="lazy" />
           <div class="pc-body">
             <h3>Chirurgie generală</h3>
@@ -213,7 +184,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="chirurgie-vasculara.html">
           <img src="materials/images/cat-chirurgie-vasculara.webp" alt="Chirurgie vasculară" loading="lazy" />
           <div class="pc-body">
             <h3>Chirurgie vasculară</h3>
@@ -221,7 +192,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="dermatologie.html">
           <img src="materials/images/cat-dermatologie.webp" alt="Dermatologie" loading="lazy" />
           <div class="pc-body">
             <h3>Dermatologie</h3>
@@ -229,7 +200,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="endocrinologie.html">
           <img src="materials/images/cat-endocrinologie.webp" alt="Endocrinologie" loading="lazy" />
           <div class="pc-body">
             <h3>Endocrinologie</h3>
@@ -237,7 +208,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="fertilizare-in-vitro.html">
           <img src="materials/images/cat-fertilizare-in-vitro.webp" alt="Fertilizare in vitro" loading="lazy" />
           <div class="pc-body">
             <h3>Fertilizare in vitro</h3>
@@ -245,7 +216,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="gastroenterologie.html">
           <img src="materials/images/cat-gastroenterologie.webp" alt="Gastroenterologie" loading="lazy" />
           <div class="pc-body">
             <h3>Gastroenterologie</h3>
@@ -253,7 +224,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="hematologie.html">
           <img src="materials/images/cat-hematologie.webp" alt="Hematologie" loading="lazy" />
           <div class="pc-body">
             <h3>Hematologie</h3>
@@ -261,7 +232,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="nefrologie.html">
           <img src="materials/images/cat-nefrologie.webp" alt="Nefrologie" loading="lazy" />
           <div class="pc-body">
             <h3>Nefrologie</h3>
@@ -269,7 +240,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="neurologie.html">
           <img src="materials/images/cat-neurologie.webp" alt="Neurologie" loading="lazy" />
           <div class="pc-body">
             <h3>Neurologie</h3>
@@ -277,7 +248,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="obstetrica-ginecologie.html">
           <img src="materials/images/cat-obstretica-ginecologie.webp" alt="Obstetrică și Ginecologie" loading="lazy" />
           <div class="pc-body">
             <h3>Obstetrică și Ginecologie</h3>
@@ -285,7 +256,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="oftalmologie.html">
           <img src="materials/images/cat-oftalmologie.webp" alt="Oftalmologie" loading="lazy" />
           <div class="pc-body">
             <h3>Oftalmologie</h3>
@@ -293,7 +264,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="oncologie.html">
           <img src="materials/images/cat-oncologie.webp" alt="Oncologie" loading="lazy" />
           <div class="pc-body">
             <h3>Oncologie</h3>
@@ -301,7 +272,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="orl.html">
           <img src="materials/images/cat-orl.webp" alt="ORL" loading="lazy" />
           <div class="pc-body">
             <h3>ORL</h3>
@@ -309,7 +280,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="ortopedie-si-traumatologie.html">
           <img src="materials/images/cat-ortopedie-2.webp" alt="Ortopedie" loading="lazy" />
           <div class="pc-body">
             <h3>Ortopedie</h3>
@@ -317,7 +288,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="pneumologie.html">
           <img src="materials/images/cat-pneumologie.webp" alt="Pneumologie" loading="lazy" />
           <div class="pc-body">
             <h3>Pneumologie</h3>
@@ -333,7 +304,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="transplant-de-organe-si-tesuturi.html">
           <img src="materials/images/cat-transplant-de-organe-si-tesuturi.webp" alt="Transplant de organe și țesuturi" loading="lazy" />
           <div class="pc-body">
             <h3>Transplant de organe și țesuturi</h3>
@@ -341,7 +312,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="urologie.html">
           <img src="materials/images/cat-urologie.webp" alt="Urologie" loading="lazy" />
           <div class="pc-body">
             <h3>Urologie</h3>
@@ -349,7 +320,7 @@
             <span class="pc-link">Întreabă despre cazul tău →</span>
           </div>
         </a>
-        <a class="proc-card reveal" href="contact.html">
+        <a class="proc-card reveal" href="stomatologie.html">
           <img src="materials/images/cat-stomatologie.webp" alt="Stomatologie" loading="lazy" />
           <div class="pc-body">
             <h3>Stomatologie</h3>
@@ -378,7 +349,7 @@
       <div class="footer-grid">
         <div>
           <a class="logo" href="index.html" aria-label="Tratamente Turcia by Medicross">
-            <span class="logo-chip"><img class="logo-img" src="https://tratamente-turcia.ro/wp-content/uploads/bleurmarin-by-medicross-logo-new-500-x-206-px.png" alt="Tratamente Turcia by Medicross — Caring for You" /></span>
+            <span class="logo-chip"><img class="logo-img" src="materials/images/bleurmarin-by-medicross-logo-new-500-x-206-px.png" alt="Tratamente Turcia by Medicross — Caring for You" /></span>
           </a>
           <p class="desc">
             Acces la inovație medicală, îngrijire personalizată și rezultate superioare,
@@ -430,7 +401,112 @@
   <a class="wa-float" href="https://wa.me/40746992222" target="_blank" rel="noopener" aria-label="Scrie-ne pe WhatsApp">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
+        <a class="proc-card reveal" href="alergologie.html">
+          <img src="materials/images/alergologie-tratamente-turcia-1-rg55tn9tusiu43x5up3ftjeivvi0syxoda0x1e4194.png" alt="Alergologie" loading="lazy" />
+          <div class="pc-body">
+            <h3>Alergologie</h3>
+            <p>Centrele noastre de alergologie sunt dotate cu echipamente de ultimă generație pentru diagnostic precis și tratamente eficiente. Printre serviciile oferite.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="boli-infectioase.html">
+          <img src="materials/images/istockphoto-1172875109-612x612-1-rcb6g4h8obv4rzywavq8g1bezxqja30b54eoa2hv14.jpg" alt="Boli infecțioase" loading="lazy" />
+          <div class="pc-body">
+            <h3>Boli infecțioase</h3>
+            <p>Centrele noastre de boli infecțioase sunt echipate cu cele mai noi tehnologii pentru diagnostic și tratament eficient..</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="chirurgie-orala-si-maxilo-faciala.html">
+          <img src="materials/images/depositphotos_137083634-stock-photo-dentist-portrait-at-clinic-qoqo68ckvs5qj616r8z5xw6ufmy7vzn34arp4c2r14.webp" alt="Chirurgie orală și maxilo-facială" loading="lazy" />
+          <div class="pc-body">
+            <h3>Chirurgie orală și maxilo-facială</h3>
+            <p>Servicii de chirurgie orală și maxilo-facială de vârf, beneficiind de tehnologii avansate și de expertiza medicală a specialiștilor noștri pentru a vă oferi.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="chirurgie-pediatrica.html">
+          <img src="materials/images/doctor-examining-child-6997091-qoqofyych4qylhr1h9p7r6dg4k33t00sp60520qlns.webp" alt="Chirurgie pediatrică" loading="lazy" />
+          <div class="pc-body">
+            <h3>Chirurgie pediatrică</h3>
+            <p>Servicii de chirurgie pediatrică de vârf, beneficiind de tehnologii avansate și de expertiza medicală a specialiștilor noștri în îngrijirea copiilor pentru a vă.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="chirurgie-toracica.html">
+          <img src="materials/images/doctors-doing-surgical-procedure-patient_23-2148962498.avif" alt="Chirurgie toracică" loading="lazy" />
+          <div class="pc-body">
+            <h3>Chirurgie toracică</h3>
+            <p>Servicii de chirurgie toracică de vârf, beneficiind de expertiza medicală a specialiștilor noștri în diagnosticul și tratamentul afecțiunilor toracice pentru a vă.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="chirurgie-plastica-microchirurgie-reconstructiva.html">
+          <img src="materials/images/pexels-shvetsa-4483327-scaled-rg571pxeb4uuhvwghqxoqf0lma9lq1wl3f8j4grhi0.jpg" alt="Chirurgie reconstructivă" loading="lazy" />
+          <div class="pc-body">
+            <h3>Chirurgie reconstructivă</h3>
+            <p>Servicii de chirurgie plastică și microchirurgie reconstructivă de vârf, beneficiind de expertiza medicală a specialiștilor noștri în estetica corporală și.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="medicina-interna.html">
+          <img src="materials/images/premium_photo-1702598479574-c99ddf4987fa.avif" alt="Medicină internă" loading="lazy" />
+          <div class="pc-body">
+            <h3>Medicină internă</h3>
+            <p>Centrele noastre de medicină internă sunt echipate cu cele mai noi tehnologii pentru diagnostic și tratament eficient..</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="medicina-nucleara.html">
+          <img src="materials/images/doctor-from-future-concept_23-2151111116.avif" alt="Medicină nucleară" loading="lazy" />
+          <div class="pc-body">
+            <h3>Medicină nucleară</h3>
+            <p>Servicii de medicină nucleară de vârf, beneficiind de tehnologii de ultimă generație și de expertiza medicală a specialiștilor noștri pentru a vă oferi tratamente precise.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="neurochirurgie.html">
+          <img src="materials/images/benign-brain-tumor-treatment-rg56om2f0awwlmxv12yyyq37euvcdzvbyjqs7k749k.jpeg" alt="Neurochirurgie" loading="lazy" />
+          <div class="pc-body">
+            <h3>Neurochirurgie</h3>
+            <p>Tratamentul eficient al acestora necesită o abordare personalizată, bazată pe tipul, localizarea și dimensiunea tumorii, precum și pe starea generală de sănătate.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="oncologia-radiologica.html">
+          <img src="materials/images/istockphoto-908045946-612x612-1.jpg" alt="Oncologie radiologică" loading="lazy" />
+          <div class="pc-body">
+            <h3>Oncologie radiologică</h3>
+            <p>Servicii de oncologie radiologică de vârf, beneficiind de tehnologii avansate și de expertiza medicală a specialiștilor noștri în tratarea cancerului cu.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="pediatrie.html">
+          <img src="materials/images/my-daughter-isn-t-afraid-pay-visit-here_329181-7634.avif" alt="Pediatrie" loading="lazy" />
+          <div class="pc-body">
+            <h3>Pediatrie</h3>
+            <p>Servicii de pediatrie de înaltă calitate, beneficiind de expertiza medicală a specialiștilor noștri în îngrijirea copiilor pentru a vă oferi tratamente și îngrijire.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="radiologie-interventionala.html">
+          <img src="materials/images/radiologie-interventionala-tratamente-turcia-ploiesti-rg57irq09y73394vxm92gm4liw8acelb3t8li5hemw.jpg" alt="Radiologie intervențională" loading="lazy" />
+          <div class="pc-body">
+            <h3>Radiologie intervențională</h3>
+            <p>Servicii de radiologie intervențională de vârf, beneficiind de tehnologii avansate și de expertiza medicală a specialiștilor noștri în domeniul imagisticii și al.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
+        <a class="proc-card reveal" href="reumatologie.html">
+          <img src="materials/images/depositphotos_468366734-stock-photo-young-doctor-examining-ray-hands-1-qoqr7z07kln5s0hrjhuc0xwvab6wpr0r44lt3sgroo.webp" alt="Reumatologie" loading="lazy" />
+          <div class="pc-body">
+            <h3>Reumatologie</h3>
+            <p>Servicii de reumatologie de înaltă calitate, beneficiind de expertiza medicală a specialiștilor noștri în diagnosticul și tratamentul afecțiunilor reumatologice pentru a.</p>
+            <span class="pc-link">Vezi specialitatea →</span>
+          </div>
+        </a>
 
     <script src="assets/site.js"></script>
+  <script src="assets/header.js"></script>
 </body>
 </html>

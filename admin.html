@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Administrare portal — Medicross</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/portal.css" />
+  <link rel="stylesheet" href="assets/admin.css" />
+</head>
+<body class="portal" id="top">
+
+  <header class="ph">
+    <div class="ph-inner">
+      <div class="ph-left">
+        <a class="ph-logo" href="index.html" aria-label="Medicross — înapoi la site">
+          <span class="dot"></span>Medicross
+        </a>
+        <span class="admin-badge">Admin</span>
+      </div>
+      <div class="ph-right">
+        <a class="ph-back" href="portal.html">Vezi portalul pacientului</a>
+        <div class="ph-user">
+          <div class="ph-user-txt"><div class="name">Medicross</div><div class="role">Administrator</div></div>
+          <span class="ph-avatar">MX</span>
+        </div>
+        <button class="ph-logout" id="logoutBtn" type="button">Ieși</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pmain">
+    <div class="welcome">
+      <div>
+        <span class="eyebrow">Consolă de administrare</span>
+        <h1>Pacienți &amp; portal</h1>
+      </div>
+    </div>
+
+    <div class="arow-2">
+      <!-- patient list -->
+      <div class="card plist" id="patientList">
+        <h2>Pacienți</h2>
+        <!-- rows injected -->
+      </div>
+
+      <!-- detail column -->
+      <div class="acol" id="detail">
+
+        <!-- discount overview -->
+        <div class="card acard">
+          <h2>Reducere acumulată</h2>
+          <div class="sub">Starea acțiunilor de marketing și consimțămintele pacientului. Reducerile se adună — plafon 25%.</div>
+          <div class="disc-sum">
+            <div class="ring-wrap">
+              <div class="ring" id="aRing"></div>
+              <div class="ring-inner"><span class="ring-num" id="aNum">0%</span><span class="ring-lbl">DIN 25%</span></div>
+            </div>
+            <div class="disc-actions" id="aActions"><!-- injected --></div>
+          </div>
+        </div>
+
+        <!-- operations -->
+        <div class="card acard">
+          <h2>Intervenții</h2>
+          <div class="sub">Gestionează intervențiile pacientului — apar imediat în portalul lui.</div>
+          <div id="opList"><!-- injected --></div>
+          <button class="ibtn primary" id="opAdd" type="button">+ Adaugă intervenție</button>
+          <form class="iform" id="opForm" hidden>
+            <div class="full"><label for="opName">Nume intervenție</label><input id="opName" required /></div>
+            <div class="full"><label for="opDetail">Detaliu (procedură · spital)</label><input id="opDetail" /></div>
+            <div><label for="opStatus">Status</label>
+              <select id="opStatus">
+                <option value="programata">Programată</option>
+                <option value="evaluare">În evaluare</option>
+                <option value="finalizata">Finalizată</option>
+              </select>
+            </div>
+            <div><label for="opDate">Dată</label><input id="opDate" placeholder="12 Aug 2026" /></div>
+            <div><label for="opRegions">Zone hartă 3D</label><input id="opRegions" placeholder="abdomen,breast" /></div>
+            <div><label for="opMode">Vedere hartă</label>
+              <select id="opMode"><option value="surface">Suprafață</option><option value="internal">Organe interne</option></select>
+            </div>
+            <div class="frow full">
+              <label style="display:flex;align-items:center;gap:7px;margin:0"><input type="checkbox" id="opActive" style="width:15px;height:15px" />Intervenția activă (evidențiată în portal)</label>
+            </div>
+            <div class="frow full">
+              <button class="ibtn primary" type="submit">Salvează</button>
+              <button class="ibtn" type="button" id="opCancel">Renunță</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- trip agenda -->
+        <div class="card acard">
+          <h2>Agenda călătoriei</h2>
+          <div class="sub">Programul complet al deplasării, de la plecare la întoarcere — ordinea de aici este ordinea din portal.</div>
+          <form class="iform" id="tripMeta" style="margin-bottom:12px;margin-top:0">
+            <div class="full"><label for="tmTitle">Titlu</label><input id="tmTitle" /></div>
+            <div class="full"><label for="tmSub">Subtitlu</label><input id="tmSub" /></div>
+            <div class="frow full"><button class="ibtn" type="submit">Salvează detaliile călătoriei</button></div>
+          </form>
+          <div id="tripList"><!-- injected --></div>
+          <button class="ibtn primary" id="tripAdd" type="button">+ Adaugă etapă</button>
+          <form class="iform" id="tripForm" hidden>
+            <div><label for="tiDate">Dată</label><input id="tiDate" placeholder="11 Aug" required /></div>
+            <div class="full"><label for="tiDesc">Descriere</label><input id="tiDesc" required /></div>
+            <div><label for="tiIcon">Pictogramă</label>
+              <select id="tiIcon">
+                <option value="plane">Avion</option><option value="building">Hotel</option>
+                <option value="tag">Consultație</option><option value="plus">Intervenție</option>
+                <option value="star">Recuperare</option><option value="home">Acasă</option>
+              </select>
+            </div>
+            <div class="frow"><label style="display:flex;align-items:center;gap:7px;margin:0"><input type="checkbox" id="tiSurgery" style="width:15px;height:15px" />Este ziua intervenției</label></div>
+            <div class="frow full">
+              <button class="ibtn primary" type="submit">Salvează etapa</button>
+              <button class="ibtn" type="button" id="tripCancel">Renunță</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- documents -->
+        <div class="card acard">
+          <h2>Documentele pacientului</h2>
+          <div class="sub">Fișierele încărcate de pacient în portal + documentele adăugate de echipă.</div>
+          <div id="docList"><!-- injected --></div>
+          <label class="ibtn primary" style="display:inline-block">
+            + Încarcă document pentru pacient
+            <input type="file" id="adminUpload" multiple style="display:none" />
+          </label>
+        </div>
+
+        <!-- activity log -->
+        <div class="card acard">
+          <h2>Jurnal de activitate</h2>
+          <div class="sub">Autentificări, încărcări, consimțăminte acordate/retrase și modificările echipei — cele mai noi primele.</div>
+          <ul class="logl" id="logList"><!-- injected --></ul>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/portal-data.js"></script>
+  <script src="assets/admin.js"></script>
+</body>
+</html>
