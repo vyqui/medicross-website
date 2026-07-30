@@ -13,20 +13,69 @@
 (function () {
   'use strict';
 
-  var DB_KEY = 'mcx_db_v2';
+  var DB_KEY = 'mcx_db_v3';
   var SESSION_KEY = 'mcx_session_v2';
+  var SCHEMA = 3;
   var MAX_STORED_FILE = 2 * 1024 * 1024;   // 2 MB per file kept inline (localStorage limit)
 
-  /* ---------------- demo accounts (documented on the login screen) -------- */
-  var ACCOUNTS = [
-    { email: 'andreea@demo.ro', pass: 'demo', role: 'patient', patientId: 'p1' },
-    { email: 'admin@medicross.ro', pass: 'admin', role: 'admin', patientId: null }
+  /* ---------------- standard procedure catalogue --------------------------
+   * Every aesthetic + bariatric procedure the site offers. `regions` are the
+   * mesh names the 3D body map actually registers (surface: abdomen, arm,
+   * breast, buttocks, chest, foot, hand, head, hip, jaw, neck, nose, thigh;
+   * internal: stomach, intestine, esophagus), so picking a procedure in the
+   * admin console sets the mannequin highlight automatically.
+   * ---------------------------------------------------------------------- */
+  var PROCEDURES = [
+    // ---- chirurgie estetică ----
+    { key: 'rinoplastie', name: 'Rinoplastie', cat: 'estetica',
+      detail: 'Chirurgie estetică facială', regions: 'nose', viewMode: 'surface', page: 'rinoplastie.html' },
+    { key: 'lifting-facial', name: 'Lifting facial și gât', cat: 'estetica',
+      detail: 'Chirurgie estetică facială', regions: 'head,jaw,neck', viewMode: 'surface', page: 'lifting-facial-si-gat.html' },
+    { key: 'transplant-par', name: 'Transplant de păr', cat: 'estetica',
+      detail: 'Transplant capilar FUE / DHI', regions: 'head', viewMode: 'surface', page: 'transplant-de-par.html' },
+    { key: 'transplant-sprancene', name: 'Transplant de sprâncene', cat: 'estetica',
+      detail: 'Transplant capilar — sprâncene', regions: 'head', viewMode: 'surface', page: 'transplant-de-sprancene.html' },
+    { key: 'marire-mamara', name: 'Mărire mamară', cat: 'estetica',
+      detail: 'Intervenții mamare · implant', regions: 'breast,chest', viewMode: 'surface', page: 'interventii-mamare.html' },
+    { key: 'micsorare-mamara', name: 'Micșorare mamară', cat: 'estetica',
+      detail: 'Intervenții mamare · reducție', regions: 'breast,chest', viewMode: 'surface', page: 'interventii-mamare.html' },
+    { key: 'lifting-mamar', name: 'Lifting mamar', cat: 'estetica',
+      detail: 'Intervenții mamare · mastopexie', regions: 'breast,chest', viewMode: 'surface', page: 'interventii-mamare.html' },
+    { key: 'abdominoplastie', name: 'Abdominoplastie', cat: 'estetica',
+      detail: 'Remodelare abdominală', regions: 'abdomen', viewMode: 'surface', page: 'abdominoplastie.html' },
+    { key: 'liposuctie', name: 'Liposucție', cat: 'estetica',
+      detail: 'Remodelare corporală', regions: 'abdomen,hip', viewMode: 'surface', page: 'liposuctie.html' },
+    { key: 'bbl', name: 'Brazilian Butt Lift (BBL)', cat: 'estetica',
+      detail: 'Remodelare fesieră cu grăsime proprie', regions: 'buttocks', viewMode: 'surface', page: 'brazilian-butt-lift.html' },
+    { key: 'mommy-makeover', name: 'Mommy Makeover', cat: 'estetica',
+      detail: 'Abdominoplastie + Mamare', regions: 'abdomen,breast,chest', viewMode: 'surface', page: 'abdominoplastie.html' },
+    // ---- chirurgie bariatrică ----
+    { key: 'gastric-sleeve', name: 'Gastric Sleeve', cat: 'bariatrica',
+      detail: 'Chirurgie bariatrică', regions: 'stomach', viewMode: 'internal', page: 'gastric-sleeve.html' },
+    { key: 'gastric-bypass', name: 'Gastric Bypass', cat: 'bariatrica',
+      detail: 'Chirurgie bariatrică', regions: 'stomach,intestine', viewMode: 'internal', page: 'gastric-bypass.html' },
+    { key: 'balon-gastric', name: 'Balon Gastric', cat: 'bariatrica',
+      detail: 'Procedură bariatrică nechirurgicală', regions: 'stomach,esophagus', viewMode: 'internal', page: 'balon-gastric.html' }
   ];
+  var CATEGORY_LABEL = { estetica: 'Chirurgie Estetică', bariatrica: 'Chirurgie Bariatrică' };
+
+  function procedure(key) {
+    for (var i = 0; i < PROCEDURES.length; i++) if (PROCEDURES[i].key === key) return PROCEDURES[i];
+    return null;
+  }
 
   /* ---------------- seed data --------------------------------------------- */
   function seed() {
     return {
-      v: 2,
+      v: SCHEMA,
+      // Demo credentials only. Passwords sit here in clear text because this is a
+      // localStorage prototype with no server — never put a real patient account
+      // in it. Production auth must hash server-side (bcrypt/argon2); see
+      // README-PORTAL.md.
+      accounts: [
+        { email: 'andreea@demo.ro', pass: 'demo', role: 'patient', patientId: 'p1' },
+        { email: 'admin@medicross.ro', pass: 'admin', role: 'admin', patientId: null }
+      ],
       patients: [{
         id: 'p1',
         name: 'Andreea M.',
@@ -36,6 +85,8 @@
         sex: 'f',
         referralCode: 'MEDI-ANDREEA-2K6',
         referralCount: 1,
+        gdprAccepted: true,
+        gdprAcceptedAt: '2026-06-28T09:12:00Z',
         actions: {
           google:   { done: true,  needsConsent: false, consent: false, pct: 4 },
           video:    { done: false, needsConsent: true,  consent: false, pct: 10 },
@@ -84,7 +135,7 @@
       var raw = localStorage.getItem(DB_KEY);
       if (raw) {
         var db = JSON.parse(raw);
-        if (db && db.v === 2 && Array.isArray(db.patients)) return db;
+        if (db && db.v === SCHEMA && Array.isArray(db.patients) && Array.isArray(db.accounts)) return db;
       }
     } catch (e) { /* corrupted — reseed */ }
     var fresh = seed();
@@ -125,8 +176,8 @@
   /* ---------------- auth --------------------------------------------------- */
   function login(email, pass) {
     email = String(email || '').trim().toLowerCase();
-    for (var i = 0; i < ACCOUNTS.length; i++) {
-      var a = ACCOUNTS[i];
+    for (var i = 0; i < db.accounts.length; i++) {
+      var a = db.accounts[i];
       if (a.email === email && a.pass === pass) {
         var s = { email: a.email, role: a.role, patientId: a.patientId, at: new Date().toISOString() };
         localStorage.setItem(SESSION_KEY, JSON.stringify(s));
@@ -141,6 +192,77 @@
   }
 
   function logout() { localStorage.removeItem(SESSION_KEY); }
+
+  function accountFor(email) {
+    email = String(email || '').trim().toLowerCase();
+    for (var i = 0; i < db.accounts.length; i++) if (db.accounts[i].email === email) return db.accounts[i];
+    return null;
+  }
+
+  function initialsOf(name) {
+    var parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '??';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  function referralCodeFor(name) {
+    var base = String(name || 'client').trim().split(/\s+/)[0]
+      .toUpperCase().replace(/[^A-Z]/g, '') || 'CLIENT';
+    return 'MEDI-' + base + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+  }
+
+  /* Creates a patient account + its patient record.
+   * `gdpr` must be true — the consent step is mandatory for both the
+   * self-service sign-up and admin-created accounts. */
+  function createPatient(opts) {
+    var name = String(opts.name || '').trim();
+    var email = String(opts.email || '').trim().toLowerCase();
+    var pass = String(opts.pass || '');
+    var sex = opts.sex === 'm' ? 'm' : 'f';
+
+    if (name.length < 3) return { error: 'Introdu numele complet.' };
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return { error: 'Adresa de e-mail nu este validă.' };
+    if (pass.length < 4) return { error: 'Parola trebuie să aibă minim 4 caractere.' };
+    if (accountFor(email)) return { error: 'Există deja un cont cu acest e-mail.' };
+    if (!opts.gdpr) return { error: 'Trebuie să accepți prelucrarea datelor (GDPR) pentru a continua.' };
+
+    var now = new Date().toISOString();
+    var p = {
+      id: uid('p'), name: name, initials: initialsOf(name), email: email,
+      phone: String(opts.phone || '').trim(), sex: sex,
+      referralCode: referralCodeFor(name), referralCount: 0,
+      gdprAccepted: true, gdprAcceptedAt: now,
+      actions: {
+        google:   { done: false, needsConsent: false, consent: false, pct: 4 },
+        video:    { done: false, needsConsent: true,  consent: false, pct: 10 },
+        photos:   { done: false, needsConsent: true,  consent: false, pct: 5 },
+        referral: { done: false, needsConsent: false, consent: false, pct: 3 }
+      },
+      activeOp: null, mode: 'surface',
+      operations: [],
+      trip: { title: 'Călătoria mea · Istanbul', subtitle: 'Se stabilește după evaluarea medicală.', items: [] },
+      documents: [],
+      log: [
+        { t: now, who: 'sistem', what: 'Acord GDPR acceptat la crearea contului' },
+        { t: now, who: opts.by === 'admin' ? 'admin' : 'pacient',
+          what: opts.by === 'admin' ? 'Cont creat de echipa Medicross' : 'Cont creat prin înregistrare' }
+      ]
+    };
+    db.patients.push(p);
+    db.accounts.push({ email: email, pass: pass, role: 'patient', patientId: p.id });
+    save(db);
+    return { patient: p };
+  }
+
+  function setGdpr(pid, accepted, who) {
+    var p = patient(pid); if (!p) return;
+    if (p.gdprAccepted === !!accepted) return;
+    p.gdprAccepted = !!accepted;
+    p.gdprAcceptedAt = accepted ? new Date().toISOString() : null;
+    logEvent(p, who || 'admin', accepted ? 'Acord GDPR marcat ca semnat' : 'Acord GDPR retras');
+    save(db);
+  }
 
   function session() {
     try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch (e) { return null; }
@@ -170,7 +292,17 @@
   window.MedicrossDB = {
     // auth
     login: login, logout: logout, session: session, requireRole: requireRole,
-    demoAccounts: ACCOUNTS.map(function (a) { return { email: a.email, pass: a.pass, role: a.role }; }),
+    createPatient: createPatient, setGdpr: setGdpr,
+    accounts: function () { return db.accounts; },
+    accountForPatient: function (pid) {
+      for (var i = 0; i < db.accounts.length; i++) if (db.accounts[i].patientId === pid) return db.accounts[i];
+      return null;
+    },
+
+    // standard procedure catalogue (drives the admin picker + 3D highlight)
+    PROCEDURES: PROCEDURES,
+    CATEGORY_LABEL: CATEGORY_LABEL,
+    procedure: procedure,
 
     // reads
     patients: function () { return db.patients; },

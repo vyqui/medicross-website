@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Creează cont — Medicross</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/auth.css" />
+</head>
+<body>
+  <main class="card wide">
+    <div class="logo"><span class="dot"></span>Medicross</div>
+    <div class="sub">Creează-ți contul de pacient ca să urmărești intervențiile, programul călătoriei și documentele tale.</div>
+
+    <form id="regForm" novalidate>
+      <div class="grid">
+        <div class="full">
+          <label for="name">Nume și prenume</label>
+          <input id="name" name="name" autocomplete="name" required />
+        </div>
+        <div class="full">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div>
+          <label for="phone">Telefon <span class="opt">(opțional)</span></label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" />
+        </div>
+        <div>
+          <label for="sex">Sex</label>
+          <select id="sex" name="sex">
+            <option value="f">Feminin</option>
+            <option value="m">Masculin</option>
+          </select>
+          <div class="hint">Selectează modelul 3D folosit în harta corpului.</div>
+        </div>
+        <div>
+          <label for="pass">Parolă</label>
+          <input id="pass" name="pass" type="password" autocomplete="new-password" required minlength="4" />
+        </div>
+        <div>
+          <label for="pass2">Confirmă parola</label>
+          <input id="pass2" name="pass2" type="password" autocomplete="new-password" required minlength="4" />
+        </div>
+      </div>
+
+      <label class="check" for="gdpr">
+        <input type="checkbox" id="gdpr" name="gdpr" required />
+        <span>
+          Am citit și accept <a href="#" id="gdprLink">acordul GDPR</a> privind prelucrarea datelor mele
+          personale și medicale. <span class="req">Obligatoriu</span>
+        </span>
+      </label>
+      <div class="gdpr-note">
+        Textul integral al acordului GDPR va fi adăugat de Medicross. Bifa este înregistrată cu dată și
+        oră și poate fi retrasă oricând.
+      </div>
+
+      <button type="submit">Creează contul</button>
+      <div class="err" id="err"></div>
+    </form>
+
+    <div class="alt">Ai deja cont? <a href="login.html">Autentifică-te</a></div>
+    <a class="back" href="index.html">← Înapoi la site</a>
+  </main>
+
+  <script src="assets/portal-data.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      document.getElementById('gdprLink').addEventListener('click', function (ev) {
+        ev.preventDefault();
+        window.alert('Acordul GDPR va fi publicat de Medicross. Deocamdată acesta este doar pasul ' +
+                     'obligatoriu de consimțământ — bifa se salvează cu dată și oră.');
+      });
+
+      document.getElementById('regForm').addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var err = document.getElementById('err');
+        var pass = document.getElementById('pass').value;
+        var pass2 = document.getElementById('pass2').value;
+
+        function fail(msg) { err.textContent = msg; err.classList.add('show'); }
+        err.classList.remove('show');
+
+        if (pass !== pass2) return fail('Parolele nu coincid.');
+        if (!document.getElementById('gdpr').checked)
+          return fail('Trebuie să accepți prelucrarea datelor (GDPR) pentru a continua.');
+
+        var res = MedicrossDB.createPatient({
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          sex: document.getElementById('sex').value,
+          pass: pass,
+          gdpr: true,
+          by: 'self'
+        });
+        if (res.error) return fail(res.error);
+
+        MedicrossDB.login(document.getElementById('email').value, pass);
+        location.replace('portal.html');
+      });
+    })();
+  </script>
+</body>
+</html>

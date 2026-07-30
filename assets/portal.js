@@ -127,6 +127,13 @@
     if (!box) return;
     var p = P();
     box.textContent = '';
+    if (!p.operations.length) {
+      var none = document.createElement('div');
+      none.className = 'empty-note';
+      none.textContent = 'Nu ai încă intervenții înregistrate. Echipa Medicross le adaugă aici după evaluarea medicală.';
+      box.appendChild(none);
+      return;
+    }
     var idx = 0;
     p.operations.forEach(function (op) {
       var st = STATUS[op.status] || STATUS.evaluare;
@@ -183,6 +190,13 @@
     var line = document.querySelector('.timeline');
     if (!line) return;
     line.textContent = '';
+    if (!p.trip.items.length) {
+      var none = document.createElement('div');
+      none.className = 'empty-note';
+      none.textContent = 'Programul călătoriei apare aici imediat ce intervenția este confirmată.';
+      line.appendChild(none);
+      return;
+    }
     p.trip.items.forEach(function (it) {
       var node = document.createElement('div');
       node.className = 'tnode' + (it.surgery ? ' surgery' : '');

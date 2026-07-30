@@ -69,6 +69,13 @@ body.portal button { font-family: inherit; }
 .pmain { padding: 26px 30px 100px; max-width: 1280px; margin: 0 auto; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; }
 
+/* empty states (a brand-new account has no operations / trip yet) */
+.empty-note {
+  padding: 16px 18px; border: 1px dashed var(--line); border-radius: 14px;
+  font-size: 13px; color: var(--muted); line-height: 1.6; width: 100%;
+}
+.timeline:has(.empty-note)::before { display: none; }
+
 /* admin-viewing-patient-portal notice */
 .admin-view-note {
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;

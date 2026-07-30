@@ -30,6 +30,34 @@
 .prow .nm { font-weight: 700; font-size: 13.5px; }
 .prow .em { font-size: 11px; color: var(--muted); }
 .prow .disc { margin-left: auto; font-weight: 800; font-size: 13px; color: var(--brand-dark); }
+/* GDPR badge in the patient list */
+.gdpr-badge {
+  display: inline-flex; align-items: center; gap: 4px; margin-top: 3px;
+  font-size: 10px; font-weight: 800; letter-spacing: .04em;
+  color: var(--success); background: var(--success-bg);
+  padding: 2px 7px; border-radius: 999px;
+}
+.gdpr-badge.missing { color: #8a5216; background: #fdf3e7; }
+.gdpr-badge svg { width: 11px; height: 11px; }
+
+/* GDPR toggle */
+.gdpr-toggle {
+  display: flex; align-items: center; gap: 9px; margin-top: 12px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.gdpr-toggle input { width: 17px; height: 17px; flex: none; accent-color: var(--brand); }
+.gdpr-toggle .gdpr-when { margin-left: auto; font-weight: 600; font-size: 11.5px; color: var(--muted); }
+.acct-line { display: flex; gap: 10px; font-size: 13px; padding: 6px 0; }
+.acct-line .k { font-weight: 700; min-width: 132px; }
+.acct-line .v { color: var(--muted); word-break: break-word; }
+.aerr { padding: 9px 12px; border-radius: 10px; background: #fdeaea; color: #a11d1d; font-size: 12.5px; font-weight: 600; }
+.fhint { font-size: 11px; color: var(--muted); margin-top: 5px; }
+.iform.stack { grid-template-columns: 1fr; }
+.iform .opt { font-weight: 600; color: var(--muted); }
+.region-warn {
+  padding: 9px 12px; border-radius: 10px; background: #fdf3e7;
+  color: #8a5216; font-size: 12px; font-weight: 600;
+}
 
 /* section cards */
 .acard { padding: 18px 20px 20px; }

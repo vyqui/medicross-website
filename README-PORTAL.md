@@ -5,15 +5,61 @@ The portal is now a **complete same-browser demo** of the full product:
 | Page | Role |
 |---|---|
 | `login.html` | Sign-in for patients and admins (demo accounts below) |
+| `register.html` | Patient self-service sign-up (name, e-mail, phone, sex, password, GDPR tick) |
 | `portal.html` | Patient dashboard: 3D body map, operations, trip agenda, discount system, documents, referral code |
-| `admin.html` | Admin console: manage each patient's interventions, trip agenda A–Z, see uploaded files, discount %, activity log |
-| `assets/portal-data.js` | The shared data layer (`MedicrossDB`) both UIs read/write |
+| `admin.html` | Admin console: create accounts, manage interventions, trip agenda A–Z, uploaded files, discount %, GDPR status, activity log |
+| `assets/portal-data.js` | The shared data layer (`MedicrossDB`) both UIs read/write, incl. the procedure catalogue |
 | `materials/bodymap.html` | The three.js 3D body map (iframe + postMessage API) |
 
+## Standard procedure catalogue
+
+`PROCEDURES` in `assets/portal-data.js` is the single source of truth for every
+aesthetic and bariatric procedure the site offers. Each entry carries the 3D body-map
+regions and the view mode, so choosing a procedure in the admin console sets the
+mannequin highlight automatically — no one has to know the mesh names:
+
+| Procedure | 3D zone | View |
+|---|---|---|
+| Rinoplastie | `nose` | surface |
+| Lifting facial și gât | `head,jaw,neck` | surface |
+| Transplant de păr | `head` | surface |
+| Transplant de sprâncene | `head` | surface |
+| Mărire / Micșorare / Lifting mamar | `breast,chest` | surface |
+| Abdominoplastie | `abdomen` | surface |
+| Liposucție | `abdomen,hip` | surface |
+| Brazilian Butt Lift (BBL) | `buttocks` | surface |
+| Mommy Makeover | `abdomen,breast,chest` | surface |
+| Gastric Sleeve | `stomach` | internal |
+| Gastric Bypass | `stomach,intestine` | internal |
+| Balon Gastric | `stomach,esophagus` | internal |
+
+"Altă intervenție (personalizată)" allows a free-text name; the admin form then
+validates the zones against the meshes the body map actually registers and warns
+before saving something that would highlight nothing. To add a procedure, append one
+entry to `PROCEDURES` — the admin picker, the patient's chips and the highlight all
+follow.
+
+## Accounts and the GDPR step
+
+Accounts live in the store (`db.accounts`) so both paths persist:
+- **Patients sign themselves up** at `register.html`. Sex is captured because it picks
+  the 3D body model.
+- **Admins create accounts** from the "Cont nou" card in the console.
+
+Both paths **require the GDPR tick** and refuse to create the account without it. The
+acceptance is stored with a timestamp (`gdprAccepted`, `gdprAcceptedAt`) and written to
+the activity log. The patient list in the admin console shows **✓ GDPR** next to each
+patient, or an amber "GDPR lipsă" when unsigned, and the selected patient's card has a
+tick-box to record or withdraw it (also logged). The GDPR agreement text itself is a
+placeholder — drop the real copy in and link it from the checkbox on `register.html`.
+
 **Demo accounts** — patient `andreea@demo.ro` / `demo`, admin `admin@medicross.ro` / `admin`.
+Accounts created by the admin get the initial password shown in the form (`medicross` by
+default). Passwords are stored in clear text in localStorage because there is no server —
+never put a real account in this prototype; production auth must hash server-side.
 
 Because GitHub Pages is a static host, `MedicrossDB` simulates the backend in `localStorage`
-(key `mcx_db_v2`). Everything is functional *within one browser*: the patient's uploads appear in
+(key `mcx_db_v3`). Everything is functional *within one browser*: the patient's uploads appear in
 the admin console, admin edits to interventions/agenda appear in the patient portal, every
 login/upload/consent change is written to a per-patient activity log, and files up to 2 MB are
 stored inline (base64) so they can be previewed and downloaded from the admin side. Larger files
@@ -62,8 +108,8 @@ Requested: the portal should later live on its own subdomain. On GitHub Pages to
 1. All portal-side links are **relative** (`login.html`, `admin.html`, `assets/…`,
    `materials/bodymap.html`), so the portal pages + their assets can be lifted into a separate
    repo/deployment served at `portal.tratamente-turcia.ro` without link rewrites.
-   Files to move: `login.html`, `portal.html`, `admin.html`, `assets/portal*.js|css`,
-   `assets/admin*`, `materials/bodymap.html`.
+   Files to move: `login.html`, `register.html`, `portal.html`, `admin.html`,
+   `assets/portal*.js|css`, `assets/admin*`, `assets/auth.css`, `materials/bodymap.html`.
 2. Create the `portal` CNAME in Cloudflare DNS → point it at the new deployment (GitHub Pages
    supports one custom domain per repo, so the subdomain needs its own repo — or host the portal
    on Cloudflare Pages/Vercel, which is also where the API from Option A/B will live).

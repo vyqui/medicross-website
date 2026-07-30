@@ -42,13 +42,49 @@
 
     <div class="arow-2">
       <!-- patient list -->
-      <div class="card plist" id="patientList">
-        <h2>Pacienți</h2>
-        <!-- rows injected -->
+      <div class="acol">
+        <div class="card plist" id="patientList">
+          <h2>Pacienți</h2>
+          <!-- rows injected -->
+        </div>
+
+        <!-- create a patient account -->
+        <div class="card acard">
+          <h2>Cont nou</h2>
+          <div class="sub">Creează un cont de pacient. Pacientul se poate înregistra și singur din <a href="register.html">pagina de înregistrare</a>.</div>
+          <form class="iform stack" id="newAcct" style="margin-top:0">
+            <div class="full"><label for="naName">Nume și prenume</label><input id="naName" required /></div>
+            <div class="full"><label for="naEmail">E-mail</label><input id="naEmail" type="email" required /></div>
+            <div class="full"><label for="naPhone">Telefon <span class="opt">(opțional)</span></label><input id="naPhone" type="tel" /></div>
+            <div class="full"><label for="naSex">Sex (model 3D)</label>
+              <select id="naSex"><option value="f">Feminin</option><option value="m">Masculin</option></select>
+            </div>
+            <div class="full"><label for="naPass">Parolă inițială</label><input id="naPass" type="text" value="medicross" required /></div>
+            <label class="gdpr-toggle full" for="naGdpr">
+              <input type="checkbox" id="naGdpr" />
+              <span>Pacientul a semnat acordul GDPR</span>
+            </label>
+            <div class="fhint full">Fără această bifă contul nu poate fi creat — consimțământul este pas obligatoriu.</div>
+            <div class="frow full"><button class="ibtn primary" type="submit">Creează contul</button></div>
+            <div class="aerr full" id="naErr" hidden></div>
+          </form>
+        </div>
       </div>
 
       <!-- detail column -->
       <div class="acol" id="detail">
+
+        <!-- account + GDPR -->
+        <div class="card acard">
+          <h2>Cont &amp; consimțământ</h2>
+          <div class="sub">Datele contului pacientului și starea acordului GDPR.</div>
+          <div id="acctInfo"><!-- injected --></div>
+          <label class="gdpr-toggle">
+            <input type="checkbox" id="gdprBox" />
+            <span>Acord GDPR semnat</span>
+            <span class="gdpr-when" id="gdprWhen"></span>
+          </label>
+        </div>
 
         <!-- discount overview -->
         <div class="card acard">
@@ -70,7 +106,12 @@
           <div id="opList"><!-- injected --></div>
           <button class="ibtn primary" id="opAdd" type="button">+ Adaugă intervenție</button>
           <form class="iform" id="opForm" hidden>
-            <div class="full"><label for="opName">Nume intervenție</label><input id="opName" required /></div>
+            <div class="full">
+              <label for="opCatalog">Intervenție standard</label>
+              <select id="opCatalog"><!-- filled from the catalogue --></select>
+              <div class="fhint">Zona evidențiată pe manechinul 3D și vederea se completează automat.</div>
+            </div>
+            <div class="full" id="opNameWrap" hidden><label for="opName">Nume intervenție</label><input id="opName" /></div>
             <div class="full"><label for="opDetail">Detaliu (procedură · spital)</label><input id="opDetail" /></div>
             <div><label for="opStatus">Status</label>
               <select id="opStatus">
@@ -84,6 +125,7 @@
             <div><label for="opMode">Vedere hartă</label>
               <select id="opMode"><option value="surface">Suprafață</option><option value="internal">Organe interne</option></select>
             </div>
+            <div class="full" id="regionWarn" hidden></div>
             <div class="frow full">
               <label style="display:flex;align-items:center;gap:7px;margin:0"><input type="checkbox" id="opActive" style="width:15px;height:15px" />Intervenția activă (evidențiată în portal)</label>
             </div>

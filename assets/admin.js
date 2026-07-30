@@ -38,6 +38,8 @@
   };
 
   /* ---------------- patient list ---------------- */
+  var TICK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>';
+
   function renderPatients() {
     var box = document.getElementById('patientList');
     box.querySelectorAll('.prow').forEach(function (r) { r.remove(); });
@@ -48,12 +50,63 @@
       var g = el('div', 'grow');
       g.appendChild(el('div', 'nm', p.name));
       g.appendChild(el('div', 'em', p.email));
+      // GDPR status right in the side menu
+      var badge = el('span', 'gdpr-badge' + (p.gdprAccepted ? '' : ' missing'));
+      badge.innerHTML = p.gdprAccepted ? TICK + ' GDPR' : '! GDPR lipsă';
+      badge.title = p.gdprAccepted
+        ? 'Acord GDPR semnat' + (p.gdprAcceptedAt ? ' · ' + fmtTime(p.gdprAcceptedAt) : '')
+        : 'Acordul GDPR nu este semnat';
+      g.appendChild(badge);
       b.appendChild(g);
       b.appendChild(el('span', 'disc', MedicrossDB.discount(p.id) + '%'));
       b.addEventListener('click', function () { currentId = p.id; renderAll(); });
       box.appendChild(b);
     });
   }
+
+  /* ---------------- account + GDPR ---------------- */
+  function renderAccount(p) {
+    var box = document.getElementById('acctInfo');
+    box.textContent = '';
+    var acct = MedicrossDB.accountForPatient(p.id);
+    [['Nume', p.name], ['E-mail', p.email || (acct && acct.email) || '—'],
+     ['Telefon', p.phone || '—'], ['Model 3D', p.sex === 'm' ? 'Masculin' : 'Feminin'],
+     ['Cod invitație', p.referralCode]].forEach(function (row) {
+      var line = el('div', 'acct-line');
+      line.appendChild(el('span', 'k', row[0]));
+      line.appendChild(el('span', 'v', row[1]));
+      box.appendChild(line);
+    });
+
+    var boxg = document.getElementById('gdprBox');
+    boxg.checked = !!p.gdprAccepted;
+    document.getElementById('gdprWhen').textContent =
+      p.gdprAccepted && p.gdprAcceptedAt ? 'semnat ' + fmtTime(p.gdprAcceptedAt) : '';
+    boxg.onchange = function () {
+      MedicrossDB.setGdpr(p.id, boxg.checked, 'admin');
+      renderAll();
+    };
+  }
+
+  document.getElementById('newAcct').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var errBox = document.getElementById('naErr');
+    errBox.hidden = true;
+    var res = MedicrossDB.createPatient({
+      name: document.getElementById('naName').value,
+      email: document.getElementById('naEmail').value,
+      phone: document.getElementById('naPhone').value,
+      sex: document.getElementById('naSex').value,
+      pass: document.getElementById('naPass').value,
+      gdpr: document.getElementById('naGdpr').checked,
+      by: 'admin'
+    });
+    if (res.error) { errBox.textContent = res.error; errBox.hidden = false; return; }
+    this.reset();
+    document.getElementById('naPass').value = 'medicross';
+    currentId = res.patient.id;
+    renderAll();
+  });
 
   /* ---------------- discount ---------------- */
   function renderDiscount(p) {
@@ -107,18 +160,102 @@
       box.appendChild(row);
     });
   }
+  /* ---- standard procedure catalogue drives the picker + the 3D zone ---- */
+  var VALID_REGIONS = {
+    surface: ['abdomen', 'arm', 'breast', 'buttocks', 'chest', 'foot', 'hand', 'head', 'hip', 'jaw', 'neck', 'nose', 'thigh'],
+    internal: ['stomach', 'intestine', 'esophagus']
+  };
+
+  function buildCatalogSelect() {
+    var sel = document.getElementById('opCatalog');
+    sel.textContent = '';
+    var cats = {};
+    MedicrossDB.PROCEDURES.forEach(function (pr) { (cats[pr.cat] = cats[pr.cat] || []).push(pr); });
+    Object.keys(cats).forEach(function (cat) {
+      var grp = document.createElement('optgroup');
+      grp.label = MedicrossDB.CATEGORY_LABEL[cat] || cat;
+      cats[cat].forEach(function (pr) {
+        var o = document.createElement('option');
+        o.value = pr.key; o.textContent = pr.name;
+        grp.appendChild(o);
+      });
+      sel.appendChild(grp);
+    });
+    var other = document.createElement('option');
+    other.value = '__custom'; other.textContent = 'Altă intervenție (personalizată)…';
+    sel.appendChild(other);
+  }
+
+  // applies a catalogue entry: name, detail, 3D regions and view mode
+  function applyCatalog(key, keepDetail) {
+    var custom = key === '__custom';
+    document.getElementById('opNameWrap').hidden = !custom;
+    if (custom) { document.getElementById('opName').focus(); checkRegions(); return; }
+    var pr = MedicrossDB.procedure(key);
+    if (!pr) return;
+    document.getElementById('opName').value = pr.name;
+    if (!keepDetail) document.getElementById('opDetail').value = pr.detail;
+    document.getElementById('opRegions').value = pr.regions;   // 3D zone, automatic
+    document.getElementById('opMode').value = pr.viewMode;
+    checkRegions();
+  }
+
+  // warn if a hand-typed zone will not highlight anything on the mannequin
+  function checkRegions() {
+    var warn = document.getElementById('regionWarn');
+    var mode = document.getElementById('opMode').value;
+    var allowed = VALID_REGIONS[mode];
+    var bad = document.getElementById('opRegions').value.split(',')
+      .map(function (s) { return s.trim().toLowerCase(); })
+      .filter(function (s) { return s && allowed.indexOf(s) === -1; });
+    if (bad.length) {
+      warn.className = 'region-warn';
+      warn.textContent = 'Zone necunoscute pentru vederea „' +
+        (mode === 'internal' ? 'Organe interne' : 'Suprafață') + '”: ' + bad.join(', ') +
+        '. Valori acceptate: ' + allowed.join(', ') + '.';
+      warn.hidden = false;
+    } else {
+      warn.hidden = true;
+    }
+  }
+
+  document.getElementById('opCatalog').addEventListener('change', function () {
+    applyCatalog(this.value, false);
+  });
+  document.getElementById('opRegions').addEventListener('input', checkRegions);
+  document.getElementById('opMode').addEventListener('change', checkRegions);
+
+  // find the catalogue entry an existing operation came from
+  function catalogKeyFor(op) {
+    var found = '__custom';
+    MedicrossDB.PROCEDURES.forEach(function (pr) {
+      if (pr.name.toLowerCase() === String(op.name || '').toLowerCase()) found = pr.key;
+    });
+    return found;
+  }
+
   function openOpForm(op) {
     editingOp = op || null;
     var f = document.getElementById('opForm');
     f.hidden = false;
-    document.getElementById('opName').value = op ? op.name : '';
-    document.getElementById('opDetail').value = op ? op.detail : '';
+    var sel = document.getElementById('opCatalog');
+
+    if (op) {
+      sel.value = catalogKeyFor(op);
+      document.getElementById('opNameWrap').hidden = sel.value !== '__custom';
+      document.getElementById('opName').value = op.name;
+      document.getElementById('opDetail').value = op.detail || '';
+      document.getElementById('opRegions').value = op.regions || '';
+      document.getElementById('opMode').value = op.viewMode || 'surface';
+    } else {
+      sel.selectedIndex = 0;
+      document.getElementById('opDetail').value = '';
+      applyCatalog(sel.value, false);   // pre-fills the 3D zone for the default pick
+    }
     document.getElementById('opStatus').value = op ? op.status : 'programata';
     document.getElementById('opDate').value = op ? op.date : '';
-    document.getElementById('opRegions').value = op ? op.regions : '';
-    document.getElementById('opMode').value = op ? op.viewMode : 'surface';
     document.getElementById('opActive').checked = !!(op && op.active);
-    document.getElementById('opName').focus();
+    checkRegions();
   }
   document.getElementById('opAdd').addEventListener('click', function () { openOpForm(null); });
   document.getElementById('opCancel').addEventListener('click', function () {
@@ -126,8 +263,11 @@
   });
   document.getElementById('opForm').addEventListener('submit', function (ev) {
     ev.preventDefault();
-    var name = document.getElementById('opName').value.trim();
-    if (!name) return;
+    var key = document.getElementById('opCatalog').value;
+    var name = key === '__custom'
+      ? document.getElementById('opName').value.trim()
+      : (MedicrossDB.procedure(key) || {}).name;
+    if (!name) { document.getElementById('opName').focus(); return; }
     MedicrossDB.saveOperation(currentId, {
       id: editingOp ? editingOp.id : null,
       name: name,
@@ -286,11 +426,13 @@
     var p = MedicrossDB.patient(currentId);
     if (!p) return;
     renderPatients();
+    renderAccount(p);
     renderDiscount(p);
     renderOps(p);
     renderTrip(p);
     renderDocs(p);
     renderLog(p);
   }
+  buildCatalogSelect();
   renderAll();
 })();
