@@ -148,11 +148,21 @@
 
   function requireRole(role) {
     var s = session();
-    if (!s) { location.href = 'login.html'; return null; }
-    // admins may open the patient portal read-only (portal.js marks the session
-    // as staff so nothing is attributed to the patient); patients may not open
-    // the admin console — send them to their own dashboard, not back to login.
-    if (role === 'admin' && s.role !== 'admin') { location.href = 'portal.html'; return null; }
+    var here = location.pathname.split('/').pop() || 'index.html';
+    // Never bounce silently: carry the intended destination so the login screen
+    // can explain what happened and send you back here once you have the right
+    // account. location.replace keeps the back button from ping-ponging.
+    if (!s) {
+      location.replace('login.html?next=' + encodeURIComponent(here));
+      return null;
+    }
+    // Admins may open the patient portal read-only (portal.js marks the session
+    // as staff so nothing is attributed to the patient). Patients have no access
+    // to the admin console.
+    if (role === 'admin' && s.role !== 'admin') {
+      location.replace('login.html?next=' + encodeURIComponent(here) + '&denied=1');
+      return null;
+    }
     return s;
   }
 

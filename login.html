@@ -52,6 +52,12 @@
     }
     .demo strong { color: var(--ink); }
     .demo code { font-family: ui-monospace, Menlo, monospace; background: #F3EEE7; padding: 1px 6px; border-radius: 6px; }
+    .denied {
+      margin-bottom: 20px; padding: 13px 15px; border-radius: 12px;
+      background: #fdf3e7; border: 1px solid #f0d3ad; color: #8a5216;
+      font-size: 13px; font-weight: 600; line-height: 1.6;
+    }
+    .denied strong { color: #6d3f0f; }
     .already {
       margin-bottom: 20px; padding: 13px 15px; border-radius: 12px;
       background: #eef3ee; color: #2f6b41; font-size: 13px; font-weight: 600;
@@ -73,6 +79,11 @@
   <main class="card">
     <div class="logo"><span class="dot"></span>Medicross</div>
     <div class="sub">Autentifică-te în contul tău de pacient sau în consola de administrare.</div>
+
+    <div class="denied" id="denied" hidden>
+      Contul <strong id="deniedWho"></strong> nu are acces la consola de administrare.
+      Autentifică-te cu un cont de administrator.
+    </div>
 
     <div class="already" id="already" hidden>
       Ești deja autentificat ca <strong id="alreadyWho"></strong>.
@@ -104,29 +115,47 @@
   <script>
     (function () {
       'use strict';
+      var params = new URLSearchParams(location.search);
+      // only same-page relative targets — never an arbitrary redirect
+      var next = /^[a-z0-9-]+\.html$/.test(params.get('next') || '') ? params.get('next') : null;
+      var denied = params.get('denied') === '1';
+      var ADMIN_ONLY = { 'admin.html': true };
+
+      function homeFor(role) { return role === 'admin' ? 'admin.html' : 'portal.html'; }
+      function destinationFor(role) {
+        // honour where they were headed, unless that page is out of their reach
+        if (next && !(ADMIN_ONLY[next] && role !== 'admin')) return next;
+        return homeFor(role);
+      }
+
       // An existing session must never trap you here: the form stays reachable so
       // you can switch between the patient and admin accounts.
       var s = MedicrossDB.session();
       if (s) {
-        var home = s.role === 'admin' ? 'admin.html' : 'portal.html';
+        if (denied) {
+          document.getElementById('deniedWho').textContent = s.email;
+          document.getElementById('denied').hidden = false;
+        }
         document.getElementById('alreadyWho').textContent =
           s.email + (s.role === 'admin' ? ' (administrator)' : ' (pacient)');
-        document.getElementById('alreadyGo').href = home;
+        document.getElementById('alreadyGo').href = homeFor(s.role);
         document.getElementById('alreadyGo').textContent =
           s.role === 'admin' ? 'Continuă în consolă' : 'Continuă în portal';
         document.getElementById('already').hidden = false;
         document.getElementById('alreadyOut').addEventListener('click', function () {
           MedicrossDB.logout();
-          location.replace('login.html');
+          location.replace('login.html' + (next ? '?next=' + encodeURIComponent(next) : ''));
         });
+        if (denied) document.getElementById('email').focus();
       }
+
       document.getElementById('loginForm').addEventListener('submit', function (ev) {
         ev.preventDefault();
         var sess = MedicrossDB.login(
           document.getElementById('email').value,
           document.getElementById('pass').value
         );
-        if (sess) location.href = sess.role === 'admin' ? 'admin.html' : 'portal.html';
+        if (sess) location.replace(destinationFor(sess.role));
         else document.getElementById('err').classList.add('show');
       });
     })();
