@@ -52,6 +52,19 @@
     }
     .demo strong { color: var(--ink); }
     .demo code { font-family: ui-monospace, Menlo, monospace; background: #F3EEE7; padding: 1px 6px; border-radius: 6px; }
+    .already {
+      margin-bottom: 20px; padding: 13px 15px; border-radius: 12px;
+      background: #eef3ee; color: #2f6b41; font-size: 13px; font-weight: 600;
+    }
+    .already strong { color: #1f4a2c; }
+    .already-row { display: flex; gap: 8px; margin-top: 11px; }
+    .agobtn {
+      font: inherit; font-weight: 700; font-size: 13px; padding: 9px 15px;
+      border-radius: 999px; border: none; cursor: pointer; text-decoration: none;
+      background: #2f6b41; color: #fff;
+    }
+    .agobtn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .agobtn.ghost:hover { border-color: var(--brand); color: var(--brand); }
     .back { display: block; text-align: center; margin-top: 18px; font-size: 13px; font-weight: 700; color: var(--muted); text-decoration: none; }
     .back:hover { color: var(--brand); }
   </style>
@@ -60,6 +73,14 @@
   <main class="card">
     <div class="logo"><span class="dot"></span>Medicross</div>
     <div class="sub">Autentifică-te în contul tău de pacient sau în consola de administrare.</div>
+
+    <div class="already" id="already" hidden>
+      Ești deja autentificat ca <strong id="alreadyWho"></strong>.
+      <div class="already-row">
+        <a class="agobtn" id="alreadyGo" href="portal.html">Continuă</a>
+        <button class="agobtn ghost" id="alreadyOut" type="button">Schimbă contul</button>
+      </div>
+    </div>
 
     <form id="loginForm" novalidate>
       <label for="email">E-mail</label>
@@ -83,8 +104,22 @@
   <script>
     (function () {
       'use strict';
+      // An existing session must never trap you here: the form stays reachable so
+      // you can switch between the patient and admin accounts.
       var s = MedicrossDB.session();
-      if (s) { location.href = s.role === 'admin' ? 'admin.html' : 'portal.html'; return; }
+      if (s) {
+        var home = s.role === 'admin' ? 'admin.html' : 'portal.html';
+        document.getElementById('alreadyWho').textContent =
+          s.email + (s.role === 'admin' ? ' (administrator)' : ' (pacient)');
+        document.getElementById('alreadyGo').href = home;
+        document.getElementById('alreadyGo').textContent =
+          s.role === 'admin' ? 'Continuă în consolă' : 'Continuă în portal';
+        document.getElementById('already').hidden = false;
+        document.getElementById('alreadyOut').addEventListener('click', function () {
+          MedicrossDB.logout();
+          location.replace('login.html');
+        });
+      }
       document.getElementById('loginForm').addEventListener('submit', function (ev) {
         ev.preventDefault();
         var sess = MedicrossDB.login(

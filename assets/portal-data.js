@@ -148,10 +148,11 @@
 
   function requireRole(role) {
     var s = session();
-    if (!s || (role && s.role !== role && s.role !== 'admin')) {
-      location.href = 'login.html' + (role === 'admin' ? '#admin' : '');
-      return null;
-    }
+    if (!s) { location.href = 'login.html'; return null; }
+    // admins may open the patient portal read-only (portal.js marks the session
+    // as staff so nothing is attributed to the patient); patients may not open
+    // the admin console — send them to their own dashboard, not back to login.
+    if (role === 'admin' && s.role !== 'admin') { location.href = 'portal.html'; return null; }
     return s;
   }
 

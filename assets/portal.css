@@ -69,6 +69,18 @@ body.portal button { font-family: inherit; }
 .pmain { padding: 26px 30px 100px; max-width: 1280px; margin: 0 auto; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; }
 
+/* admin-viewing-patient-portal notice */
+.admin-view-note {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 20px; padding: 12px 16px; border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 9%, #fff);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  color: #24408c; font-size: 13px; font-weight: 600;
+}
+.admin-view-note a { color: var(--accent); text-decoration: underline; font-weight: 700; }
+.a-consent input:disabled { opacity: .5; }
+.a-consent:has(input:disabled) { cursor: default; }
+
 /* welcome */
 .welcome { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; flex-wrap: wrap; margin-bottom: 22px; }
 .welcome .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 8px; display: block; }
