@@ -69,6 +69,17 @@ body.portal button { font-family: inherit; }
 .pmain { padding: 26px 30px 100px; max-width: 1280px; margin: 0 auto; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; }
 
+/* general description written by the Medicross team */
+.details-card { padding: 20px 24px 22px; margin-bottom: 18px; }
+.details-card h2 { font-family: var(--font-display); font-weight: 600; font-size: 20px; margin-bottom: 10px; }
+.details-text { font-size: 14px; line-height: 1.75; color: #40392f; white-space: pre-line; }
+
+/* partner hospital on a trip stage */
+.tnode .hosp {
+  font-size: 10.5px; font-weight: 700; color: var(--brand-dark);
+  margin-top: 4px; line-height: 1.4;
+}
+
 /* empty states (a brand-new account has no operations / trip yet) */
 .empty-note {
   padding: 16px 18px; border: 1px dashed var(--line); border-radius: 14px;

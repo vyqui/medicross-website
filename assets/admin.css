@@ -54,10 +54,47 @@
 .fhint { font-size: 11px; color: var(--muted); margin-top: 5px; }
 .iform.stack { grid-template-columns: 1fr; }
 .iform .opt { font-weight: 600; color: var(--muted); }
-.region-warn {
-  padding: 9px 12px; border-radius: 10px; background: #fdf3e7;
-  color: #8a5216; font-size: 12px; font-weight: 600;
+/* collapsible card */
+.acard.collapse { padding: 0; }
+.acard.collapse > summary {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  padding: 16px 20px; list-style: none; border-radius: 20px;
 }
+.acard.collapse > summary::-webkit-details-marker { display: none; }
+.acard.collapse > summary .ctitle {
+  font-family: var(--font-display); font-weight: 600; font-size: 19px; flex: 1;
+}
+.acard.collapse > summary .chev { width: 16px; height: 16px; flex: none; color: var(--muted); transition: transform .25s ease; }
+.acard.collapse[open] > summary .chev { transform: rotate(180deg); }
+.acard.collapse > summary:hover .chev { color: var(--brand); }
+.acard.collapse > .sub { padding: 0 20px; }
+.acard.collapse > form { padding: 0 20px 20px; }
+
+/* the 3D zone is assigned by the procedure — shown, not editable */
+.zoneinfo {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 10px 13px; border-radius: 11px;
+  background: color-mix(in srgb, var(--accent) 7%, #fff);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  font-size: 12px; font-weight: 600; color: #24408c; line-height: 1.55;
+}
+.zoneinfo.none { background: #fdf3e7; border-color: #f0d3ad; color: #8a5216; }
+.zoneinfo code {
+  font-family: ui-monospace, Menlo, monospace; font-size: 11.5px;
+  background: rgba(255, 255, 255, .7); padding: 1px 6px; border-radius: 5px;
+}
+
+/* long partner list scrolls natively; keep the closed control compact */
+select.scroll-select { max-width: 100%; }
+
+/* Detalii */
+#detailsText {
+  width: 100%; padding: 12px 14px; font: inherit; font-size: 13.5px; line-height: 1.65;
+  border: 1px solid var(--line); border-radius: 12px; background: #fff; color: inherit;
+  resize: vertical; min-height: 120px;
+}
+#detailsText:focus { outline: 2px solid var(--brand); outline-offset: 1px; border-color: transparent; }
+.saved-note { align-self: center; font-size: 12.5px; font-weight: 700; color: var(--success); }
 
 /* section cards */
 .acard { padding: 18px 20px 20px; }

@@ -33,11 +33,34 @@ mannequin highlight automatically — no one has to know the mesh names:
 | Gastric Bypass | `stomach,intestine` | internal |
 | Balon Gastric | `stomach,esophagus` | internal |
 
-"Altă intervenție (personalizată)" allows a free-text name; the admin form then
-validates the zones against the meshes the body map actually registers and warns
-before saving something that would highlight nothing. To add a procedure, append one
-entry to `PROCEDURES` — the admin picker, the patient's chips and the highlight all
-follow.
+The zone is **not selectable** — it belongs to the procedure. The admin form only
+reports which zone will light up ("Zona evidențiată pe manechinul 3D: …, atribuită
+automat de intervenție"). "Altă intervenție (personalizată)" allows a free-text name
+and says plainly that no zone is attached, so nothing will highlight. To add a
+procedure, append one entry to `PROCEDURES` — the admin picker, the patient's chips
+and the highlight all follow.
+
+## Partner hospital network
+
+`HOSPITALS` in `assets/portal-data.js` lists the 11 partner hospitals and clinics, each
+linked to its page on the site. The trip-agenda form offers them as a dropdown per
+stage, and the chosen hospital shows under that stage in the patient's timeline. Add a
+hospital by appending one entry.
+
+## Per-patient description ("Detalii")
+
+`patient.details` is free text the team writes in the admin console — the patient's
+situation, what happens next, anything else worth saying. It is **shown to the patient**
+in a "Detalii" card in their portal (the card hides itself when empty), line breaks
+preserved. Every edit is recorded in the activity log. If it should be internal notes
+instead, remove the card from `portal.html` and the `renderDetails()` call in
+`portal.js`.
+
+## Store migrations
+
+`normalize()` in `portal-data.js` fills in fields added by later versions and persists
+the upgrade, so bumping the schema does **not** wipe accounts or data created with an
+earlier build.
 
 ## Accounts and the GDPR step
 

@@ -43,14 +43,12 @@
     <div class="arow-2">
       <!-- patient list -->
       <div class="acol">
-        <div class="card plist" id="patientList">
-          <h2>Pacienți</h2>
-          <!-- rows injected -->
-        </div>
-
-        <!-- create a patient account -->
-        <div class="card acard">
-          <h2>Cont nou</h2>
+        <!-- create a patient account (collapsed by default) -->
+        <details class="card acard collapse" id="newAcctCard">
+          <summary>
+            <span class="ctitle">Cont nou</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+          </summary>
           <div class="sub">Creează un cont de pacient. Pacientul se poate înregistra și singur din <a href="register.html">pagina de înregistrare</a>.</div>
           <form class="iform stack" id="newAcct" style="margin-top:0">
             <div class="full"><label for="naName">Nume și prenume</label><input id="naName" required /></div>
@@ -68,6 +66,11 @@
             <div class="frow full"><button class="ibtn primary" type="submit">Creează contul</button></div>
             <div class="aerr full" id="naErr" hidden></div>
           </form>
+        </details>
+
+        <div class="card plist" id="patientList">
+          <h2>Pacienți</h2>
+          <!-- rows injected -->
         </div>
       </div>
 
@@ -84,6 +87,19 @@
             <span>Acord GDPR semnat</span>
             <span class="gdpr-when" id="gdprWhen"></span>
           </label>
+        </div>
+
+        <!-- general description -->
+        <div class="card acard">
+          <h2>Detalii</h2>
+          <div class="sub">Descrierea generală a pacientului — situația lui, ce urmează să facă și alte detalii. Textul este vizibil pacientului în portal.</div>
+          <form id="detailsForm">
+            <textarea id="detailsText" rows="7" placeholder="Ex: Pacientă evaluată pentru Mommy Makeover la Liv Hospital. Analizele sunt complete. Urmează consultația pe 12 august, intervenția în aceeași zi, recuperare 3 zile în Istanbul…"></textarea>
+            <div class="frow" style="margin-top:10px">
+              <button class="ibtn primary" type="submit">Salvează detaliile</button>
+              <span class="saved-note" id="detailsSaved" hidden>Salvat ✓</span>
+            </div>
+          </form>
         </div>
 
         <!-- discount overview -->
@@ -121,11 +137,7 @@
               </select>
             </div>
             <div><label for="opDate">Dată</label><input id="opDate" placeholder="12 Aug 2026" /></div>
-            <div><label for="opRegions">Zone hartă 3D</label><input id="opRegions" placeholder="abdomen,breast" /></div>
-            <div><label for="opMode">Vedere hartă</label>
-              <select id="opMode"><option value="surface">Suprafață</option><option value="internal">Organe interne</option></select>
-            </div>
-            <div class="full" id="regionWarn" hidden></div>
+            <div class="full zoneinfo" id="opZoneInfo"><!-- zone assigned by the procedure --></div>
             <div class="frow full">
               <label style="display:flex;align-items:center;gap:7px;margin:0"><input type="checkbox" id="opActive" style="width:15px;height:15px" />Intervenția activă (evidențiată în portal)</label>
             </div>
@@ -150,6 +162,11 @@
           <form class="iform" id="tripForm" hidden>
             <div><label for="tiDate">Dată</label><input id="tiDate" placeholder="11 Aug" required /></div>
             <div class="full"><label for="tiDesc">Descriere</label><input id="tiDesc" required /></div>
+            <div class="full">
+              <label for="tiHospital">Spital / clinică partener</label>
+              <select id="tiHospital" class="scroll-select"><!-- filled from the network --></select>
+              <div class="fhint">Opțional — apare sub etapă în portalul pacientului.</div>
+            </div>
             <div><label for="tiIcon">Pictogramă</label>
               <select id="tiIcon">
                 <option value="plane">Avion</option><option value="building">Hotel</option>

@@ -108,6 +108,20 @@
     renderAll();
   });
 
+  /* ---------------- general description ---------------- */
+  function renderDetails(p) {
+    document.getElementById('detailsText').value = p.details || '';
+    document.getElementById('detailsSaved').hidden = true;
+  }
+  document.getElementById('detailsForm').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    MedicrossDB.saveDetails(currentId, document.getElementById('detailsText').value, 'admin');
+    var note = document.getElementById('detailsSaved');
+    note.hidden = false;
+    setTimeout(function () { note.hidden = true; }, 1800);
+    renderLog(MedicrossDB.patient(currentId));
+  });
+
   /* ---------------- discount ---------------- */
   function renderDiscount(p) {
     var total = MedicrossDB.discount(p.id);
@@ -160,11 +174,36 @@
       box.appendChild(row);
     });
   }
-  /* ---- standard procedure catalogue drives the picker + the 3D zone ---- */
-  var VALID_REGIONS = {
-    surface: ['abdomen', 'arm', 'breast', 'buttocks', 'chest', 'foot', 'hand', 'head', 'hip', 'jaw', 'neck', 'nose', 'thigh'],
-    internal: ['stomach', 'intestine', 'esophagus']
+  /* ---- standard procedure catalogue drives the picker + the 3D zone ----
+   * The zone is never chosen by hand: every procedure carries the regions it
+   * operates on, so the mannequin highlight follows from the procedure alone.
+   * The form only reports which zone will light up.                        */
+  var ZONE_LABEL = {
+    abdomen: 'abdomen', arm: 'brațe', breast: 'sâni', buttocks: 'fesieri', chest: 'torace',
+    foot: 'picioare', hand: 'mâini', head: 'cap / față', hip: 'flancuri', jaw: 'maxilar',
+    neck: 'gât', nose: 'nas', thigh: 'coapse',
+    stomach: 'stomac', intestine: 'intestin', esophagus: 'esofag'
   };
+
+  // hidden state: filled from the catalogue, submitted with the operation
+  var zoneState = { regions: '', viewMode: 'surface' };
+
+  function renderZoneInfo() {
+    var box = document.getElementById('opZoneInfo');
+    var list = zoneState.regions.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    if (!list.length) {
+      box.className = 'full zoneinfo none';
+      box.innerHTML = 'Intervenție personalizată — nicio zonă atribuită, deci nu se evidențiază ' +
+        'nimic pe manechin. Alege o intervenție standard dacă vrei evidențierea automată.';
+      return;
+    }
+    box.className = 'full zoneinfo';
+    box.innerHTML = 'Zona evidențiată pe manechinul 3D: <strong>' +
+      list.map(function (r) { return ZONE_LABEL[r] || r; }).join(', ') + '</strong> ' +
+      '<code>' + list.join(',') + '</code> · vedere ' +
+      (zoneState.viewMode === 'internal' ? '<strong>organe interne</strong>' : '<strong>suprafață</strong>') +
+      ' — atribuită automat de intervenție.';
+  }
 
   function buildCatalogSelect() {
     var sel = document.getElementById('opCatalog');
@@ -186,44 +225,27 @@
     sel.appendChild(other);
   }
 
-  // applies a catalogue entry: name, detail, 3D regions and view mode
+  // applies a catalogue entry: name, detail and — automatically — the 3D zone
   function applyCatalog(key, keepDetail) {
     var custom = key === '__custom';
     document.getElementById('opNameWrap').hidden = !custom;
-    if (custom) { document.getElementById('opName').focus(); checkRegions(); return; }
+    if (custom) {
+      zoneState = { regions: '', viewMode: 'surface' };
+      renderZoneInfo();
+      document.getElementById('opName').focus();
+      return;
+    }
     var pr = MedicrossDB.procedure(key);
     if (!pr) return;
     document.getElementById('opName').value = pr.name;
     if (!keepDetail) document.getElementById('opDetail').value = pr.detail;
-    document.getElementById('opRegions').value = pr.regions;   // 3D zone, automatic
-    document.getElementById('opMode').value = pr.viewMode;
-    checkRegions();
-  }
-
-  // warn if a hand-typed zone will not highlight anything on the mannequin
-  function checkRegions() {
-    var warn = document.getElementById('regionWarn');
-    var mode = document.getElementById('opMode').value;
-    var allowed = VALID_REGIONS[mode];
-    var bad = document.getElementById('opRegions').value.split(',')
-      .map(function (s) { return s.trim().toLowerCase(); })
-      .filter(function (s) { return s && allowed.indexOf(s) === -1; });
-    if (bad.length) {
-      warn.className = 'region-warn';
-      warn.textContent = 'Zone necunoscute pentru vederea „' +
-        (mode === 'internal' ? 'Organe interne' : 'Suprafață') + '”: ' + bad.join(', ') +
-        '. Valori acceptate: ' + allowed.join(', ') + '.';
-      warn.hidden = false;
-    } else {
-      warn.hidden = true;
-    }
+    zoneState = { regions: pr.regions, viewMode: pr.viewMode };
+    renderZoneInfo();
   }
 
   document.getElementById('opCatalog').addEventListener('change', function () {
     applyCatalog(this.value, false);
   });
-  document.getElementById('opRegions').addEventListener('input', checkRegions);
-  document.getElementById('opMode').addEventListener('change', checkRegions);
 
   // find the catalogue entry an existing operation came from
   function catalogKeyFor(op) {
@@ -245,17 +267,22 @@
       document.getElementById('opNameWrap').hidden = sel.value !== '__custom';
       document.getElementById('opName').value = op.name;
       document.getElementById('opDetail').value = op.detail || '';
-      document.getElementById('opRegions').value = op.regions || '';
-      document.getElementById('opMode').value = op.viewMode || 'surface';
+      if (sel.value === '__custom') {
+        zoneState = { regions: op.regions || '', viewMode: op.viewMode || 'surface' };
+      } else {
+        // re-read from the catalogue so the zone always matches the procedure
+        var pr = MedicrossDB.procedure(sel.value);
+        zoneState = { regions: pr.regions, viewMode: pr.viewMode };
+      }
+      renderZoneInfo();
     } else {
       sel.selectedIndex = 0;
       document.getElementById('opDetail').value = '';
-      applyCatalog(sel.value, false);   // pre-fills the 3D zone for the default pick
+      applyCatalog(sel.value, false);   // assigns the 3D zone for the default pick
     }
     document.getElementById('opStatus').value = op ? op.status : 'programata';
     document.getElementById('opDate').value = op ? op.date : '';
     document.getElementById('opActive').checked = !!(op && op.active);
-    checkRegions();
   }
   document.getElementById('opAdd').addEventListener('click', function () { openOpForm(null); });
   document.getElementById('opCancel').addEventListener('click', function () {
@@ -274,8 +301,8 @@
       detail: document.getElementById('opDetail').value.trim(),
       status: document.getElementById('opStatus').value,
       date: document.getElementById('opDate').value.trim(),
-      regions: document.getElementById('opRegions').value.trim(),
-      viewMode: document.getElementById('opMode').value,
+      regions: zoneState.regions,       // assigned by the procedure, not typed
+      viewMode: zoneState.viewMode,
       active: document.getElementById('opActive').checked
     });
     document.getElementById('opForm').hidden = true;
@@ -285,6 +312,19 @@
 
   /* ---------------- trip agenda ---------------- */
   var editingTrip = null;
+
+  function buildHospitalSelect() {
+    var sel = document.getElementById('tiHospital');
+    sel.textContent = '';
+    var none = document.createElement('option');
+    none.value = ''; none.textContent = '— fără spital —';
+    sel.appendChild(none);
+    MedicrossDB.HOSPITALS.forEach(function (h) {
+      var o = document.createElement('option');
+      o.value = h.name; o.textContent = h.name;
+      sel.appendChild(o);
+    });
+  }
   function renderTrip(p) {
     document.getElementById('tmTitle').value = p.trip.title;
     document.getElementById('tmSub').value = p.trip.subtitle;
@@ -294,7 +334,9 @@
       var row = el('div', 'itemrow' + (it.surgery ? ' surgery-row' : ''));
       var g = el('div', 'grow');
       g.appendChild(el('div', 't', it.date + ' — ' + it.desc));
-      g.appendChild(el('div', 'm', (it.surgery ? 'Ziua intervenției · ' : '') + 'pictogramă: ' + it.icon));
+      g.appendChild(el('div', 'm',
+        (it.surgery ? 'Ziua intervenției · ' : '') +
+        (it.hospital ? it.hospital + ' · ' : '') + 'pictogramă: ' + it.icon));
       row.appendChild(g);
       var up = el('button', 'ibtn', '↑'); up.type = 'button'; up.disabled = i === 0;
       up.setAttribute('aria-label', 'Mută mai sus');
@@ -322,6 +364,7 @@
     document.getElementById('tiDate').value = it ? it.date : '';
     document.getElementById('tiDesc').value = it ? it.desc : '';
     document.getElementById('tiIcon').value = it ? it.icon : 'plane';
+    document.getElementById('tiHospital').value = (it && it.hospital) || '';
     document.getElementById('tiSurgery').checked = !!(it && it.surgery);
     document.getElementById('tiDate').focus();
   }
@@ -338,6 +381,7 @@
       id: editingTrip ? editingTrip.id : null,
       date: date, desc: desc,
       icon: document.getElementById('tiIcon').value,
+      hospital: document.getElementById('tiHospital').value,
       surgery: document.getElementById('tiSurgery').checked
     });
     document.getElementById('tripForm').hidden = true;
@@ -427,6 +471,7 @@
     if (!p) return;
     renderPatients();
     renderAccount(p);
+    renderDetails(p);
     renderDiscount(p);
     renderOps(p);
     renderTrip(p);
@@ -434,5 +479,6 @@
     renderLog(p);
   }
   buildCatalogSelect();
+  buildHospitalSelect();
   renderAll();
 })();
