@@ -209,9 +209,25 @@
       var date = document.createElement('div'); date.className = 'date'; date.textContent = it.date;
       var desc = document.createElement('div'); desc.className = 'desc'; desc.textContent = it.desc;
       wrap.appendChild(date); wrap.appendChild(desc);
+      if (it.hospital) {
+        var hosp = document.createElement('div');
+        hosp.className = 'hosp';
+        hosp.textContent = it.hospital;
+        wrap.appendChild(hosp);
+      }
       node.appendChild(wrap);
       line.appendChild(node);
     });
+  }
+
+  /* ---------------- general description from the team ---------------- */
+  function renderDetails() {
+    var card = document.getElementById('detailsCard');
+    var body = document.getElementById('patientDetails');
+    if (!card || !body) return;
+    var txt = (P().details || '').trim();
+    body.textContent = txt;
+    card.hidden = !txt;      // no card at all when the team hasn't written anything
   }
 
   /* ---------------- next-intervention card ---------------- */
@@ -439,6 +455,7 @@
   renderChips();
   syncModeSeg();
   renderOps();
+  renderDetails();
   renderTrip();
   renderNext();
   renderDocs();

@@ -87,9 +87,6 @@ body.home a { text-decoration: none; color: inherit; }
 
 /* ===================== HERO ===================== */
 .hero { position: relative; overflow: hidden; padding: 56px 0 40px; }
-.hero-blob { position: absolute; border-radius: 50%; pointer-events: none; }
-.hero-blob.a { top: -80px; right: -60px; width: 360px; height: 360px; background: radial-gradient(circle, color-mix(in srgb, var(--brand) 16%, transparent), transparent 70%); }
-.hero-blob.b { top: 140px; left: -90px; width: 230px; height: 230px; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 72%); }
 .hero-grid { position: relative; display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 44px; align-items: center; }
 .hero h1 { font-family: var(--font-display); font-weight: 600; font-size: 76px; line-height: .98; letter-spacing: -.02em; margin: 22px 0; }
 .hero h1 em { font-style: italic; color: var(--brand); }
@@ -104,21 +101,63 @@ body.home a { text-decoration: none; color: inherit; }
 
 /* hero right */
 .hero-right { position: relative; min-height: 560px; }
-.hero-panel {
-  position: absolute; inset: 6px -30px 40px 30px; border-radius: 26px;
-  background: linear-gradient(155deg, color-mix(in srgb, var(--brand) 20%, var(--page)), color-mix(in srgb, var(--brand) 8%, var(--page)));
-  transform: rotate(4deg); box-shadow: var(--shadow-card);
+
+/* ---- fan of soft red shadows behind the lead form ----
+   Seven blurred blades splayed from a point below the card. The whole fan
+   drifts toward the pointer and opens up on hover; --gx/--gy/--tilt/--open
+   are driven from assets/home.js. Purely decorative: pointer-events none, so
+   the form underneath stays fully clickable. */
+.hero-aura {
+  position: absolute; inset: -12% -26% -8% -26%;
+  z-index: 0; pointer-events: none;
+  transform: translate3d(var(--gx, 0px), var(--gy, 0px), 0) rotate(var(--tilt, 0deg));
+  transition: transform .75s cubic-bezier(.22, .61, .36, 1);
+  will-change: transform;
 }
-.hero-badge {
-  position: absolute; left: -6px; bottom: 34px; z-index: 1;
-  display: flex; align-items: center; gap: 12px; background: #fff;
-  padding: 14px 18px; border-radius: 16px; box-shadow: var(--shadow-card);
-  animation: floaty 4.5s ease-in-out infinite;
+.hero-aura .ray {
+  position: absolute; left: 50%; bottom: 10%;
+  width: 25%; height: 92%;
+  margin-left: -12.5%;
+  transform-origin: 50% 100%;
+  border-radius: 48% 48% 30% 30% / 60% 60% 40% 40%;
+  /* strongest near the tip, dissolving toward the pivot */
+  background: linear-gradient(to top,
+    transparent 0%,
+    color-mix(in srgb, var(--brand) 16%, transparent) 26%,
+    color-mix(in srgb, var(--brand) 52%, transparent) 62%,
+    color-mix(in srgb, var(--brand) 34%, transparent) 88%,
+    transparent 100%);
+  filter: blur(20px);
+  opacity: .5;
+  transform: rotate(calc(var(--a) * var(--open, 1))) scaleY(var(--len, 1));
+  transition: opacity .6s ease, transform .8s cubic-bezier(.22, .61, .36, 1), filter .6s ease;
 }
-@keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-.hero-badge .ic { width: 38px; height: 38px; border-radius: 50%; background: color-mix(in srgb, var(--brand) 14%, #fff); color: var(--brand); display: grid; place-items: center; }
-.hero-badge strong { font-size: 14px; display: block; }
-.hero-badge span { font-size: 12px; color: var(--muted); }
+/* centre blade sits strongest, the outer ones fade away */
+.hero-aura .ray:nth-child(4) { opacity: .62; }
+.hero-aura .ray:nth-child(3),
+.hero-aura .ray:nth-child(5) { opacity: .56; }
+.hero-aura .ray:nth-child(1),
+.hero-aura .ray:nth-child(7) { opacity: .32; }
+
+/* hover: the fan opens, brightens and sharpens slightly */
+.hero-right:hover .hero-aura .ray,
+.hero-right:focus-within .hero-aura .ray {
+  opacity: .78; filter: blur(15px);
+}
+.hero-right:hover .hero-aura .ray:nth-child(4),
+.hero-right:focus-within .hero-aura .ray:nth-child(4) { opacity: .9; }
+.hero-right:hover .hero-aura .ray:nth-child(1),
+.hero-right:hover .hero-aura .ray:nth-child(7),
+.hero-right:focus-within .hero-aura .ray:nth-child(1),
+.hero-right:focus-within .hero-aura .ray:nth-child(7) { opacity: .55; }
+/* staggered so the blades ripple outward instead of moving as one block */
+.hero-aura .ray:nth-child(1), .hero-aura .ray:nth-child(7) { transition-delay: .08s; }
+.hero-aura .ray:nth-child(2), .hero-aura .ray:nth-child(6) { transition-delay: .05s; }
+.hero-aura .ray:nth-child(3), .hero-aura .ray:nth-child(5) { transition-delay: .03s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-aura, .hero-aura .ray { transition: none; }
+}
 
 /* lead form card */
 .lead-card {

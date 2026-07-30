@@ -59,6 +59,24 @@
   ];
   var CATEGORY_LABEL = { estetica: 'Chirurgie Estetică', bariatrica: 'Chirurgie Bariatrică' };
 
+  /* ---------------- partner hospitals & clinics ---------------------------
+   * The network the trip agenda draws from; `page` links the site's own
+   * detail page for that hospital.
+   * ---------------------------------------------------------------------- */
+  var HOSPITALS = [
+    { name: 'Liv Hospital Vadistanbul', page: 'spitalul-liv.html' },
+    { name: 'Medical Park Bahçelievler Hospital', page: 'medical-park-bahcelievler-hospital.html' },
+    { name: 'Medical Park Gaziosmanpaşa', page: 'medical-park-gaziosmanpasa.html' },
+    { name: 'VM Medical Park Florya', page: 'vm-medical-park-florya.html' },
+    { name: 'Medicana Health Group', page: 'medicana-health-group.html' },
+    { name: 'Academic Hospital Istanbul', page: 'academic-hospital-istanbul.html' },
+    { name: 'Avrasya Hospital International', page: 'avrasya-hospital-international.html' },
+    { name: 'Central Hospital Istanbul', page: 'central-hospital.html' },
+    { name: 'BHT Clinic Istanbul Tema Hospital', page: 'parteneri.html' },
+    { name: 'HAB Dental Clinic Vadistanbul', page: 'hab-dental-clinic-vadistanbul.html' },
+    { name: 'Emine Erdem Hair Clinic', page: 'emine-erdem-hair-clinic.html' }
+  ];
+
   function procedure(key) {
     for (var i = 0; i < PROCEDURES.length; i++) if (PROCEDURES[i].key === key) return PROCEDURES[i];
     return null;
@@ -87,6 +105,11 @@
         referralCount: 1,
         gdprAccepted: true,
         gdprAcceptedAt: '2026-06-28T09:12:00Z',
+        details: 'Pacientă evaluată pentru Mommy Makeover (abdominoplastie + mamare) la Liv Hospital. '
+          + 'Analizele pre-operatorii sunt complete și în parametri. Urmează consultația cu medicul '
+          + 'chirurg pe 12 august, în ziua sosirii, iar intervenția în aceeași zi. Recuperare '
+          + 'estimată 3 zile în Istanbul, cu control înainte de întoarcere. Gastric Sleeve rămâne '
+          + 'în discuție pentru anul viitor, după stabilizarea greutății.',
         actions: {
           google:   { done: true,  needsConsent: false, consent: false, pct: 4 },
           video:    { done: false, needsConsent: true,  consent: false, pct: 10 },
@@ -107,12 +130,12 @@
           title: 'Călătoria mea · Istanbul',
           subtitle: 'Mommy Makeover · 11–16 August 2026 · totul organizat de echipa Medicross',
           items: [
-            { id: 't1', date: '11 Aug', desc: 'Zbor București→Istanbul + transfer privat', icon: 'plane', surgery: false },
-            { id: 't2', date: '11 Aug', desc: 'Cazare hotel 5★', icon: 'building', surgery: false },
-            { id: 't3', date: '12 Aug', desc: 'Consultație + analize', icon: 'tag', surgery: false },
-            { id: 't4', date: '12 Aug', desc: 'Intervenție', icon: 'plus', surgery: true },
-            { id: 't5', date: '13–15 Aug', desc: 'Recuperare & control', icon: 'star', surgery: false },
-            { id: 't6', date: '16 Aug', desc: 'Întoarcere acasă', icon: 'home', surgery: false }
+            { id: 't1', date: '11 Aug', desc: 'Zbor București→Istanbul + transfer privat', icon: 'plane', surgery: false, hospital: '' },
+            { id: 't2', date: '11 Aug', desc: 'Cazare hotel 5★', icon: 'building', surgery: false, hospital: '' },
+            { id: 't3', date: '12 Aug', desc: 'Consultație + analize', icon: 'tag', surgery: false, hospital: 'Liv Hospital Vadistanbul' },
+            { id: 't4', date: '12 Aug', desc: 'Intervenție', icon: 'plus', surgery: true, hospital: 'Liv Hospital Vadistanbul' },
+            { id: 't5', date: '13–15 Aug', desc: 'Recuperare & control', icon: 'star', surgery: false, hospital: 'Liv Hospital Vadistanbul' },
+            { id: 't6', date: '16 Aug', desc: 'Întoarcere acasă', icon: 'home', surgery: false, hospital: '' }
           ]
         },
         documents: [
@@ -130,12 +153,37 @@
   }
 
   /* ---------------- persistence ------------------------------------------- */
+  // Fills in fields added by later versions so an older saved store keeps working.
+  function normalize(db) {
+    db.v = SCHEMA;
+    db.patients.forEach(function (p) {
+      if (typeof p.details !== 'string') p.details = '';
+      if (typeof p.gdprAccepted !== 'boolean') p.gdprAccepted = false;
+      if (!('gdprAcceptedAt' in p)) p.gdprAcceptedAt = null;
+      if (typeof p.referralCount !== 'number') p.referralCount = 0;
+      if (!p.trip) p.trip = { title: 'Călătoria mea · Istanbul', subtitle: '', items: [] };
+      if (!Array.isArray(p.trip.items)) p.trip.items = [];
+      p.trip.items.forEach(function (t) { if (typeof t.hospital !== 'string') t.hospital = ''; });
+      if (!Array.isArray(p.operations)) p.operations = [];
+      if (!Array.isArray(p.documents)) p.documents = [];
+      if (!Array.isArray(p.log)) p.log = [];
+    });
+    return db;
+  }
+
   function load() {
     try {
       var raw = localStorage.getItem(DB_KEY);
       if (raw) {
         var db = JSON.parse(raw);
-        if (db && db.v === SCHEMA && Array.isArray(db.patients) && Array.isArray(db.accounts)) return db;
+        // Migrate rather than reseed, so accounts created earlier survive an update,
+        // and persist the upgrade so the stored shape matches the current schema.
+        if (db && Array.isArray(db.patients) && Array.isArray(db.accounts)) {
+          var stale = db.v !== SCHEMA;
+          normalize(db);
+          if (stale) save(db);
+          return db;
+        }
       }
     } catch (e) { /* corrupted — reseed */ }
     var fresh = seed();
@@ -233,6 +281,7 @@
       phone: String(opts.phone || '').trim(), sex: sex,
       referralCode: referralCodeFor(name), referralCount: 0,
       gdprAccepted: true, gdprAcceptedAt: now,
+      details: '',
       actions: {
         google:   { done: false, needsConsent: false, consent: false, pct: 4 },
         video:    { done: false, needsConsent: true,  consent: false, pct: 10 },
@@ -253,6 +302,15 @@
     db.accounts.push({ email: email, pass: pass, role: 'patient', patientId: p.id });
     save(db);
     return { patient: p };
+  }
+
+  function saveDetails(pid, text, who) {
+    var p = patient(pid); if (!p) return;
+    var next = String(text || '');
+    if (p.details === next) return;
+    p.details = next;
+    logEvent(p, who || 'admin', next ? 'A actualizat descrierea pacientului' : 'A șters descrierea pacientului');
+    save(db);
   }
 
   function setGdpr(pid, accepted, who) {
@@ -292,7 +350,8 @@
   window.MedicrossDB = {
     // auth
     login: login, logout: logout, session: session, requireRole: requireRole,
-    createPatient: createPatient, setGdpr: setGdpr,
+    createPatient: createPatient, setGdpr: setGdpr, saveDetails: saveDetails,
+    HOSPITALS: HOSPITALS,
     accounts: function () { return db.accounts; },
     accountForPatient: function (pid) {
       for (var i = 0; i < db.accounts.length; i++) if (db.accounts[i].patientId === pid) return db.accounts[i];

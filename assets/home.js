@@ -104,9 +104,51 @@ function onScroll() {
     const y = window.scrollY;
     plx.forEach(el => {
       const f = parseFloat(el.dataset.parallax) || 0;
-      el.style.transform = (el.classList.contains('hero-panel') ? 'rotate(4deg) ' : '') + `translateY(${y * f * -0.4}px)`;
+      el.style.transform = `translateY(${y * f * -0.4}px)`;
     });
     ticking = false;
   });
 }
 window.addEventListener('scroll', onScroll, { passive: true });
+
+// ---- hero aura: the fan of red shadows follows the pointer ----
+(() => {
+  const zone = document.getElementById('heroRight');
+  const aura = document.getElementById('heroAura');
+  if (!zone || !aura) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // skip on touch: there is no hover, and the effect would only cost battery
+  if (!window.matchMedia('(hover: hover)').matches) return;
+
+  let raf = null;
+  const idle = () => {
+    aura.style.setProperty('--gx', '0px');
+    aura.style.setProperty('--gy', '0px');
+    aura.style.setProperty('--tilt', '0deg');
+    aura.style.setProperty('--open', '1');
+    aura.style.setProperty('--len', '1');
+  };
+
+  zone.addEventListener('pointermove', ev => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = null;
+      const r = zone.getBoundingClientRect();
+      // -1 .. 1 from the centre of the card area
+      const nx = Math.max(-1, Math.min(1, ((ev.clientX - r.left) / r.width - 0.5) * 2));
+      const ny = Math.max(-1, Math.min(1, ((ev.clientY - r.top) / r.height - 0.5) * 2));
+      aura.style.setProperty('--gx', (nx * 26).toFixed(1) + 'px');
+      aura.style.setProperty('--gy', (ny * 16).toFixed(1) + 'px');
+      aura.style.setProperty('--tilt', (nx * 7).toFixed(2) + 'deg');
+      // the fan opens wider and the blades stretch as the pointer rises
+      aura.style.setProperty('--open', (1.14 - ny * 0.12).toFixed(3));
+      aura.style.setProperty('--len', (1.06 - ny * 0.08).toFixed(3));
+    });
+  }, { passive: true });
+
+  zone.addEventListener('pointerleave', () => {
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    idle();
+  });
+  idle();
+})();
