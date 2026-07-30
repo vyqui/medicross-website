@@ -15,6 +15,12 @@
   var PID = sess.patientId || (MedicrossDB.patients()[0] && MedicrossDB.patients()[0].id);
   var CAP = 25;
 
+  // An admin may open this page to see what the patient sees. Everything they do
+  // is attributed to the staff, and consent stays the patient's own act — staff
+  // must never be able to grant or revoke it on the patient's behalf.
+  var AS_ADMIN = sess.role === 'admin';
+  var WHO = AS_ADMIN ? 'staff' : 'pacient';
+
   function P() { return MedicrossDB.patient(PID); }
 
   /* ---------------- header: identity + logout ---------------- */
@@ -32,6 +38,20 @@
       MedicrossDB.logout();
       location.href = 'login.html';
     });
+
+    if (AS_ADMIN) {
+      var role = document.querySelector('.ph-user-txt .role');
+      if (role) role.textContent = 'Vizualizare admin';
+      var main = document.querySelector('.pmain');
+      if (main) {
+        var bar = document.createElement('div');
+        bar.className = 'admin-view-note';
+        bar.innerHTML = 'Vizualizezi portalul pacientului ca <strong>administrator</strong>. ' +
+          'Consimțămintele de marketing pot fi acordate sau retrase doar de pacient. ' +
+          '<a href="admin.html">Înapoi în consolă</a>';
+        main.insertBefore(bar, main.firstChild);
+      }
+    }
   })();
 
   /* ---------------- body map wiring ---------------- */
@@ -107,6 +127,13 @@
     if (!box) return;
     var p = P();
     box.textContent = '';
+    if (!p.operations.length) {
+      var none = document.createElement('div');
+      none.className = 'empty-note';
+      none.textContent = 'Nu ai încă intervenții înregistrate. Echipa Medicross le adaugă aici după evaluarea medicală.';
+      box.appendChild(none);
+      return;
+    }
     var idx = 0;
     p.operations.forEach(function (op) {
       var st = STATUS[op.status] || STATUS.evaluare;
@@ -163,6 +190,13 @@
     var line = document.querySelector('.timeline');
     if (!line) return;
     line.textContent = '';
+    if (!p.trip.items.length) {
+      var none = document.createElement('div');
+      none.className = 'empty-note';
+      none.textContent = 'Programul călătoriei apare aici imediat ce intervenția este confirmată.';
+      line.appendChild(none);
+      return;
+    }
     p.trip.items.forEach(function (it) {
       var node = document.createElement('div');
       node.className = 'tnode' + (it.surgery ? ' surgery' : '');
@@ -261,17 +295,17 @@
           // register the upload in the shared store so the admin sees the files
           Array.prototype.slice.call(fileInput.files).forEach(function (f) {
             var reader = new FileReader();
-            reader.onload = function () { MedicrossDB.addDocument(PID, f, reader.result, 'pacient'); renderDocs(); };
-            reader.onerror = function () { MedicrossDB.addDocument(PID, f, null, 'pacient'); renderDocs(); };
+            reader.onload = function () { MedicrossDB.addDocument(PID, f, reader.result, WHO); renderDocs(); };
+            reader.onerror = function () { MedicrossDB.addDocument(PID, f, null, WHO); renderDocs(); };
             reader.readAsDataURL(f);
           });
-          MedicrossDB.setAction(PID, key, { done: true });
+          MedicrossDB.setAction(PID, key, { done: true }, WHO);
           updateUI();
         }
       });
       toggle.addEventListener('click', function () {
         var a = P().actions[key];
-        if (a.done) { MedicrossDB.setAction(PID, key, { done: false }); updateUI(); }
+        if (a.done) { MedicrossDB.setAction(PID, key, { done: false }, WHO); updateUI(); }
         else fileInput.click();
       });
     } else if (toggle && key === 'referral') {
@@ -282,10 +316,17 @@
 
     if (consent) {
       consent.checked = P().actions[key].consent;
-      consent.addEventListener('change', function () {
-        MedicrossDB.setAction(PID, key, { consent: consent.checked });
-        updateUI();
-      });
+      if (AS_ADMIN) {
+        // consent is the patient's own act — staff can see it, never change it
+        consent.disabled = true;
+        var lbl = consent.closest('.a-consent');
+        if (lbl) lbl.title = 'Doar pacientul poate acorda sau retrage consimțământul.';
+      } else {
+        consent.addEventListener('change', function () {
+          MedicrossDB.setAction(PID, key, { consent: consent.checked }, WHO);
+          updateUI();
+        });
+      }
     }
   });
 
