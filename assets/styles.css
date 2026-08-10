@@ -174,17 +174,26 @@
         radial-gradient(700px 420px at -10% 110%, rgba(226,59,67,.22), transparent 55%),
         linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 60%, #3a332c 100%);
     }
+    /* The photo comes from a background-image in the section's style
+       attribute. It used to be passed in a --hero-img custom property, but a
+       relative url() inside a custom property resolves against the stylesheet
+       in Chromium and against the document elsewhere, so the same string can
+       never be right in both — every hero photo 404'd. The dark overlay lives
+       on ::before instead, so the page only has to name the file. */
     .page-hero.has-bg {
-      background-image:
-        linear-gradient(120deg, rgba(10,42,67,.94) 0%, rgba(10,42,67,.82) 45%, rgba(10,42,67,.55) 100%),
-        var(--hero-img);
-      background-size: cover, cover;
-      background-position: center, center;
+      background-size: cover;
+      background-position: center;
     }
     .page-hero::before {
       content: ""; position: absolute; inset: 0;
       background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
       background-size: 26px 26px;
+    }
+    .page-hero.has-bg::before {
+      background-image:
+        linear-gradient(120deg, rgba(10,42,67,.94) 0%, rgba(10,42,67,.82) 45%, rgba(10,42,67,.55) 100%),
+        radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+      background-size: auto, 26px 26px;
     }
     .page-hero .container { position: relative; }
     .page-hero h1 { font-family: "Newsreader", serif; font-size: clamp(30px, 4.5vw, 46px); line-height: 1.15; margin: 14px 0 16px; color: #fff; }
@@ -193,7 +202,11 @@
     .breadcrumbs a { color: rgba(255,255,255,.85); font-weight: 600; }
     .breadcrumbs a:hover { color: #fff; }
 
-    .article-layout { display: grid; grid-template-columns: 1fr 340px; gap: 44px; align-items: start; }
+    /* minmax(0, …) rather than 1fr: a plain 1fr track is floored at the
+       item's min-content width, so one nowrap CTA in the sidebar was widening
+       the whole column past the viewport on phones */
+    .article-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 44px; align-items: start; }
+    .article-layout.sidebar-left { grid-template-columns: 380px minmax(0, 1fr); }
     .article h2 { font-family: "Newsreader", serif; font-size: clamp(24px, 3vw, 32px); color: var(--navy); margin: 38px 0 16px; }
     .article h2:first-child { margin-top: 0; }
     .article h3 { font-size: 19px; color: var(--navy); margin: 28px 0 12px; }
@@ -213,7 +226,9 @@
     .sidebar-card.navy { background: linear-gradient(140deg, var(--navy) 0%, var(--navy-2) 100%); color: #fff; border: none; }
     .sidebar-card.navy h3 { color: #fff; }
     .sidebar-card h3 { font-size: 17px; color: var(--navy); margin-bottom: 14px; }
-    .sidebar-card .btn { width: 100%; justify-content: center; margin-top: 6px; }
+    /* these span the card, so they are allowed to wrap — "Întreabă
+       specialistul pe WhatsApp" on one line is wider than a phone */
+    .sidebar-card .btn { width: 100%; justify-content: center; margin-top: 6px; white-space: normal; }
     .sidebar-list { list-style: none; }
     .sidebar-list a {
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -604,7 +619,11 @@
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
       .about-float { right: 8px; }
-      .article-layout { grid-template-columns: 1fr; }
+      .article-layout { grid-template-columns: minmax(0, 1fr); }
+      /* the contact page puts its sidebar first in the DOM; stacked, the form
+         is what people came for, so it goes on top */
+      .article-layout.sidebar-left { grid-template-columns: minmax(0, 1fr); }
+      .article-layout.sidebar-left > aside { order: 2; }
       .page-sidebar { position: static; }
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
       .proc-grid { grid-template-columns: 1fr 1fr; }

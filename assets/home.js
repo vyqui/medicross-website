@@ -130,9 +130,11 @@ window.addEventListener('scroll', onScroll, { passive: true });
   if (!still) {
     const onBloomScroll = () => {
       const r = zone.getBoundingClientRect();
-      // 0 while the hero sits at the top of the viewport, 1 once it has
-      // travelled roughly its own height upward
-      const travelled = Math.max(0, -r.top + window.innerHeight * 0.18);
+      /* Exactly 0 while the page is at rest, 1 once the hero has travelled
+         about 85% of its own height upward. Measuring the travel itself
+         rather than the hero's distance from some fraction of the viewport
+         keeps the closed state closed whatever the header height is. */
+      const travelled = Math.max(0, window.scrollY);
       scrollBloom = Math.max(0, Math.min(1, travelled / (r.height * 0.85 || 1)));
       queueBloom();
     };

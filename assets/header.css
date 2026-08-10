@@ -16,14 +16,14 @@
   padding: 5px 32px; max-width: 1600px; margin: 0 auto;
 }
 .mh-logo { flex: none; display: block; }
-/* Doubled to 176px. The lockup is ~2.43:1, so at full size it is ~427px wide —
-   more than the inline nav leaves at 1440px. The min() below keeps it fully
-   doubled wherever there is room and scales it down only where the nav would
-   otherwise be pushed off; the constant is the space the rest of the header
-   needs at that breakpoint. */
-.mh-logo img { height: 176px; width: auto; display: block; }
+/* The source lockup was 500x206 with ~133px of empty margin baked in, so most
+   of the header's height was blank image. medicross-logo.png is the same
+   artwork cropped to its ink (286x77, ratio ~3.71): the bar halves while the
+   visible mark actually gets bigger. The min() keeps it from crowding the
+   inline nav; the constant is the width the rest of the header needs. */
+.mh-logo img { height: 84px; width: auto; display: block; }
 @media (max-width: 1780px) {
-  .mh-logo img { height: clamp(88px, min(176px, (100vw - 1215px) / 2.43), 176px); }
+  .mh-logo img { height: clamp(40px, min(84px, (100vw - 1210px) / 3.714), 84px); }
 }
 
 /* ---------- desktop nav ---------- */
@@ -127,9 +127,8 @@
 @media (max-width: 1400px) {
   .mh-nav { display: none; }
   .mh-burger { display: block; }
-  /* No inline nav from here, so there is room — but capped at 118px: at the
-     full 176px the sticky header grows to ~186px of mostly empty space. */
-  .mh-logo img { height: clamp(92px, min(118px, (100vw - 500px) / 2.43), 118px); }
+  /* no inline nav from here, so the mark can sit at its full size */
+  .mh-logo img { height: 56px; }
 }
 @media (max-width: 1180px) {
   .mh-inner { padding: 5px 26px; }
@@ -138,7 +137,9 @@
 }
 @media (max-width: 620px) {
   .mh-inner { padding: 5px 16px; gap: 8px; }
-  .mh-logo img { height: clamp(56px, (100vw - 238px) / 2.43, 124px); }
+  /* 240px = the padding, the gap and the CTA+burger block measured at this
+     breakpoint, so the mark takes exactly the width that is left over */
+  .mh-logo img { height: clamp(30px, (100vw - 240px) / 3.714, 56px); }
   .mh-btn-ghost { display: none; }
   .mh-btn-primary { padding: 10px 13px; font-size: 12.5px; }
   .mh-burger { padding: 6px; }
@@ -146,6 +147,10 @@
   .mh-group-items a { padding-left: 34px; }
   .mh-mobile .mh-btn-primary { margin: 14px 18px 20px; }
 }
+/* below ~400px the CTA has to give ground too, or there is nothing left for
+   the mark; tightening it first buys the logo ~15px of width */
 @media (max-width: 400px) {
-  .mh-logo img { height: clamp(52px, (100vw - 236px) / 2.43, 108px); }
+  .mh-right { gap: 6px; }
+  .mh-btn-primary { padding: 9px 11px; font-size: 12px; }
+  .mh-logo img { height: clamp(26px, (100vw - 224px) / 3.714, 56px); }
 }
