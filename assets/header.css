@@ -13,7 +13,7 @@
 .mh a { text-decoration: none; color: inherit; }
 .mh-inner {
   display: flex; align-items: center; justify-content: space-between; gap: 18px;
-  padding: 10px 32px; max-width: 1600px; margin: 0 auto;
+  padding: 5px 32px; max-width: 1600px; margin: 0 auto;
 }
 .mh-logo { flex: none; display: block; }
 /* Doubled to 176px. The lockup is ~2.43:1, so at full size it is ~427px wide —
@@ -127,17 +127,17 @@
 @media (max-width: 1400px) {
   .mh-nav { display: none; }
   .mh-burger { display: block; }
-  /* No inline nav from here, so there is room — but capped at 130px: at the
-     full 176px the sticky header grows to ~196px and is mostly empty space. */
-  .mh-logo img { height: clamp(96px, min(130px, (100vw - 500px) / 2.43), 130px); }
+  /* No inline nav from here, so there is room — but capped at 118px: at the
+     full 176px the sticky header grows to ~186px of mostly empty space. */
+  .mh-logo img { height: clamp(92px, min(118px, (100vw - 500px) / 2.43), 118px); }
 }
 @media (max-width: 1180px) {
-  .mh-inner { padding: 10px 26px; }
+  .mh-inner { padding: 5px 26px; }
   .mh-nav { display: none; }
   .mh-burger { display: block; }
 }
 @media (max-width: 620px) {
-  .mh-inner { padding: 8px 16px; gap: 8px; }
+  .mh-inner { padding: 5px 16px; gap: 8px; }
   .mh-logo img { height: clamp(56px, (100vw - 238px) / 2.43, 124px); }
   .mh-btn-ghost { display: none; }
   .mh-btn-primary { padding: 10px 13px; font-size: 12.5px; }

@@ -111,14 +111,43 @@ function onScroll() {
 }
 window.addEventListener('scroll', onScroll, { passive: true });
 
-// ---- hero aura: the fan of red shadows follows the pointer ----
+// ---- hero aura: the fan of red shadows blooms on scroll and on hover ----
 (() => {
   const zone = document.getElementById('heroRight');
   const aura = document.getElementById('heroAura');
   if (!zone || !aura) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  // skip on touch: there is no hover, and the effect would only cost battery
-  if (!window.matchMedia('(hover: hover)').matches) return;
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* The petals open as the hero scrolls past and again when the card is
+     hovered; whichever is stronger wins, so the two never fight each other. */
+  let scrollBloom = 0, hoverBloom = 0, bloomRaf = null;
+  const applyBloom = () => {
+    bloomRaf = null;
+    aura.style.setProperty('--bloom', Math.max(scrollBloom, hoverBloom).toFixed(3));
+  };
+  const queueBloom = () => { if (!bloomRaf) bloomRaf = requestAnimationFrame(applyBloom); };
+
+  if (!still) {
+    const onBloomScroll = () => {
+      const r = zone.getBoundingClientRect();
+      // 0 while the hero sits at the top of the viewport, 1 once it has
+      // travelled roughly its own height upward
+      const travelled = Math.max(0, -r.top + window.innerHeight * 0.18);
+      scrollBloom = Math.max(0, Math.min(1, travelled / (r.height * 0.85 || 1)));
+      queueBloom();
+    };
+    window.addEventListener('scroll', onBloomScroll, { passive: true });
+    window.addEventListener('resize', onBloomScroll);
+    onBloomScroll();
+
+    zone.addEventListener('pointerenter', () => { hoverBloom = 0.8; queueBloom(); });
+    zone.addEventListener('pointerleave', () => { hoverBloom = 0; queueBloom(); });
+    zone.addEventListener('focusin', () => { hoverBloom = 0.8; queueBloom(); });
+    zone.addEventListener('focusout', () => { hoverBloom = 0; queueBloom(); });
+  }
+
+  // skip pointer tracking on touch: there is no hover, and it would only cost battery
+  if (still || !window.matchMedia('(hover: hover)').matches) return;
 
   let raf = null;
   const idle = () => {

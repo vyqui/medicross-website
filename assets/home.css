@@ -112,10 +112,16 @@ body.home a.btn-ghost { color: var(--ink); }
    are driven from assets/home.js. Purely decorative: pointer-events none, so
    the form underneath stays fully clickable. */
 .hero-aura {
+  /* --bloom 0 = closed bud, 1 = fully open. Driven from home.js by whichever
+     is greater: how far the hero has scrolled, or hovering the card. */
+  --bloom: 0;
   position: absolute; inset: -12% -26% -8% -26%;
   z-index: 0; pointer-events: none;
-  transform: translate3d(var(--gx, 0px), var(--gy, 0px), 0) rotate(var(--tilt, 0deg));
-  transition: transform .75s cubic-bezier(.22, .61, .36, 1);
+  opacity: calc(.72 + var(--bloom) * .28);
+  transform: translate3d(var(--gx, 0px), var(--gy, 0px), 0)
+             rotate(var(--tilt, 0deg))
+             scale(calc(1 + var(--bloom) * .07));
+  transition: transform .75s cubic-bezier(.22, .61, .36, 1), opacity .6s ease;
   will-change: transform;
 }
 .hero-aura .ray {
@@ -133,7 +139,9 @@ body.home a.btn-ghost { color: var(--ink); }
     transparent 100%);
   filter: blur(20px);
   opacity: .5;
-  transform: rotate(calc(var(--a) * var(--open, 1))) scaleY(var(--len, 1));
+  /* blooming = the petals swing wider from the pivot and stretch outward */
+  transform: rotate(calc(var(--a) * var(--open, 1) * (1 + var(--bloom) * .34)))
+             scaleY(calc(var(--len, 1) * (1 + var(--bloom) * .24)));
   transition: opacity .6s ease, transform .8s cubic-bezier(.22, .61, .36, 1), filter .6s ease;
 }
 /* centre blade sits strongest, the outer ones fade away */
