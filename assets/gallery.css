@@ -2,6 +2,49 @@
    Medicross — partner gallery: carousel + fullscreen lightbox
    Used on the hospital/clinic pages (assets/gallery.js).
    =========================================================== */
+/* ---- readable body copy on the partner pages ----
+   These pages had no .prose typography at all, so paragraphs ran together. */
+.prose {
+  font-size: 16.5px;
+  line-height: 1.8;
+  color: #453e35;
+}
+.prose > p { margin: 0 0 20px; }
+.prose > p:last-child { margin-bottom: 0; }
+.prose > h2 {
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(23px, 2.4vw, 30px);
+  line-height: 1.25;
+  color: var(--navy, #211E1A);
+  margin: 44px 0 16px;
+}
+.prose > h2:first-child { margin-top: 0; }
+/* the first paragraph reads as a short intro */
+.prose > p.intro {
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--navy, #211E1A);
+}
+.prose ul.ticks {
+  list-style: none; padding: 0; margin: 0 0 22px;
+  display: grid; gap: 12px;
+}
+.prose ul.ticks li {
+  position: relative; padding-left: 32px; line-height: 1.7;
+}
+.prose ul.ticks li::before {
+  content: ""; position: absolute; left: 0; top: .45em;
+  width: 19px; height: 19px; border-radius: 50%;
+  background: color-mix(in srgb, var(--red, #D42B2B) 12%, #fff)
+    url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D42B2B' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 12.75l6 6 9-13.5'/%3E%3C/svg%3E") center / 11px no-repeat;
+}
+/* keep a comfortable measure once the float is gone */
+@media (max-width: 900px) {
+  .prose { font-size: 16px; }
+  .prose > h2 { margin-top: 34px; }
+}
+
 /* ---- presentation video floated into the top-right of the copy ---- */
 .prose-video {
   float: right;
@@ -18,6 +61,69 @@
 
 @media (max-width: 900px) {
   .prose-video { float: none; width: 100%; margin: 0 0 26px; }
+}
+
+/* ===========================================================
+   Partner hero: photo carousel behind the gradient
+   =========================================================== */
+.page-hero.has-shots { padding: 74px 0 66px; }
+/* the photos sit under the hero's own gradient, so the copy stays legible */
+/* full width, with the overlay doing the hiding — a half-width strip left a
+   visible vertical seam where it met the hero's own background */
+.hero-shots {
+  position: absolute; inset: 0;
+  z-index: 0; overflow: hidden;
+}
+.hero-shots .shot {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0; transition: opacity .9s ease, transform 6s linear;
+  transform: scale(1.04);
+}
+.hero-shots .shot.on { opacity: 1; transform: scale(1.1); }
+/* fade the strip into the hero on its left edge and along the bottom */
+.hero-shots::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(100deg,
+      rgba(10, 42, 67, .97) 0%,
+      rgba(10, 42, 67, .95) 34%,
+      rgba(10, 42, 67, .74) 52%,
+      rgba(10, 42, 67, .38) 74%,
+      rgba(10, 42, 67, .26) 100%),
+    linear-gradient(0deg, rgba(10, 42, 67, .5) 0%, transparent 40%);
+}
+.page-hero.has-shots .container { position: relative; z-index: 2; }
+.page-hero.has-shots h1 { font-size: clamp(38px, 5.6vw, 66px); margin: 16px 0 22px; max-width: 15ch; }
+
+.hero-shots-nav {
+  position: absolute; right: 26px; bottom: 24px; z-index: 3;
+  display: flex; align-items: center; gap: 9px;
+}
+.hs-btn {
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+  background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .34);
+  color: #fff; display: grid; place-items: center;
+  backdrop-filter: blur(6px);
+  transition: background .2s ease, transform .2s ease;
+}
+.hs-btn:hover { background: rgba(255, 255, 255, .3); }
+.hs-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.hs-btn svg { width: 18px; height: 18px; }
+.hs-count { font-size: 12.5px; font-weight: 700; color: rgba(255, 255, 255, .8); min-width: 46px; text-align: center; }
+
+@media (max-width: 900px) {
+  .hero-shots::after {
+    background:
+      linear-gradient(180deg, rgba(10,42,67,.92) 0%, rgba(10,42,67,.86) 45%, rgba(10,42,67,.9) 100%);
+  }
+  .page-hero.has-shots h1 { font-size: clamp(32px, 8vw, 44px); max-width: none; }
+  .hero-shots-nav { right: 18px; bottom: 14px; }
+  .hs-btn { width: 38px; height: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-shots .shot { transition: opacity .3s ease; transform: none; }
+  .hero-shots .shot.on { transform: none; }
 }
 
 .gallery-carousel { position: relative; margin-top: 34px; }

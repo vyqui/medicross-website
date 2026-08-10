@@ -4,6 +4,49 @@
 (function () {
   'use strict';
 
+  /* ---------------- hero photo carousel (behind the gradient) ---------------- */
+  (function heroShots() {
+    var strip = document.querySelector('.hero-shots');
+    if (!strip) return;
+    var shots = Array.prototype.slice.call(strip.querySelectorAll('.shot'));
+    if (shots.length < 1) return;
+
+    var i = 0, timer = null;
+    var counter = document.querySelector('.hs-count');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function paint() {
+      shots.forEach(function (s, n) { s.classList.toggle('on', n === i); });
+      if (counter) counter.textContent = (i + 1) + ' / ' + shots.length;
+    }
+    function go(n) { i = (n + shots.length) % shots.length; paint(); }
+
+    function start() {
+      if (reduce || shots.length < 2 || timer) return;
+      timer = setInterval(function () { go(i + 1); }, 2000);
+    }
+    function stop() { clearInterval(timer); timer = null; }
+    function nudge(n) { stop(); go(n); start(); }   // manual input restarts the clock
+
+    var prev = document.querySelector('.hs-prev');
+    var next = document.querySelector('.hs-next');
+    if (prev) prev.addEventListener('click', function () { nudge(i - 1); });
+    if (next) next.addEventListener('click', function () { nudge(i + 1); });
+
+    // don't animate offscreen or in a hidden tab
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop(); else start();
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) start(); else stop(); });
+      }, { threshold: 0.05 }).observe(strip);
+    }
+
+    paint();
+    start();
+  })();
+
   var carousels = Array.prototype.slice.call(document.querySelectorAll('.gallery-carousel'));
   if (!carousels.length) return;
 
