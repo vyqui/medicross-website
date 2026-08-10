@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/styles.css" />
   <link rel="stylesheet" href="assets/header.css" />
+  <link rel="stylesheet" href="assets/gallery.css" />
 </head>
 <body>
 
@@ -155,7 +156,54 @@
     </div>
   </section>
 
-<footer class="footer">
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Video de prezentare</h2>
+      <p class="section-lead">Vezi spitalul și dotările sale, direct din interior.</p>
+      <div class="video-grid">
+        <div class="video-card reveal">
+          <div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/6N3kCQ67wV8" title="Central Hospital Istanbul — prezentare video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <h2 class="section-title">Galerie foto</h2>
+      <p class="section-lead">Apasă pe o fotografie pentru a o deschide pe tot ecranul.</p>
+      <div class="gallery-carousel">
+        <button class="gc-nav prev" type="button" aria-label="Fotografiile anterioare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="gc-track">
+          <button class="gc-item" type="button" data-full="materials/images/parteneri/67f693b72499b806c81ae5c5_dsc_0742-scaled-1.avif" aria-label="Deschide fotografia 1 din 7 pe tot ecranul">
+            <img src="materials/images/parteneri/67f693b72499b806c81ae5c5_dsc_0742-scaled-1.avif" alt="Central Hospital Istanbul — fotografia 1" loading="lazy" />
+          </button>
+          <button class="gc-item" type="button" data-full="materials/images/parteneri/67f693b72499b806c81ae5d7_dsc05186-scaled-2.avif" aria-label="Deschide fotografia 2 din 7 pe tot ecranul">
+            <img src="materials/images/parteneri/67f693b72499b806c81ae5d7_dsc05186-scaled-2.avif" alt="Central Hospital Istanbul — fotografia 2" loading="lazy" />
+          </button>
+          <button class="gc-item" type="button" data-full="materials/images/parteneri/67f693b8445fd26d2cd1aee3_etiler_central.avif" aria-label="Deschide fotografia 3 din 7 pe tot ecranul">
+            <img src="materials/images/parteneri/67f693b8445fd26d2cd1aee3_etiler_central.avif" alt="Central Hospital Istanbul — fotografia 3" loading="lazy" />
+          </button>
+          <button class="gc-item" type="button" data-full="materials/images/parteneri/67f693b751bd6dbd82232356_dsc_0615-scaled-1.avif" aria-label="Deschide fotografia 4 din 7 pe tot ecranul">
+            <img src="materials/images/parteneri/67f693b751bd6dbd82232356_dsc_0615-scaled-1.avif" alt="Central Hospital Istanbul — fotografia 4" loading="lazy" />
+          </button>
+          <button class="gc-item" type="button" data-full="materials/images/parteneri/67f693b88a84444c985c4ad9_dsc_0724-scaled-1.avif" aria-label="Deschide fotografia 5 din 7 pe tot ecranul">
+            <img src="materials/images/parteneri/67f693b88a84444c985c4ad9_dsc_0724-scaled-1.avif" alt="Central Hospital Istanbul — fotografia 5" loading="lazy" />
+          </button>
+          <button class="gc-item" type="button" data-full="materials/images/parteneri/67f693b7104b8e94df39ee2f_3-1-scaled-1.avif" aria-label="Deschide fotografia 6 din 7 pe tot ecranul">
+            <img src="materials/images/parteneri/67f693b7104b8e94df39ee2f_3-1-scaled-1.avif" alt="Central Hospital Istanbul — fotografia 6" loading="lazy" />
+          </button>
+          <button class="gc-item" type="button" data-full="materials/images/parteneri/67f693b72499b806c81ae5d7_dsc05186-scaled-1.avif" aria-label="Deschide fotografia 7 din 7 pe tot ecranul">
+            <img src="materials/images/parteneri/67f693b72499b806c81ae5d7_dsc05186-scaled-1.avif" alt="Central Hospital Istanbul — fotografia 7" loading="lazy" />
+          </button>
+        </div>
+        <button class="gc-nav next" type="button" aria-label="Fotografiile următoare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+      <p class="gc-count">7 fotografii</p>
+    </div>
+  </section>
+
+  <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div>
@@ -215,5 +263,6 @@
 
     <script src="assets/site.js"></script>
   <script src="assets/header.js"></script>
+  <script src="assets/gallery.js"></script>
 </body>
 </html>
