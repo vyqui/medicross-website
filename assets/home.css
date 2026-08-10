@@ -57,6 +57,10 @@ body.home a { text-decoration: none; color: inherit; }
   transition: transform .25s ease, background .25s ease;
 }
 .btn-primary:hover { transform: translateY(-2px); background: var(--brand-dark); }
+/* `body.home a { color: inherit }` outranks .btn-primary, which left the red
+   CTAs with dark ink text — restate the colours at matching specificity */
+body.home a.btn-primary { color: #fff; }
+body.home a.btn-ghost { color: var(--ink); }
 .btn-ghost {
   font-size: 16px; padding: 16px 26px; border-radius: 999px;
   background: #fff; color: var(--ink); border: 1px solid var(--line-strong);

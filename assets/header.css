@@ -16,7 +16,15 @@
   padding: 10px 32px; max-width: 1600px; margin: 0 auto;
 }
 .mh-logo { flex: none; display: block; }
-.mh-logo img { height: 88px; width: auto; display: block; }
+/* Doubled to 176px. The lockup is ~2.43:1, so at full size it is ~427px wide —
+   more than the inline nav leaves at 1440px. The min() below keeps it fully
+   doubled wherever there is room and scales it down only where the nav would
+   otherwise be pushed off; the constant is the space the rest of the header
+   needs at that breakpoint. */
+.mh-logo img { height: 176px; width: auto; display: block; }
+@media (max-width: 1780px) {
+  .mh-logo img { height: clamp(88px, min(176px, (100vw - 1215px) / 2.43), 176px); }
+}
 
 /* ---------- desktop nav ---------- */
 .mh-nav { display: flex; align-items: center; gap: 19px; font-weight: 600; font-size: 14px; color: #4a453d; }
@@ -76,6 +84,11 @@
   box-shadow: 0 14px 26px -14px rgba(212, 43, 43, .8);
 }
 .mh-btn-primary:hover { transform: translateY(-2px); background: var(--brand-dark, #ae2323); }
+/* `.mh a { color: inherit }` outranks the button classes, which left the red
+   header CTA with dark ink text — restate at matching specificity */
+.mh a.mh-btn-primary { color: #fff; }
+.mh a.mh-btn-ghost { color: var(--ink, #211E1A); }
+.mh a.mh-btn-ghost:hover { color: var(--brand, #D42B2B); }
 
 /* ---------- burger ---------- */
 .mh-burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex: none; }
@@ -114,16 +127,18 @@
 @media (max-width: 1400px) {
   .mh-nav { display: none; }
   .mh-burger { display: block; }
+  /* No inline nav from here, so there is room — but capped at 130px: at the
+     full 176px the sticky header grows to ~196px and is mostly empty space. */
+  .mh-logo img { height: clamp(96px, min(130px, (100vw - 500px) / 2.43), 130px); }
 }
 @media (max-width: 1180px) {
   .mh-inner { padding: 10px 26px; }
   .mh-nav { display: none; }
   .mh-burger { display: block; }
-  .mh-logo img { height: 78px; }
 }
 @media (max-width: 620px) {
   .mh-inner { padding: 8px 16px; gap: 8px; }
-  .mh-logo img { height: 62px; }
+  .mh-logo img { height: clamp(56px, (100vw - 238px) / 2.43, 124px); }
   .mh-btn-ghost { display: none; }
   .mh-btn-primary { padding: 10px 13px; font-size: 12.5px; }
   .mh-burger { padding: 6px; }
@@ -132,5 +147,5 @@
   .mh-mobile .mh-btn-primary { margin: 14px 18px 20px; }
 }
 @media (max-width: 400px) {
-  .mh-logo img { height: 52px; }
+  .mh-logo img { height: clamp(52px, (100vw - 236px) / 2.43, 108px); }
 }
