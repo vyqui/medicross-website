@@ -1,0 +1,41 @@
+# Tratamente Turcia by Medicross — robots.txt
+
+# ---------------------------------------------------------------
+# Search engines
+# ---------------------------------------------------------------
+User-agent: *
+Allow: /
+# the client portal is a private patient area — nothing there is public
+Disallow: /portal.html
+Disallow: /admin.html
+Disallow: /login.html
+Disallow: /register.html
+
+# ---------------------------------------------------------------
+# AI answer engines (GEO)
+# These are the crawlers that let ChatGPT, Perplexity, Claude, Gemini
+# and Copilot quote and cite the site in generated answers. They are
+# allowed deliberately: being citable is the point. The same portal
+# pages stay closed to them.
+# ---------------------------------------------------------------
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: anthropic-ai
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bingbot
+User-agent: Amazonbot
+User-agent: meta-externalagent
+Allow: /
+Disallow: /portal.html
+Disallow: /admin.html
+Disallow: /login.html
+Disallow: /register.html
+
+Sitemap: https://tratamente-turcia.ro/sitemap.xml

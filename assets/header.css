@@ -23,7 +23,7 @@
    inline nav; the constant is the width the rest of the header needs. */
 .mh-logo img { height: 84px; width: auto; display: block; }
 @media (max-width: 1780px) {
-  .mh-logo img { height: clamp(40px, min(84px, (100vw - 1210px) / 3.714), 84px); }
+  .mh-logo img { height: clamp(36px, min(84px, (100vw - 1258px) / 3.714), 84px); }
 }
 
 /* ---------- desktop nav ---------- */
