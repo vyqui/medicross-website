@@ -147,42 +147,51 @@
       <!-- discounts -->
       <div class="card disc-card" id="reduceri">
         <div class="disc-head">
-          <div><h2>Reducerea ta la următoarea operație</h2><div class="sub">Completează acțiunile de mai jos. Reducerile se adună — plafon <strong>25%</strong>.</div></div>
+          <div><h2>Reducerea ta la următoarea operație</h2><div class="sub">Sumele se adună. <strong>30 €</strong> pentru cele patru acțiuni sociale, <strong>70 €</strong> pentru fiecare prieten care se operează cu codul tău, <strong>20 €</strong> dacă te-ai înscris cu codul altcuiva.</div></div>
           <div class="ring-wrap">
             <div class="ring" id="discRing"></div>
-            <div class="ring-inner"><span class="ring-num" id="discNum">0%</span><span class="ring-lbl">DIN 25%</span></div>
+            <div class="ring-inner"><span class="ring-num" id="discNum">0 €</span><span class="ring-lbl" id="discCap">DIN 0 €</span></div>
           </div>
         </div>
         <div class="actions" id="actions">
-          <div class="arow" data-action="google">
+          <div class="arow" data-action="instagram">
+            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></span>
+            <div class="a-body"><div class="t">Follow pe Instagram <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
+            <a class="a-link" data-open target="_blank" rel="noopener" hidden>Deschide ↗</a>
+            <button class="a-btn" data-toggle>—</button>
+          </div>
+          <div class="arow" data-action="facebook">
+            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="currentColor"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.7c0-.87.24-1.46 1.49-1.46H17V4.55C16.7 4.5 15.75 4.4 14.65 4.4c-2.3 0-3.9 1.4-3.9 3.98v2.12H8.2v3h2.55V21z"/></svg></span>
+            <div class="a-body"><div class="t">Follow pe Facebook <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
+            <a class="a-link" data-open target="_blank" rel="noopener" hidden>Deschide ↗</a>
+            <button class="a-btn" data-toggle>—</button>
+          </div>
+          <div class="arow" data-action="review">
             <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 20.5l1.4-6.8L2.2 9l6.9-.7z"/></svg></span>
-            <div class="a-body"><div class="t">Recenzie Google verificată <span class="pct">+4%</span></div><div class="status" data-status>—</div></div>
+            <div class="a-body"><div class="t">Recenzie <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
+            <a class="a-link" data-open target="_blank" rel="noopener" hidden>Deschide ↗</a>
             <button class="a-btn" data-toggle>—</button>
           </div>
-          <div class="arow" data-action="video">
-            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h8.25a1.5 1.5 0 001.5-1.5V6.75a1.5 1.5 0 00-1.5-1.5H4.5a1.5 1.5 0 00-1.5 1.5v10.5a1.5 1.5 0 001.5 1.5z"/></svg></span>
-            <div class="a-body">
-              <div class="t">Video de mulțumire <span class="pct">+10%</span></div>
-              <div class="status" data-status>—</div>
-              <label class="a-consent"><input type="checkbox" data-consent />Sunt de acord să folosiți acest material în scop de marketing</label>
-            </div>
+          <div class="arow" data-action="share">
+            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7.2 10.9a2.7 2.7 0 100 2.2m0-2.2l9.6-4.4m-9.6 6.6l9.6 4.4M19.5 5.5a2.7 2.7 0 11-5.4 0 2.7 2.7 0 015.4 0zm0 13a2.7 2.7 0 11-5.4 0 2.7 2.7 0 015.4 0z"/></svg></span>
+            <div class="a-body"><div class="t">Distribuie o postare <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
+            <a class="a-link" data-open target="_blank" rel="noopener" hidden>Deschide ↗</a>
             <button class="a-btn" data-toggle>—</button>
           </div>
-          <div class="arow" data-action="photos">
-            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.16-5.16a2.25 2.25 0 013.18 0l5.16 5.16m-1.5-1.5l1.41-1.41a2.25 2.25 0 013.18 0l2.16 2.16M2.25 18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V6A2.25 2.25 0 0019.5 3.75h-15A2.25 2.25 0 002.25 6v12z"/></svg></span>
-            <div class="a-body">
-              <div class="t">Poze înainte / după <span class="pct">+5%</span></div>
-              <div class="status" data-status>—</div>
-              <label class="a-consent"><input type="checkbox" data-consent />Sunt de acord să folosiți acest material în scop de marketing</label>
-            </div>
-            <button class="a-btn" data-toggle>—</button>
-          </div>
+
+          <!-- the two stacking rewards the patient cannot self-declare:
+               the admin confirms the surgery before the 70 € is paid -->
           <div class="arow" data-action="referral">
             <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.1 9.1 0 003.74-.48 3 3 0 00-4.68-3.09M18 18.72V16.5a5.97 5.97 0 00-.94-3.19M18 18.72H6m0 0a9.1 9.1 0 01-3.74-.48 3 3 0 014.68-3.09M6 18.72V16.5c0-1.17.34-2.27.94-3.19m0 0a6 6 0 0110.12 0M12 6.38a3 3 0 11-6 0 3 3 0 016 0zm7.5 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg></span>
-            <div class="a-body"><div class="t">Recomandă un prieten <span class="pct">+3% / prieten</span></div><div class="status" data-status>—</div></div>
+            <div class="a-body"><div class="t">Prieteni care s-au operat cu codul tău <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
             <button class="a-btn outline-btn" data-toggle>Invită</button>
           </div>
+          <div class="arow" data-action="usedCode">
+            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M9.6 3.75h4.8l5.85 5.85v4.8L14.4 20.25H9.6L3.75 14.4V9.6zM12 8.25v4.5m0 3h.01"/></svg></span>
+            <div class="a-body"><div class="t">Te-ai înscris cu codul unui prieten <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
+          </div>
         </div>
+        <p class="disc-note">Acțiunile sociale sunt verificate de echipa Medicross înainte de a fi aplicate pe factură. Cei 70 € se acordă după ce prietenul recomandat trece efectiv prin intervenție.</p>
       </div>
 
       <!-- docs + referral code -->
@@ -207,9 +216,9 @@
         </div>
         <div class="card referral-card">
           <h2>Codul tău de invitație</h2>
-          <p>Prietenii primesc consultație gratuită, tu primești +3% la următoarea intervenție.</p>
+          <p>Prietenul tău primește <strong>20 €</strong> reducere, iar tu <strong>70 €</strong> după ce se operează.</p>
           <div class="ref-row">
-            <div class="ref-code">MEDI-ANDREEA-2K6</div>
+            <div class="ref-code">—</div>
             <button class="ref-copy" id="copyBtn">Copiază</button>
           </div>
         </div>

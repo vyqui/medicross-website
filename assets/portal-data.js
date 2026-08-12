@@ -15,8 +15,48 @@
 
   var DB_KEY = 'mcx_db_v3';
   var SESSION_KEY = 'mcx_session_v2';
-  var SCHEMA = 3;
+  var SCHEMA = 4;
   var MAX_STORED_FILE = 2 * 1024 * 1024;   // 2 MB per file kept inline (localStorage limit)
+
+  /* ---------------- reward amounts (single source of truth) ---------------
+   * Fixed euro amounts, not percentages, and they stack:
+   *
+   *   · social bundle .... 30 € in total for following Instagram and
+   *     Facebook, leaving a review and sharing a post — 7,50 € per action,
+   *     so a patient who only does two of the four collects 15 €.
+   *   · referral ......... 70 € to the patient whose code was used, paid
+   *     only once the referred person actually has surgery.
+   *   · code used ........ 20 € to the patient who signs up with someone
+   *     else's code.
+   *
+   * ACTION_REWARD is what the UI renders and what discount() adds up, so a
+   * price change happens here and nowhere else. Every amount still has to be
+   * re-verified server-side before it is honoured (see README-PORTAL.md) —
+   * localStorage is trivially editable by the patient.
+   * ---------------------------------------------------------------------- */
+  var ACTION_REWARD = { instagram: 7.5, facebook: 7.5, review: 7.5, share: 7.5 };
+
+  /* Where the "Deschide ↗" button sends the patient. Left blank until the real
+     profile and review URLs are known — a blank entry simply hides the button,
+     so the action still works as a self-declaration. */
+  var SOCIAL_LINKS = { instagram: '', facebook: '', review: '', share: '' };
+  var SOCIAL_BUNDLE = 30;      // the four actions above, completed
+  var REFERRAL_OPERATED = 70;  // per referred patient who goes through with surgery
+  var CODE_USED = 20;          // for signing up with someone else's code
+
+  function freshActions(seedState) {
+    var s = seedState || {};
+    var out = {};
+    Object.keys(ACTION_REWARD).forEach(function (k) {
+      out[k] = {
+        done: !!s[k],
+        needsConsent: false,
+        consent: false,
+        eur: ACTION_REWARD[k]
+      };
+    });
+    return out;
+  }
 
   /* ---------------- standard procedure catalogue --------------------------
    * Every aesthetic + bariatric procedure the site offers. `regions` are the
@@ -102,7 +142,13 @@
         phone: '+40 7xx xxx xxx',
         sex: 'f',
         referralCode: 'MEDI-ANDREEA-2K6',
-        referralCount: 1,
+        // one friend signed up and operated (70 €), one is still only signed up (0 € yet)
+        referrals: [
+          { id: 'r1', name: 'Ioana P.', status: 'operat', at: '2026-05-04T10:00:00Z', operatedAt: '2026-07-19T08:30:00Z' },
+          { id: 'r2', name: 'Cristina D.', status: 'inscris', at: '2026-07-02T16:40:00Z', operatedAt: null }
+        ],
+        // she joined with a friend's code, so the 20 € applies to her too
+        usedCode: { code: 'MEDI-RALUCA-8F1', at: '2026-04-11T12:00:00Z' },
         gdprAccepted: true,
         gdprAcceptedAt: '2026-06-28T09:12:00Z',
         details: 'Pacientă evaluată pentru Mommy Makeover (abdominoplastie + mamare) la Liv Hospital. '
@@ -110,12 +156,7 @@
           + 'chirurg pe 12 august, în ziua sosirii, iar intervenția în aceeași zi. Recuperare '
           + 'estimată 3 zile în Istanbul, cu control înainte de întoarcere. Gastric Sleeve rămâne '
           + 'în discuție pentru anul viitor, după stabilizarea greutății.',
-        actions: {
-          google:   { done: true,  needsConsent: false, consent: false, pct: 4 },
-          video:    { done: false, needsConsent: true,  consent: false, pct: 10 },
-          photos:   { done: false, needsConsent: true,  consent: false, pct: 5 },
-          referral: { done: true,  needsConsent: false, consent: false, pct: 3 }
-        },
+        actions: freshActions({ instagram: true, review: true }),
         activeOp: 'mommy',
         mode: 'surface',
         operations: [
@@ -160,7 +201,37 @@
       if (typeof p.details !== 'string') p.details = '';
       if (typeof p.gdprAccepted !== 'boolean') p.gdprAccepted = false;
       if (!('gdprAcceptedAt' in p)) p.gdprAcceptedAt = null;
-      if (typeof p.referralCount !== 'number') p.referralCount = 0;
+      /* Schema 4 moved discounts from percentages to fixed euro amounts.
+         Carry old accounts over instead of wiping them: the four new social
+         actions start from whatever the patient had already done (the old
+         "google" review becomes the new "review"), and a bare referralCount
+         becomes that many pending referrals — pending, not paid, because the
+         old model never recorded whether the friend actually operated. */
+      if (!p.actions || !('instagram' in p.actions)) {
+        var was = p.actions || {};
+        p.actions = freshActions({
+          review: !!(was.google && was.google.done),
+          share: !!(was.photos && was.photos.done && was.photos.consent)
+        });
+      }
+      Object.keys(ACTION_REWARD).forEach(function (k) {
+        if (!p.actions[k]) p.actions[k] = { done: false, needsConsent: false, consent: false, eur: ACTION_REWARD[k] };
+        p.actions[k].eur = ACTION_REWARD[k];   // amounts always come from the table
+        delete p.actions[k].pct;
+      });
+      Object.keys(p.actions).forEach(function (k) {
+        if (!(k in ACTION_REWARD)) delete p.actions[k];   // drop retired actions
+      });
+      if (!Array.isArray(p.referrals)) {
+        var n = typeof p.referralCount === 'number' ? p.referralCount : 0;
+        p.referrals = [];
+        for (var i = 0; i < n; i++) {
+          p.referrals.push({ id: uid('r'), name: 'Recomandare ' + (i + 1), patientId: null,
+            status: 'inscris', at: p.gdprAcceptedAt || new Date().toISOString(), operatedAt: null });
+        }
+      }
+      delete p.referralCount;
+      if (!('usedCode' in p)) p.usedCode = null;
       if (!p.trip) p.trip = { title: 'Călătoria mea · Istanbul', subtitle: '', items: [] };
       if (!Array.isArray(p.trip.items)) p.trip.items = [];
       p.trip.items.forEach(function (t) { if (typeof t.hospital !== 'string') t.hospital = ''; });
@@ -263,6 +334,18 @@
   /* Creates a patient account + its patient record.
    * `gdpr` must be true — the consent step is mandatory for both the
    * self-service sign-up and admin-created accounts. */
+  function patientByCode(code) {
+    var c = String(code || '').trim().toUpperCase();
+    for (var i = 0; i < db.patients.length; i++) {
+      if (String(db.patients[i].referralCode || '').toUpperCase() === c) return db.patients[i];
+    }
+    return null;
+  }
+
+  // an action pays out only when it is done and, where the material is the
+  // patient's own, only while the marketing consent still stands
+  function earnedAction(a) { return !!a && a.done && (!a.needsConsent || a.consent); }
+
   function createPatient(opts) {
     var name = String(opts.name || '').trim();
     var email = String(opts.email || '').trim().toLowerCase();
@@ -279,15 +362,11 @@
     var p = {
       id: uid('p'), name: name, initials: initialsOf(name), email: email,
       phone: String(opts.phone || '').trim(), sex: sex,
-      referralCode: referralCodeFor(name), referralCount: 0,
+      referralCode: referralCodeFor(name), referrals: [],
+      usedCode: null,
       gdprAccepted: true, gdprAcceptedAt: now,
       details: '',
-      actions: {
-        google:   { done: false, needsConsent: false, consent: false, pct: 4 },
-        video:    { done: false, needsConsent: true,  consent: false, pct: 10 },
-        photos:   { done: false, needsConsent: true,  consent: false, pct: 5 },
-        referral: { done: false, needsConsent: false, consent: false, pct: 3 }
-      },
+      actions: freshActions(),
       activeOp: null, mode: 'surface',
       operations: [],
       trip: { title: 'Călătoria mea · Istanbul', subtitle: 'Se stabilește după evaluarea medicală.', items: [] },
@@ -300,6 +379,28 @@
     };
     db.patients.push(p);
     db.accounts.push({ email: email, pass: pass, role: 'patient', patientId: p.id });
+
+    /* A referral code entered at sign-up credits both sides: 20 € to the new
+       patient straight away, and a pending 70 € to whoever owns the code —
+       pending because it is only earned once this patient actually operates.
+       An unknown or own code is ignored rather than rejected, so a typo never
+       blocks a registration. */
+    var code = String(opts.code || '').trim().toUpperCase();
+    if (code && code !== p.referralCode) {
+      var owner = patientByCode(code);
+      if (owner) {
+        p.usedCode = { code: owner.referralCode, at: now };
+        logEvent(p, 'sistem', 'S-a înscris cu codul ' + owner.referralCode +
+          ' — reducere de ' + CODE_USED + ' € aplicată');
+        owner.referrals.push({
+          id: uid('r'), name: p.name, patientId: p.id,
+          status: 'inscris', at: now, operatedAt: null
+        });
+        logEvent(owner, 'sistem', p.name + ' s-a înscris cu codul tău — ' +
+          REFERRAL_OPERATED + ' € se acordă după ce se operează');
+      }
+    }
+
     save(db);
     return { patient: p };
   }
@@ -347,7 +448,7 @@
   }
 
   /* ---------------- public API -------------------------------------------- */
-  window.MedicrossDB = {
+  var API = window.MedicrossDB = {
     // auth
     login: login, logout: logout, session: session, requireRole: requireRole,
     createPatient: createPatient, setGdpr: setGdpr, saveDetails: saveDetails,
@@ -387,14 +488,101 @@
       if (mode) p.mode = mode;
       save(db);
     },
-    discount: function (pid) {
-      var p = patient(pid); if (!p) return 0;
-      var sum = 0;
-      for (var k in p.actions) {
+    /* The amounts, in euro, and how they were reached. Both the patient view
+       and the admin console render straight off this, so neither can drift
+       from the other or from ACTION_REWARD. */
+    discountBreakdown: function (pid) {
+      var p = patient(pid);
+      if (!p) return { lines: [], social: 0, referral: 0, code: 0, total: 0, potential: 0 };
+
+      var lines = [], social = 0, socialMax = 0;
+      Object.keys(p.actions).forEach(function (k) {
         var a = p.actions[k];
-        if (a.done && (!a.needsConsent || a.consent)) sum += a.pct;
+        var got = earnedAction(a);
+        socialMax += a.eur;
+        if (got) social += a.eur;
+        lines.push({ key: k, kind: 'social', eur: a.eur, earned: got, action: a });
+      });
+
+      var operated = p.referrals.filter(function (r) { return r.status === 'operat'; }).length;
+      var pending = p.referrals.filter(function (r) { return r.status === 'inscris'; }).length;
+      var referral = operated * REFERRAL_OPERATED;
+      lines.push({
+        key: 'referral', kind: 'referral', eur: REFERRAL_OPERATED,
+        earned: operated > 0, count: operated, pending: pending
+      });
+
+      var code = p.usedCode ? CODE_USED : 0;
+      lines.push({ key: 'usedCode', kind: 'code', eur: CODE_USED, earned: !!p.usedCode,
+        code: p.usedCode ? p.usedCode.code : null });
+
+      return {
+        lines: lines,
+        social: social, socialMax: socialMax,
+        referral: referral, operated: operated, pending: pending,
+        code: code,
+        total: social + referral + code,
+        // what is on the table right now: the full social bundle, the 20 € if a
+        // code was used, and 70 € for each referral already recorded
+        potential: socialMax + code + (operated + pending) * REFERRAL_OPERATED
+      };
+    },
+    discount: function (pid) { return API.discountBreakdown(pid).total; },
+
+    // ---- referrals (admin-managed: the 70 € is only earned on surgery) ----
+    addReferral: function (pid, name, who) {
+      var p = patient(pid); if (!p) return null;
+      var nm = String(name || '').trim();
+      if (!nm) return null;
+      var r = { id: uid('r'), name: nm, patientId: null, status: 'inscris',
+                at: new Date().toISOString(), operatedAt: null };
+      p.referrals.push(r);
+      logEvent(p, who || 'admin', 'A înregistrat recomandarea „' + nm + '”');
+      save(db);
+      return r;
+    },
+    setReferralStatus: function (pid, rid, status, who) {
+      var p = patient(pid); if (!p) return;
+      if (['inscris', 'operat', 'anulat'].indexOf(status) < 0) return;
+      p.referrals.forEach(function (r) {
+        if (r.id !== rid || r.status === status) return;
+        r.status = status;
+        r.operatedAt = status === 'operat' ? new Date().toISOString() : null;
+        logEvent(p, who || 'admin', 'Recomandarea „' + r.name + '” → ' +
+          (status === 'operat' ? 'operat, ' + REFERRAL_OPERATED + ' € acordați'
+           : status === 'anulat' ? 'anulată' : 'înscris, în așteptare'));
+      });
+      save(db);
+    },
+    removeReferral: function (pid, rid, who) {
+      var p = patient(pid); if (!p) return;
+      p.referrals = p.referrals.filter(function (r) {
+        if (r.id === rid) logEvent(p, who || 'admin', 'A șters recomandarea „' + r.name + '”');
+        return r.id !== rid;
+      });
+      save(db);
+    },
+    setUsedCode: function (pid, code, who) {
+      var p = patient(pid); if (!p) return { error: 'Pacient inexistent.' };
+      var c = String(code || '').trim().toUpperCase();
+      if (!c) {
+        if (p.usedCode) logEvent(p, who || 'admin', 'A eliminat codul de reducere folosit');
+        p.usedCode = null; save(db); return { ok: true };
       }
-      return Math.min(sum, 25);
+      if (c === p.referralCode) return { error: 'Pacientul nu poate folosi propriul cod.' };
+      var owner = patientByCode(c);
+      if (!owner) return { error: 'Codul „' + c + '” nu există.' };
+      p.usedCode = { code: owner.referralCode, at: new Date().toISOString() };
+      logEvent(p, who || 'admin', 'Cod de reducere folosit: ' + owner.referralCode +
+        ' — ' + CODE_USED + ' €');
+      if (!owner.referrals.some(function (r) { return r.patientId === p.id; })) {
+        owner.referrals.push({ id: uid('r'), name: p.name, patientId: p.id,
+          status: 'inscris', at: new Date().toISOString(), operatedAt: null });
+        logEvent(owner, who || 'admin', p.name + ' folosește codul tău — ' +
+          REFERRAL_OPERATED + ' € după intervenție');
+      }
+      save(db);
+      return { ok: true };
     },
 
     // documents
@@ -490,6 +678,26 @@
     log: function (pid) { var p = patient(pid); return p ? p.log : []; },
     reset: function () { localStorage.removeItem(DB_KEY); db = load(); },
     _save: function () { save(db); },
-    MAX_STORED_FILE: MAX_STORED_FILE
+    MAX_STORED_FILE: MAX_STORED_FILE,
+
+    // the reward table, so no view has to hard-code an amount
+    SOCIAL_LINKS: SOCIAL_LINKS,
+    REWARDS: {
+      actions: ACTION_REWARD,
+      socialBundle: SOCIAL_BUNDLE,
+      referralOperated: REFERRAL_OPERATED,
+      codeUsed: CODE_USED
+    },
+    ACTION_LABEL: {
+      instagram: 'Follow pe Instagram',
+      facebook: 'Follow pe Facebook',
+      review: 'Recenzie',
+      share: 'Distribuie o postare'
+    },
+    // 7.5 -> "7,50 €", 30 -> "30 €"
+    eur: function (n) {
+      var v = Math.round(Number(n) * 100) / 100;
+      return (v % 1 === 0 ? String(v) : v.toFixed(2).replace('.', ',')) + ' €';
+    }
   };
 })();

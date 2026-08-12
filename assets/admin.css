@@ -123,6 +123,34 @@ select.scroll-select { max-width: 100%; }
 .ibtn.primary:hover { background: var(--brand-dark); }
 .ibtn:disabled { opacity: .4; cursor: default; }
 
+/* single-line add forms (referrals, referral code) */
+.addrow { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.addrow input {
+  flex: 1; min-width: 180px; font: inherit; font-size: 13px;
+  padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--ink);
+}
+.addrow input:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+.addrow button {
+  border: 1px solid var(--brand); background: var(--brand); color: #fff;
+  font: inherit; font-weight: 700; font-size: 12.5px; padding: 9px 15px;
+  border-radius: 9px; cursor: pointer; white-space: nowrap;
+}
+.addrow button:hover { background: var(--brand-dark); }
+.err { margin-top: 8px; font-size: 12.5px; font-weight: 600; color: #a11d1d; }
+.err[hidden] { display: none; }
+
+/* referral rows */
+.ref-line { display: flex; align-items: center; gap: 9px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.ref-line:last-child { border-bottom: none; }
+.ref-line .grow { flex: 1; min-width: 0; }
+.ref-line .t { font-weight: 700; font-size: 13.5px; }
+.ref-line .m { font-size: 11.5px; color: var(--muted); }
+.ref-line select {
+  font: inherit; font-size: 12px; font-weight: 600; padding: 6px 9px;
+  border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink);
+}
+.ref-empty { font-size: 12.5px; color: var(--muted); padding: 6px 0; }
+
 /* status pills (mirror the portal's) */
 .st { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
 .st.programata { color: var(--brand-dark); background: color-mix(in srgb, var(--brand) 12%, #fff); }
@@ -135,7 +163,7 @@ select.scroll-select { max-width: 100%; }
 .disc-line { display: flex; align-items: center; gap: 9px; font-size: 13px; }
 .disc-line .k { font-weight: 700; min-width: 168px; }
 .disc-line .v { color: var(--muted); font-size: 12px; }
-.disc-line .pctv { margin-left: auto; font-weight: 800; }
+.disc-line .pctv { margin-left: auto; font-weight: 800; white-space: nowrap; }
 .disc-line.on .pctv { color: var(--success); }
 .disc-line.off .pctv { color: var(--muted); text-decoration: line-through; }
 

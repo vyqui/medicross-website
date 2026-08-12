@@ -32,10 +32,9 @@
     } catch (e) { return iso; }
   }
   var STATUS_LABEL = { programata: 'Programată', evaluare: 'În evaluare', finalizata: 'Finalizată' };
-  var ACTION_LABEL = {
-    google: 'Recenzie Google', video: 'Video de mulțumire',
-    photos: 'Poze înainte/după', referral: 'Recomandare prieten'
-  };
+  var ACTION_LABEL = MedicrossDB.ACTION_LABEL;
+  var EUR = MedicrossDB.eur;
+  var REF_STATUS = { inscris: 'Înscris — în așteptare', operat: 'Operat', anulat: 'Anulat' };
 
   /* ---------------- patient list ---------------- */
   var TICK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>';
@@ -58,7 +57,7 @@
         : 'Acordul GDPR nu este semnat';
       g.appendChild(badge);
       b.appendChild(g);
-      b.appendChild(el('span', 'disc', MedicrossDB.discount(p.id) + '%'));
+      b.appendChild(el('span', 'disc', EUR(MedicrossDB.discount(p.id))));
       b.addEventListener('click', function () { currentId = p.id; renderAll(); });
       box.appendChild(b);
     });
@@ -124,27 +123,92 @@
 
   /* ---------------- discount ---------------- */
   function renderDiscount(p) {
-    var total = MedicrossDB.discount(p.id);
-    var deg = Math.round((total / 25) * 360);
+    var d = MedicrossDB.discountBreakdown(p.id);
+    var deg = d.potential > 0 ? Math.round((d.total / d.potential) * 360) : 0;
     document.getElementById('aRing').style.background =
       'conic-gradient(var(--brand) ' + deg + 'deg, var(--ring-track) ' + deg + 'deg)';
-    document.getElementById('aNum').textContent = total + '%';
+    document.getElementById('aNum').textContent = EUR(d.total);
+    document.getElementById('aCap').textContent = 'DIN ' + EUR(d.potential);
 
     var box = document.getElementById('aActions');
     box.textContent = '';
-    Object.keys(p.actions).forEach(function (k) {
-      var a = p.actions[k];
-      var earned = a.done && (!a.needsConsent || a.consent);
-      var line = el('div', 'disc-line ' + (earned ? 'on' : 'off'));
-      line.appendChild(el('span', 'k', ACTION_LABEL[k] || k));
-      var state = !a.done ? 'neînceput'
-        : (a.needsConsent && !a.consent ? 'finalizat, fără consimțământ' : 'activ');
-      if (a.needsConsent) state += a.consent ? ' · consimțământ DA' : ' · consimțământ NU';
-      line.appendChild(el('span', 'v', state));
-      line.appendChild(el('span', 'pctv', '+' + a.pct + '%'));
+    d.lines.forEach(function (ln) {
+      var line = el('div', 'disc-line ' + (ln.earned ? 'on' : 'off'));
+      if (ln.kind === 'social') {
+        line.appendChild(el('span', 'k', ACTION_LABEL[ln.key] || ln.key));
+        line.appendChild(el('span', 'v', ln.earned ? 'confirmată de pacient' : 'neînceput'));
+        line.appendChild(el('span', 'pctv', EUR(ln.eur)));
+      } else if (ln.kind === 'referral') {
+        line.appendChild(el('span', 'k', 'Prieteni operați'));
+        line.appendChild(el('span', 'v', ln.count + ' × ' + EUR(ln.eur) +
+          (ln.pending ? ' · ' + ln.pending + ' în așteptare' : '')));
+        line.appendChild(el('span', 'pctv', EUR(ln.count * ln.eur)));
+      } else {
+        line.appendChild(el('span', 'k', 'Cod folosit la înscriere'));
+        line.appendChild(el('span', 'v', ln.code || 'niciunul'));
+        line.appendChild(el('span', 'pctv', EUR(ln.eur)));
+      }
       box.appendChild(line);
     });
   }
+
+  /* ---------------- referrals + used code ---------------- */
+  function renderReferrals(p) {
+    document.getElementById('aOwnCode').textContent = p.referralCode;
+    var box = document.getElementById('refList');
+    box.textContent = '';
+    if (!p.referrals.length) {
+      box.appendChild(el('div', 'ref-empty', 'Nicio recomandare înregistrată.'));
+    }
+    p.referrals.forEach(function (r) {
+      var line = el('div', 'ref-line');
+      var g = el('div', 'grow');
+      g.appendChild(el('div', 't', r.name));
+      g.appendChild(el('div', 'm', 'înscris ' + fmtTime(r.at) +
+        (r.status === 'operat' && r.operatedAt ? ' · operat ' + fmtTime(r.operatedAt) : '') +
+        (r.status === 'operat' ? ' · ' + EUR(MedicrossDB.REWARDS.referralOperated) + ' acordați' : '')));
+      line.appendChild(g);
+
+      var sel = el('select');
+      Object.keys(REF_STATUS).forEach(function (k) {
+        var o = el('option', null, REF_STATUS[k]); o.value = k;
+        if (r.status === k) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.addEventListener('change', function () {
+        MedicrossDB.setReferralStatus(p.id, r.id, sel.value, 'admin');
+        renderAll();
+      });
+      line.appendChild(sel);
+
+      var del = el('button', 'ibtn danger', 'Șterge');
+      del.type = 'button';
+      del.addEventListener('click', function () {
+        MedicrossDB.removeReferral(p.id, r.id, 'admin');
+        renderAll();
+      });
+      line.appendChild(del);
+      box.appendChild(line);
+    });
+
+    document.getElementById('codeInput').value = p.usedCode ? p.usedCode.code : '';
+    document.getElementById('codeErr').hidden = true;
+  }
+
+  document.getElementById('refAdd').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var input = document.getElementById('refName');
+    if (MedicrossDB.addReferral(currentId, input.value, 'admin')) { input.value = ''; renderAll(); }
+  });
+
+  document.getElementById('codeForm').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var errBox = document.getElementById('codeErr');
+    var res = MedicrossDB.setUsedCode(currentId, document.getElementById('codeInput').value, 'admin');
+    if (res.error) { errBox.textContent = res.error; errBox.hidden = false; return; }
+    errBox.hidden = true;
+    renderAll();
+  });
 
   /* ---------------- operations ---------------- */
   var editingOp = null;
@@ -473,6 +537,7 @@
     renderAccount(p);
     renderDetails(p);
     renderDiscount(p);
+    renderReferrals(p);
     renderOps(p);
     renderTrip(p);
     renderDocs(p);

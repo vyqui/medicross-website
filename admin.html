@@ -105,14 +105,30 @@
         <!-- discount overview -->
         <div class="card acard">
           <h2>Reducere acumulată</h2>
-          <div class="sub">Starea acțiunilor de marketing și consimțămintele pacientului. Reducerile se adună — plafon 25%.</div>
+          <div class="sub">Sumele se adună: 30 € pentru cele patru acțiuni sociale (7,50 € fiecare), 70 € pentru fiecare prieten recomandat care se operează, 20 € dacă pacientul s-a înscris cu codul altcuiva.</div>
           <div class="disc-sum">
             <div class="ring-wrap">
               <div class="ring" id="aRing"></div>
-              <div class="ring-inner"><span class="ring-num" id="aNum">0%</span><span class="ring-lbl">DIN 25%</span></div>
+              <div class="ring-inner"><span class="ring-num" id="aNum">0 €</span><span class="ring-lbl" id="aCap">DIN 0 €</span></div>
             </div>
             <div class="disc-actions" id="aActions"><!-- injected --></div>
           </div>
+        </div>
+
+        <!-- referrals: the 70 € is released here, once surgery is confirmed -->
+        <div class="card acard">
+          <h2>Recomandări și cod folosit</h2>
+          <div class="sub">Cei 70 € se acordă doar când recomandarea trece pe „operat”. Codul propriu al pacientului: <strong id="aOwnCode">—</strong></div>
+          <div id="refList"><!-- injected --></div>
+          <form class="addrow" id="refAdd">
+            <input id="refName" type="text" placeholder="Numele prietenului recomandat" required />
+            <button type="submit">Adaugă recomandare</button>
+          </form>
+          <form class="addrow" id="codeForm">
+            <input id="codeInput" type="text" placeholder="Cod folosit la înscriere (ex. MEDI-RALUCA-8F1)" />
+            <button type="submit">Salvează codul</button>
+          </form>
+          <div class="err" id="codeErr" hidden></div>
         </div>
 
         <!-- operations -->

@@ -179,13 +179,17 @@ body.portal button { font-family: inherit; }
 .a-ic { width: 38px; height: 38px; flex: none; border-radius: 10px; background: var(--chip); display: grid; place-items: center; color: #4a453d; margin-top: 1px; }
 .a-body { flex: 1; min-width: 0; }
 .a-body .t { font-weight: 700; font-size: 13.5px; }
-.a-body .t .pct { color: var(--brand); }
+.a-body .t .pct { color: var(--brand); white-space: nowrap; }
 .a-body .status { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 .a-consent { display: flex; align-items: center; gap: 7px; margin-top: 9px; font-size: 11.5px; color: var(--muted); cursor: pointer; }
 .a-consent input { width: 15px; height: 15px; accent-color: var(--brand); }
 .a-btn { border: none; cursor: pointer; font-weight: 700; font-size: 13.5px; padding: 12px 20px; border-radius: 10px; background: var(--brand); color: #fff; flex: none; transition: background .2s, color .2s; white-space: nowrap; }
 .a-btn.earned-btn { background: var(--success-bg); color: var(--success); }
+.a-link { align-self: center; font-size: 12px; font-weight: 700; color: var(--muted); flex: none; white-space: nowrap; }
+.a-link:hover { color: var(--brand); }
+.a-link[hidden] { display: none; }
 .a-btn.outline-btn { background: #fff; border: 1px solid var(--line); color: var(--ink); }
+.disc-note { margin-top: 13px; font-size: 11.5px; line-height: 1.6; color: var(--muted); }
 
 /* docs + referral */
 .side-col { display: flex; flex-direction: column; gap: 18px; }

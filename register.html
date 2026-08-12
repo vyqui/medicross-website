@@ -47,6 +47,15 @@
         </div>
       </div>
 
+      <div>
+        <label for="code">Cod de reducere <span class="opt">(opțional)</span></label>
+        <input id="code" name="code" type="text" placeholder="ex. MEDI-ANDREEA-2K6" autocomplete="off" />
+        <div class="gdpr-note" style="margin-top:6px">
+          Ai primit un cod de la un prieten? Introdu-l aici și primești <strong>20 €</strong> reducere
+          la intervenția ta. Prietenul care ți l-a dat primește 70 € după ce te operezi.
+        </div>
+      </div>
+
       <label class="check" for="gdpr">
         <input type="checkbox" id="gdpr" name="gdpr" required />
         <span>
@@ -96,6 +105,7 @@
           phone: document.getElementById('phone').value,
           sex: document.getElementById('sex').value,
           pass: pass,
+          code: document.getElementById('code').value,
           gdpr: true,
           by: 'self'
         });

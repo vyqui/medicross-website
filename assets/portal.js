@@ -13,7 +13,6 @@
   var sess = MedicrossDB.requireRole('patient');
   if (!sess) return;
   var PID = sess.patientId || (MedicrossDB.patients()[0] && MedicrossDB.patients()[0].id);
-  var CAP = 25;
 
   // An admin may open this page to see what the patient sees. Everything they do
   // is attributed to the staff, and consent stays the patient's own act — staff
@@ -250,45 +249,63 @@
   }
 
   /* ---------------- discount ---------------- */
-  function earned(a) { return a.done && (!a.needsConsent || a.consent); }
+  var EUR = MedicrossDB.eur;
 
   function updateUI() {
     var p = P();
-    var total = MedicrossDB.discount(PID);
-    var deg = Math.round((total / CAP) * 360);
+    var d = MedicrossDB.discountBreakdown(PID);
+    // the ring fills against what is actually on the table for this patient,
+    // not a fixed ceiling — the referral reward has no cap by design
+    var deg = d.potential > 0 ? Math.round((d.total / d.potential) * 360) : 0;
     var ring = document.getElementById('discRing');
     var num = document.getElementById('discNum');
+    var cap = document.getElementById('discCap');
     if (ring) ring.style.background = 'conic-gradient(var(--brand) ' + deg + 'deg, var(--ring-track) ' + deg + 'deg)';
-    if (num) num.textContent = total + '%';
+    if (num) num.textContent = EUR(d.total);
+    if (cap) cap.textContent = 'DIN ' + EUR(d.potential);
 
     document.querySelectorAll('.arow').forEach(function (row) {
       var key = row.dataset.action;
-      var a = p.actions[key];
-      if (!a) return;
-      var active = earned(a);
-      row.classList.toggle('earned', active);
-
+      var amount = row.querySelector('[data-eur]');
       var status = row.querySelector('[data-status]');
-      if (status) {
-        if (key === 'referral') status.textContent = p.referralCount + (p.referralCount === 1 ? ' prieten înscris' : ' prieteni înscriși') + ' · +' + (a.pct * p.referralCount) + '%';
-        else if (active) status.textContent = 'Activă · +' + a.pct + '% aplicat';
-        else if (a.done && a.needsConsent && !a.consent) status.textContent = 'Bifează consimțământul pentru a activa';
-        else status.textContent = 'Neînceput';
+      var btn = row.querySelector('[data-toggle]');
+      var open = row.querySelector('[data-open]');
+
+      if (key === 'referral') {
+        row.classList.toggle('earned', d.operated > 0);
+        if (amount) amount.textContent = EUR(MedicrossDB.REWARDS.referralOperated) + ' / prieten';
+        if (status) {
+          status.textContent = d.operated
+            ? d.operated + (d.operated === 1 ? ' prieten operat' : ' prieteni operați') + ' · ' + EUR(d.referral) +
+              (d.pending ? ' · ' + d.pending + ' în așteptare' : '')
+            : (d.pending ? d.pending + (d.pending === 1 ? ' prieten înscris' : ' prieteni înscriși') +
+                ' · se acordă după intervenție' : 'Niciun prieten înscris încă');
+        }
+        return;
       }
 
-      var btn = row.querySelector('[data-toggle]');
+      if (key === 'usedCode') {
+        row.classList.toggle('earned', !!p.usedCode);
+        if (amount) amount.textContent = EUR(MedicrossDB.REWARDS.codeUsed);
+        if (status) status.textContent = p.usedCode
+          ? 'Cod ' + p.usedCode.code + ' · ' + EUR(MedicrossDB.REWARDS.codeUsed) + ' aplicat'
+          : 'Niciun cod folosit la înscriere';
+        return;
+      }
+
+      var a = p.actions[key];
+      if (!a) return;
+      row.classList.toggle('earned', a.done);
+      if (amount) amount.textContent = EUR(a.eur);
+      if (status) status.textContent = a.done ? 'Confirmată · ' + EUR(a.eur) + ' aplicați' : 'Neînceput';
       if (btn) {
-        if (key === 'google') {
-          btn.textContent = 'Adăugată ✓';
-          btn.className = 'a-btn earned-btn';
-          btn.disabled = true; // server-verified — not user-revocable from the UI
-        } else if (key === 'referral') {
-          btn.textContent = 'Invită';
-          btn.className = 'a-btn outline-btn';
-        } else {
-          btn.textContent = a.done ? 'Trimis ✓' : 'Încarcă';
-          btn.className = a.done ? 'a-btn earned-btn' : 'a-btn';
-        }
+        btn.textContent = a.done ? 'Gata ✓' : 'Am făcut';
+        btn.className = a.done ? 'a-btn earned-btn' : 'a-btn';
+      }
+      if (open) {
+        var url = MedicrossDB.SOCIAL_LINKS[key];
+        open.hidden = !url;
+        if (url) open.href = url;
       }
     });
   }
@@ -296,54 +313,33 @@
   document.querySelectorAll('.arow').forEach(function (row) {
     var key = row.dataset.action;
     var toggle = row.querySelector('[data-toggle]');
-    var consent = row.querySelector('[data-consent]');
-    var fileInput = null;
+    if (!toggle) return;
 
-    if (toggle && key !== 'google' && key !== 'referral') {
-      fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = key === 'video' ? 'video/*' : 'image/*';
-      fileInput.multiple = key === 'photos';
-      fileInput.style.display = 'none';
-      row.appendChild(fileInput);
-      fileInput.addEventListener('change', function () {
-        if (fileInput.files && fileInput.files.length) {
-          // register the upload in the shared store so the admin sees the files
-          Array.prototype.slice.call(fileInput.files).forEach(function (f) {
-            var reader = new FileReader();
-            reader.onload = function () { MedicrossDB.addDocument(PID, f, reader.result, WHO); renderDocs(); };
-            reader.onerror = function () { MedicrossDB.addDocument(PID, f, null, WHO); renderDocs(); };
-            reader.readAsDataURL(f);
-          });
-          MedicrossDB.setAction(PID, key, { done: true }, WHO);
-          updateUI();
-        }
-      });
+    if (key === 'referral') {
       toggle.addEventListener('click', function () {
-        var a = P().actions[key];
-        if (a.done) { MedicrossDB.setAction(PID, key, { done: false }, WHO); updateUI(); }
-        else fileInput.click();
+        var msg = 'Salut! Îți las codul meu de reducere Medicross: ' + P().referralCode +
+          '\nTu primești ' + EUR(MedicrossDB.REWARDS.codeUsed) + ' reducere la intervenția ta.';
+        if (navigator.share) { navigator.share({ text: msg }).catch(function () {}); return; }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(msg).then(function () {
+            window.alert('Mesajul cu codul tău a fost copiat. Trimite-l prietenilor tăi.');
+          }, function () { window.alert(msg); });
+        } else { window.alert(msg); }
       });
-    } else if (toggle && key === 'referral') {
-      toggle.addEventListener('click', function () {
-        window.alert('Trimite acest cod prietenilor tăi: ' + P().referralCode + '\n(Ecran de invitație complet — în lucru.)');
-      });
+      return;
     }
 
-    if (consent) {
-      consent.checked = P().actions[key].consent;
-      if (AS_ADMIN) {
-        // consent is the patient's own act — staff can see it, never change it
-        consent.disabled = true;
-        var lbl = consent.closest('.a-consent');
-        if (lbl) lbl.title = 'Doar pacientul poate acorda sau retrage consimțământul.';
-      } else {
-        consent.addEventListener('change', function () {
-          MedicrossDB.setAction(PID, key, { consent: consent.checked }, WHO);
-          updateUI();
-        });
-      }
+    // instagram / facebook / review / share — the patient declares it, the
+    // admin verifies before the amount ever reaches an invoice
+    if (AS_ADMIN) {
+      toggle.disabled = true;
+      toggle.title = 'Doar pacientul poate confirma acțiunile.';
+      return;
     }
+    toggle.addEventListener('click', function () {
+      MedicrossDB.setAction(PID, key, { done: !P().actions[key].done }, WHO);
+      updateUI();
+    });
   });
 
   /* ---------------- referral code ---------------- */

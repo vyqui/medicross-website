@@ -7,7 +7,7 @@ The portal is now a **complete same-browser demo** of the full product:
 | `login.html` | Sign-in for patients and admins (demo accounts below) |
 | `register.html` | Patient self-service sign-up (name, e-mail, phone, sex, password, GDPR tick) |
 | `portal.html` | Patient dashboard: 3D body map, operations, trip agenda, discount system, documents, referral code |
-| `admin.html` | Admin console: create accounts, manage interventions, trip agenda A–Z, uploaded files, discount %, GDPR status, activity log |
+| `admin.html` | Admin console: create accounts, manage interventions, trip agenda A–Z, uploaded files, discounts in €, referrals, GDPR status, activity log |
 | `assets/portal-data.js` | The shared data layer (`MedicrossDB`) both UIs read/write, incl. the procedure catalogue |
 | `materials/bodymap.html` | The three.js 3D body map (iframe + postMessage API) |
 
@@ -114,14 +114,40 @@ to do it:
 
 ## Non-negotiables before real patient data (GDPR)
 
-- Server-side re-validation of every discount action before it is honored (review actually
-  posted, media actually received, referral actually enrolled) — the client UI is only a mirror
-  of verified state. The demo's activity log shows the shape of the required **auditable consent
+- Server-side re-validation of every discount action before it is honored (the follow really
+  happened, the review is actually posted, the share exists, the referred patient really had
+  surgery) — the client UI is only a mirror of verified state. The amounts live in
+  `ACTION_REWARD` / `REFERRAL_OPERATED` / `CODE_USED` in `assets/portal-data.js` and are
+  trivially editable by anyone with devtools, so the server must recompute them, never accept
+  a total sent by the browser. The demo's activity log shows the shape of the required **auditable consent
   record**: who consented to what, when, and every revocation, all timestamped.
 - Consent revocation must propagate to stored media (delete/quarantine), not just zero the
   discount.
 - Uploaded video/photos + procedure data are health-adjacent personal data: encrypt at rest,
   restrict access, support erasure. Add malware scanning on upload.
+
+## Discount rules (as configured)
+
+Fixed euro amounts, and they stack. Single source of truth: the constants at the top of
+`assets/portal-data.js`.
+
+| Reward | Amount | Earned when |
+|---|---|---|
+| Follow Instagram | 7,50 € | patient confirms, staff verifies |
+| Follow Facebook | 7,50 € | patient confirms, staff verifies |
+| Recenzie | 7,50 € | patient confirms, staff verifies |
+| Distribuie o postare | 7,50 € | patient confirms, staff verifies |
+| **Social bundle total** | **30 €** | all four above |
+| Referral | 70 € **per person** | the referred patient actually has surgery — set in the admin console, never self-declared |
+| Signed up with someone's code | 20 € | once, at registration |
+
+A patient who does everything social, brought two friends who both operated, and joined on a
+friend's code collects 30 + 140 + 20 = **190 €**. There is no global cap: the referral reward is
+uncapped by design, and the social bundle caps itself at 30 €.
+
+Two amounts a real backend must also settle, which the demo does not decide:
+the discount cannot exceed the invoice, and the payout currency/rounding on a
+referral that is earned after the referrer has already been invoiced.
 
 ## Subdomain plan (portal.tratamente-turcia.ro)
 
