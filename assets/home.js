@@ -5,10 +5,10 @@ document.documentElement.classList.add('js');
 
 // ---- hero operation switcher ----
 const OPS = [
-  { title: 'Rinoplastie',    img: 'materials/images/rinoplastrie-tratamente-turcia.png' },
+  { title: 'Rinoplastie',    img: 'materials/images/portret_rinoplastie_01_close-up.webp' },
   { title: 'Gastric Sleeve', img: 'materials/images/gastric-sleeve-tratamente-turcia-3.png' },
-  { title: 'BBL',            img: 'materials/images/lifting-mamar-tratamente-turcia.png' },
-  { title: 'Mommy Makeover', img: 'materials/images/tot-ce-trebuie-sa-stii-despre-abdominoplastie.png' },
+  { title: 'BBL',            img: 'materials/images/brazilian-butt-lift-bbl-tratamente-turcia.png' },
+  { title: 'Mommy Makeover', img: 'materials/images/liposuctie_1920x1440.webp' },
 ];
 const lcImg = document.getElementById('lcImg');
 const lcTitle = document.getElementById('lcTitle');
