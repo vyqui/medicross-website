@@ -18,12 +18,13 @@
 .mh-logo { flex: none; display: block; }
 /* The source lockup was 500x206 with ~133px of empty margin baked in, so most
    of the header's height was blank image. medicross-logo.png is the same
-   artwork cropped to its ink (286x77, ratio ~3.71): the bar halves while the
-   visible mark actually gets bigger. The min() keeps it from crowding the
-   inline nav; the constant is the width the rest of the header needs. */
-.mh-logo img { height: 84px; width: auto; display: block; }
+   artwork cropped to its ink (286x77, ratio ~3.71). 56px is a regular,
+   nav-scale mark rather than the oversized one the crop produced at 84px.
+   The min() keeps it from crowding the inline nav; the constant is the width
+   the rest of the header needs. */
+.mh-logo img { height: 56px; width: auto; display: block; }
 @media (max-width: 1780px) {
-  .mh-logo img { height: clamp(36px, min(84px, (100vw - 1258px) / 3.714), 84px); }
+  .mh-logo img { height: clamp(24px, min(56px, (100vw - 1258px) / 3.714), 56px); }
 }
 
 /* ---------- desktop nav ---------- */
@@ -128,7 +129,7 @@
   .mh-nav { display: none; }
   .mh-burger { display: block; }
   /* no inline nav from here, so the mark can sit at its full size */
-  .mh-logo img { height: 56px; }
+  .mh-logo img { height: 38px; }
 }
 @media (max-width: 1180px) {
   .mh-inner { padding: 5px 26px; }
@@ -139,7 +140,7 @@
   .mh-inner { padding: 5px 16px; gap: 8px; }
   /* 240px = the padding, the gap and the CTA+burger block measured at this
      breakpoint, so the mark takes exactly the width that is left over */
-  .mh-logo img { height: clamp(30px, (100vw - 240px) / 3.714, 56px); }
+  .mh-logo img { height: clamp(20px, (100vw - 240px) / 3.714, 38px); }
   .mh-btn-ghost { display: none; }
   .mh-btn-primary { padding: 10px 13px; font-size: 12.5px; }
   .mh-burger { padding: 6px; }
@@ -152,5 +153,5 @@
 @media (max-width: 400px) {
   .mh-right { gap: 6px; }
   .mh-btn-primary { padding: 9px 11px; font-size: 12px; }
-  .mh-logo img { height: clamp(26px, (100vw - 224px) / 3.714, 56px); }
+  .mh-logo img { height: clamp(17px, (100vw - 224px) / 3.714, 38px); }
 }
