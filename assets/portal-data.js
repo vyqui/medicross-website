@@ -112,7 +112,6 @@
     { name: 'Academic Hospital Istanbul', page: 'academic-hospital-istanbul.html' },
     { name: 'Avrasya Hospital International', page: 'avrasya-hospital-international.html' },
     { name: 'Central Hospital Istanbul', page: 'central-hospital.html' },
-    { name: 'BHT Clinic Istanbul Tema Hospital', page: 'parteneri.html' },
     { name: 'HAB Dental Clinic Vadistanbul', page: 'hab-dental-clinic-vadistanbul.html' },
     { name: 'Emine Erdem Hair Clinic', page: 'emine-erdem-hair-clinic.html' }
   ];
