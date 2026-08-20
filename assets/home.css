@@ -234,6 +234,9 @@ body.home a.btn-ghost { color: var(--ink); }
 .proc-head { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
 .proc-head .lnk { font-weight: 700; color: var(--brand); }
 .proc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.proc-note { text-align: center; margin-top: 32px; color: var(--muted); font-size: 15px; }
+.proc-note a { color: var(--brand); font-weight: 700; }
+.proc-note a:hover { text-decoration: underline; }
 .pcard { background: #fff; border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card); transition: box-shadow .3s ease; }
 .pcard:hover { box-shadow: 0 34px 60px -26px rgba(33,30,26,.5); }
 .pcard-img { height: 230px; overflow: hidden; }
