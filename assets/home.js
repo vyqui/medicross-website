@@ -9,6 +9,7 @@ const OPS = [
   { title: 'Gastric Sleeve', img: 'materials/images/gastric-sleeve-tratamente-turcia-3.png' },
   { title: 'BBL',            img: 'materials/images/brazilian-butt-lift-bbl-tratamente-turcia.png' },
   { title: 'Mommy Makeover', img: 'materials/images/liposuctie_1920x1440.webp' },
+  { title: 'Altele',         img: 'materials/images/depositphotos_317632286-stock-photo-cropped-view-doctor-white-coat-qoqpbxgu278nkfgq9rud1vdz3zfecm6f6om4j89108.webp' },
 ];
 const lcImg = document.getElementById('lcImg');
 const lcTitle = document.getElementById('lcTitle');
