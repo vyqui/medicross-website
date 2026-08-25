@@ -1,0 +1,62 @@
+## ---------------------------------------------------------------
+## Tratamente Turcia by Medicross — Netlify configuration
+##
+## The site is plain static HTML with no build step, so the
+## repository root is published exactly as it is committed.
+## ---------------------------------------------------------------
+
+[build]
+  publish = "."
+
+## Every canonical tag on the site is extensionless — contact.html
+## declares <link rel="canonical" href=".../contact"> — and sitemap.xml
+## lists the same extensionless URLs. Pretty URLs make the address
+## that is actually served agree with the one the page claims for
+## itself; without this, every page contradicts its own canonical.
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = true
+
+## ---------------------------------------------------------------
+## Security headers
+## ---------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    ## SAMEORIGIN rather than DENY: portal.html embeds
+    ## materials/bodymap.html in an iframe. When the portal moves to
+    ## its own subdomain, bodymap.html moves with it, so this stays
+    ## correct.
+    X-Frame-Options = "SAMEORIGIN"
+    ## Deliberately without includeSubDomains for now: the platform
+    ## subdomain will be served by Railway and needs its own
+    ## certificate in place before HSTS is allowed to cover it.
+    ## Add includeSubDomains, then preload, once that is live.
+    Strict-Transport-Security = "max-age=31536000"
+
+## ---------------------------------------------------------------
+## Caching
+##
+## Media filenames are stable and are not edited in place, so a week
+## of browser cache is safe. CSS and JS deliberately keep Netlify's
+## default ETag revalidation instead: those filenames carry no content
+## hash, so a long max-age would strand visitors on a stale stylesheet
+## after every deploy.
+## ---------------------------------------------------------------
+[[headers]]
+  for = "/materials/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+## ---------------------------------------------------------------
+## Not part of the public site
+## ---------------------------------------------------------------
+[[redirects]]
+  from = "/README-PORTAL.md"
+  to = "/"
+  status = 301

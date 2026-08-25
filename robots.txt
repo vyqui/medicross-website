@@ -5,10 +5,16 @@
 # ---------------------------------------------------------------
 User-agent: *
 Allow: /
-# the client portal is a private patient area — nothing there is public
+# the client portal is a private patient area — nothing there is public.
+# Both spellings are listed because the host serves these pages
+# extensionless (/portal) and redirects the .html form to it.
+Disallow: /portal
 Disallow: /portal.html
+Disallow: /admin
 Disallow: /admin.html
+Disallow: /login
 Disallow: /login.html
+Disallow: /register
 Disallow: /register.html
 
 # ---------------------------------------------------------------
@@ -33,9 +39,13 @@ User-agent: Bingbot
 User-agent: Amazonbot
 User-agent: meta-externalagent
 Allow: /
+Disallow: /portal
 Disallow: /portal.html
+Disallow: /admin
 Disallow: /admin.html
+Disallow: /login
 Disallow: /login.html
+Disallow: /register
 Disallow: /register.html
 
 Sitemap: https://tratamente-turcia.ro/sitemap.xml
