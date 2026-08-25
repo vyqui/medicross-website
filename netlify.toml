@@ -55,7 +55,18 @@
 
 ## ---------------------------------------------------------------
 ## Not part of the public site
+##
+## The repository root is the publish directory, so anything committed
+## here is otherwise reachable over HTTP. The API lives in server/ and
+## is deployed separately to Railway; it has no business being served
+## by the marketing site.
 ## ---------------------------------------------------------------
+[[redirects]]
+  from = "/server/*"
+  to = "/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/README-PORTAL.md"
   to = "/"
