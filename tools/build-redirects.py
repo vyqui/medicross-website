@@ -36,9 +36,13 @@ OVERRIDES = {
     '/client/inregistrare/': PORTAL, '/devino-membru/': PORTAL,
     '/login/': PORTAL, '/my-account/': PORTAL, '/registration/': PORTAL,
     '/registrierung/': PORTAL,
-    # legal pages that exist only on WordPress
+    # /acord-gdpr/ now resolves by slug to the real page. The signed-copy URL
+    # has no equivalent — online consent is a ticked box recorded with a
+    # timestamp, not a stored per-person document — so it points at the
+    # agreement itself.
+    '/acord-gdpr-semnat/': '/acord-gdpr',
+    # still only on WordPress
     '/politica-de-confidentialitate/': NEEDS_PAGE,
-    '/acord-gdpr/': NEEDS_PAGE, '/acord-gdpr-semnat/': NEEDS_PAGE,
     # dormant WooCommerce install
     '/shop/': '/oferte', '/cart/': '/oferte', '/checkout/': '/contact',
     # other-language pages

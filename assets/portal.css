@@ -269,3 +269,20 @@ body.portal button { font-family: inherit; }
   .ph-user-txt { display: none; }
   .ph-user { padding: 4px; background: transparent; border: none; }
 }
+
+/* Medical disclaimer. The portal shows a treatment plan written by our team,
+   so the notice sits at the end of the dashboard rather than in a footer the
+   portal does not have. Extra bottom padding clears the mobile tab bar. */
+.portal-disclaimer {
+  margin: 40px 0 0; padding: 22px 0 0;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px; line-height: 1.75; color: var(--muted);
+  max-width: 105ch;
+}
+.portal-disclaimer p { margin: 0 0 11px; }
+.portal-disclaimer strong { color: var(--ink); font-weight: 700; }
+.portal-disclaimer-links { margin-top: 14px; }
+.portal-disclaimer-links a { color: var(--brand); text-decoration: underline; }
+@media (max-width: 720px) {
+  .portal-disclaimer { padding-bottom: 84px; }
+}

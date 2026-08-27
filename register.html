@@ -59,13 +59,13 @@
       <label class="check" for="gdpr">
         <input type="checkbox" id="gdpr" name="gdpr" required />
         <span>
-          Am citit și accept <a href="#" id="gdprLink">acordul GDPR</a> privind prelucrarea datelor mele
+          Am citit și accept <a href="acord-gdpr.html" id="gdprLink" target="_blank" rel="noopener">acordul GDPR</a> privind prelucrarea datelor mele
           personale și medicale. <span class="req">Obligatoriu</span>
         </span>
       </label>
       <div class="gdpr-note">
-        Textul integral al acordului GDPR va fi adăugat de Medicross. Bifa este înregistrată cu dată și
-        oră și poate fi retrasă oricând.
+        Bifa este înregistrată cu dată și oră și poate fi retrasă oricând, scriindu-ne la
+        <a href="mailto:office@tratamente-turcia.ro">office@tratamente-turcia.ro</a>.
       </div>
 
       <button type="submit">Creează contul</button>
@@ -80,11 +80,8 @@
   <script>
     (function () {
       'use strict';
-      document.getElementById('gdprLink').addEventListener('click', function (ev) {
-        ev.preventDefault();
-        window.alert('Acordul GDPR va fi publicat de Medicross. Deocamdată acesta este doar pasul ' +
-                     'obligatoriu de consimțământ — bifa se salvează cu dată și oră.');
-      });
+      /* The agreement is a real page now — the link opens it in a new tab so a
+         half-filled form is never lost. */
 
       document.getElementById('regForm').addEventListener('submit', function (ev) {
         ev.preventDefault();

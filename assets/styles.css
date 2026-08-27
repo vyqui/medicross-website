@@ -587,6 +587,20 @@
     .footer a:hover { color: var(--brand-soft); }
     .footer .logo-text strong { color: #fff; }
     .footer p.desc { margin-top: 16px; line-height: 1.7; color: rgba(255,255,255,.65); }
+    /* Medical disclaimer — required on every page. Deliberately quiet, but
+       legible: it is a legal notice, not decoration, so it never drops below
+       12.5px and keeps a readable line length. */
+    .footer-disclaimer {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding: 26px 0 6px;
+      font-size: 12.5px; line-height: 1.75;
+      color: rgba(255,255,255,.52);
+      max-width: 105ch;
+    }
+    .footer-disclaimer p { margin-bottom: 11px; }
+    .footer-disclaimer p:last-child { margin-bottom: 0; }
+    .footer-disclaimer strong { color: rgba(255,255,255,.75); font-weight: 700; }
+
     .footer-bottom {
       border-top: 1px solid rgba(255,255,255,.12); padding: 22px 0;
       display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;

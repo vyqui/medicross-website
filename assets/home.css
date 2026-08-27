@@ -293,6 +293,16 @@ body.home a.btn-ghost { color: var(--ink); }
 .ff-brand .tag { font-family: var(--font-display); font-size: 24px; }
 .ff-brand .tag small { display: block; font-size: 13px; font-weight: 700; color: var(--brand-dark); letter-spacing: .04em; }
 .ff-contact { text-align: right; color: var(--muted); font-size: 14.5px; line-height: 1.8; }
+/* Medical disclaimer — the homepage footer is light, so the same notice takes
+   the light-ground palette rather than the navy footer's. */
+.ff-disclaimer {
+  border-top: 1px solid var(--line);
+  margin-top: 30px; padding-top: 24px;
+  font-size: 12.5px; line-height: 1.75; color: var(--muted);
+}
+.ff-disclaimer p { margin-bottom: 11px; }
+.ff-disclaimer p:last-child { margin-bottom: 0; }
+.ff-disclaimer strong { color: var(--ink); font-weight: 700; }
 .ff-contact a { color: var(--muted); }
 .ff-contact a:hover { color: var(--brand); }
 

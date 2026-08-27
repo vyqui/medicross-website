@@ -233,3 +233,38 @@
   .gc-track { scroll-behavior: auto; }
   .gc-item, .gc-item img, .glb-figure img { transition: none; animation: none; }
 }
+
+/* ---- Legal documents (acord-gdpr) --------------------------------------
+   A consent agreement has to be readable end to end, so the measure is
+   tighter than editorial prose and the headings are quieter: nothing here
+   should read as marketing. */
+.prose.legal { max-width: 74ch; }
+.prose.legal > h2 {
+  font-size: 25px; margin-top: 46px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.prose.legal > h3 {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 16px; font-weight: 800; color: var(--navy);
+  margin: 32px 0 12px; letter-spacing: .01em;
+}
+.prose.legal > p { margin-bottom: 18px; }
+.prose.legal > ul { margin: 0 0 20px; padding-left: 22px; }
+.prose.legal > ul li { margin-bottom: 10px; line-height: 1.7; }
+
+/* The one part of the page that is ours rather than the signed agreement:
+   how consent is actually captured online. Set apart so it is never mistaken
+   for a clause of the agreement itself. */
+.legal-note {
+  margin-top: 44px; padding: 24px 26px;
+  background: var(--sand, #F7F5F1);
+  border-left: 3px solid var(--brand, #C81E25);
+  border-radius: 0 10px 10px 0;
+}
+.legal-note h4 {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 14px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--navy); margin: 0 0 12px;
+}
+.legal-note p { font-size: 14.5px; line-height: 1.7; margin: 0 0 10px; }
+.legal-note p:last-child { margin-bottom: 0; }

@@ -90,7 +90,7 @@
 ## Netlify applies the FIRST matching rule, so the exact paths below
 ## always win over the catch-alls at the end of the file.
 ##
-## Regenerate with scratchpad/buildredirects.py after porting any
+## Regenerate with tools/build-redirects.py after porting any
 ## article, so its rule is replaced by the real page.
 ## ===============================================================
 
@@ -109,6 +109,18 @@
 [[redirects]]
   from = "/academic-hospital-istanbul/"
   to = "/academic-hospital-istanbul"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/acord-gdpr-semnat/"
+  to = "/acord-gdpr"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/acord-gdpr/"
+  to = "/acord-gdpr"
   status = 301
   force = true
 
