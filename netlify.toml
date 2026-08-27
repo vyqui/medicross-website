@@ -68,6 +68,1197 @@
   force = true
 
 [[redirects]]
+  from = "/tools/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/README-PORTAL.md"
   to = "/"
   status = 301
+
+## ===============================================================
+## WordPress cutover redirect map
+##
+## The domain serves a WordPress site with ~217 indexed URLs; this
+## repository has 69. Every old URL is mapped to its closest
+## equivalent so that no ranking page returns 404 the moment DNS
+## moves. Blog posts, which have no counterpart here, point at the
+## nearest procedure or specialty page.
+##
+## Netlify applies the FIRST matching rule, so the exact paths below
+## always win over the catch-alls at the end of the file.
+##
+## Regenerate with scratchpad/buildredirects.py after porting any
+## article, so its rule is replaced by the real page.
+## ===============================================================
+
+[[redirects]]
+  from = "/2728-septembrie-dr-sahin-ulu-revine-in-romania-ploiesti/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/404-2/"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/academic-hospital-istanbul/"
+  to = "/academic-hospital-istanbul"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/acreditare-jci/"
+  to = "/acreditare-jci"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ai-asigurare-medicala-privata-beneficiaza-de-opinia-medicala-gratuita-oferita-de-tratamente-turcia/"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ai-o-problema-medicala-vino-in-turcia-pentru-consult-gratuit/"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/alergiile-de-primavara-si-vara/"
+  to = "/alergologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/alergologie/"
+  to = "/alergologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/analize-si-investigatii/"
+  to = "/analize-si-investigatii"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/artrita-reumatoida-boala-care-schimba-viata-pacientilor/"
+  to = "/reumatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/avrasya-hospital-international/"
+  to = "/avrasya-hospital-international"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/bht-tema/"
+  to = "/parteneri"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/"
+  to = "/blog"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/boli-infectioase/"
+  to = "/boli-infectioase"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/bolile-vezicii-biliare-cauze-simptome-si-tratament/"
+  to = "/chirurgie-generala"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/botox-si-fillere-diferente-avantaje-si-reactii-adverse/"
+  to = "/chirurgie-estetica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/brazilian-butt-lift-bbl/"
+  to = "/brazilian-butt-lift"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/bypassul-aorto-coronarian-sau-operatia-chirurgicala-pentru-angina-pectorala/"
+  to = "/cardiologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/calculii-biliari-si-colecistectomia-laparoscopica/"
+  to = "/chirurgie-generala"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cancerul-de-prostata-cel-mai-frecvent-tip-de-cancer-care-afecteaza-barbatii/"
+  to = "/oncologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cancerul-pulmonar-boala-fatala-care-poate-fi-invinsa/"
+  to = "/oncologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cand-poate-un-cuplu-sa-apeleze-la-fertilizarea-in-vitro-explicatiile-unui-specialist-video/"
+  to = "/fertilizare-in-vitro"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cardiologie/"
+  to = "/cardiologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cart/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cat-de-multa-sangerare-din-nas-este-normala/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cauti-sa-faci-transplant-de-par-in-conditii-vip-merita-sa-vezi-oferta-noastra/"
+  to = "/transplant-de-par"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ce-este-chirurgia-plastica/"
+  to = "/chirurgie-estetica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ce-sunt-hemoroizii-si-cum-ii-tratam/"
+  to = "/chirurgie-generala"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ce-sunt-varicele-si-care-este-cea-mai-eficienta-metoda-de-tratament/"
+  to = "/chirurgie-vasculara"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/central-hospital/"
+  to = "/central-hospital"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/checkout/"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgia-obezitatii-chirurgia-pentru-pierderea-in-greutate/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgia-urechii-otoplastia-o-procedura-simpla-cu-efecte-complexe/"
+  to = "/chirurgie-estetica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-bariatrica/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-estetica-si-medicina-estetica/"
+  to = "/chirurgie-estetica-si-medicina-estetica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-generala/"
+  to = "/chirurgie-generala"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-orala-si-maxilo-faciala/"
+  to = "/chirurgie-orala-si-maxilo-faciala"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-pediatrica/"
+  to = "/chirurgie-pediatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-plastica-estetica/"
+  to = "/chirurgie-estetica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-plastica-microchirurgie-reconstructiva/"
+  to = "/chirurgie-plastica-microchirurgie-reconstructiva"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-toracica/"
+  to = "/chirurgie-toracica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-vasculara/"
+  to = "/chirurgie-vasculara"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/client/"
+  to = "https://cont.tratamente-turcia.ro/login"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/consult-gratuit-de-rinoplastie-in-romania-14-15-iunie/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact/"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cu-ce-ajuta-lifting-ul-facial/"
+  to = "/lifting-facial-si-gat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cum-depistam-cancerul-la-san-a-doua-cauza-de-deces-dupa-cel-pulmonar/"
+  to = "/interventii-mamare"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cum-sa-obtinem-concediu-medical-pentru-interventii-in-strainatate/"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cum-sa-previi-bolile-de-rinichi-prin-control-de-rutina/"
+  to = "/nefrologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cyber-knife-tratamentul-cu-radioterapie-stereotactica-ce-trateaza-cancerul-protejand-tesuturile-sanatoase/"
+  to = "/oncologia-radiologica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/de-ce-sa-alegem-operatiile-laparoscopice-iata-cateva-dintre-avantaje/"
+  to = "/chirurgie-generala"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/de-ce-sa-alegi-silicoanele-mentor/"
+  to = "/interventii-mamare"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/dermatologie/"
+  to = "/dermatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/descopera-excelenta-in-rinoplastie-ploiesti-22-iunie/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/descopera-excelenta-in-rinoplastie-ploiesti-25-26-mai/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/despre-procedura-de-inghetare-a-embrionilor-cu-medicul-aynur-ersahin-din-istanbul-astazi-de-la-ora-20-00-la-sanatatea-fara-frontiere/"
+  to = "/fertilizare-in-vitro"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/devino-membru/"
+  to = "https://cont.tratamente-turcia.ro/login"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/diabetul-de-tip-ii-simptome-factori-de-risc-si-posibile-complicatii/"
+  to = "/endocrinologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/efectele-rinoplastiei-se-vad-o-viata-este-important-sa-apelezi-la-cei-mai-buni-interviu-cu-medicul-sahin-ulu-istanbul/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/emine-erdem-hair-clinic/"
+  to = "/emine-erdem-hair-clinic"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/endocrinologie/"
+  to = "/endocrinologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/fertilizare-in-vitro/"
+  to = "/fertilizare-in-vitro"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/fertilizarea-in-vitro-ce-presupune-procedura-fiv/"
+  to = "/fertilizare-in-vitro"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/fibromul-uterin-o-tumoare-inofensiva-in-cele-mai-multe-cazuri/"
+  to = "/obstetrica-ginecologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/fistulele-anale-cauze-simptome-si-tratament/"
+  to = "/chirurgie-generala"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/fpi-fibroza-pulmonara-idiopatica/"
+  to = "/pneumologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/future-health-project/"
+  to = "/despre"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/gastric-sleeve-si-ziua-mondiala-a-diabetului/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/gastric-sleeve-surgery/"
+  to = "/gastric-sleeve"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/gastroenterologie-2/"
+  to = "/gastroenterologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ghidul-pacientului-de-gastric-sleeve/"
+  to = "/gastric-sleeve"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ghidul-pacientului-de-rinoplastie/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/hab-dental-clinic-vadistanbul/"
+  to = "/hab-dental-clinic-vadistanbul"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/hematologie/"
+  to = "/hematologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/hipertensiunea-arteriala-boala-ascunsa-cauze-simptome-si-tratament/"
+  to = "/cardiologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/home/"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ii-sfatuiesc-sa-nu-renunte-usor-pe-parintii-care-isi-doresc-un-copil-interviu-cu-aynur-adeviye-ersahin-seful-departamentului-fiv-din-cadrul-medical-park-goztepe-hospital-din-istanb/"
+  to = "/fertilizare-in-vitro"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/implantul-dentar-de-ce-sa-alegem-turcia/"
+  to = "/stomatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/incearca-fertilizarea-in-vitro-cel-mai-eficient-tip-de-reproducere-asistata-pentru-a-ajuta-femeile-sa-ramana-insarcinate/"
+  to = "/fertilizare-in-vitro"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/informatii/"
+  to = "/specialitati"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/intalnire-cu-assoc-prof-dr-omer-avlanmis-29-iunie-ploiesti/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/intalnire-cu-dr-prof-omer-avlanmis/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii-estetice/"
+  to = "/chirurgie-estetica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii-populare/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/"
+  to = "/specialitati"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/intreaba-medicul-ce-mancam-dupa-operatia-de-micsorare-de-stomac/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/intreaba-medicul-tratamente-turcia-ro-iti-raspunde-cand-si-cine-poate-sa-apeleze-la-fertilizarea-in-vitro/"
+  to = "/fertilizare-in-vitro"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/intreaba-medicul-tratamente-turcia-ro-iti-raspunde-ce-medicamente-sunt-indicate-si-cand-puteti-relua-activitatea-fizica-dupa-chirurgia-bariatrica/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/intreaba-medicul-tratamente-turcia-ro-iti-raspunde-despre-obezitate/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/lifting-facial-si-gat/"
+  to = "/lifting-facial-si-gat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/liposuctia-o-procedura-de-modelare-nu-de-scadere-in-greutate/"
+  to = "/liposuctie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/liposuctie-o-metoda-prin-care-poti-ajunge-la-dimensiunile-la-care-ai-visat/"
+  to = "/liposuctie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/login/"
+  to = "https://cont.tratamente-turcia.ro/login"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/medical-park-bahcelievler-hospital/"
+  to = "/medical-park-bahcelievler-hospital"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/medical-park-gaziosmanpasa/"
+  to = "/medical-park-gaziosmanpasa"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/medicana-health-group/"
+  to = "/medicana-health-group"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/medicina-interna/"
+  to = "/medicina-interna"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/medicina-nucleara/"
+  to = "/medicina-nucleara"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/micsorarea-de-stomac-necesita-si-schimbarea-stilului-de-viata/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/misiunea-noastra/"
+  to = "/despre"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/my-account/"
+  to = "https://cont.tratamente-turcia.ro/login"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/nefrologie/"
+  to = "/nefrologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/neurochirurgie/"
+  to = "/neurochirurgie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/neurologie-2/"
+  to = "/neurologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/obstetrica-ginecologie/"
+  to = "/obstetrica-ginecologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/oferte/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/oftalmologie-2/"
+  to = "/oftalmologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/oncologia-radiologica/"
+  to = "/oncologia-radiologica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/oncologie-2/"
+  to = "/oncologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/operatia-de-marire-a-sanilor-este-dureroasa-recuperarea-care-sunt-riscurile-si-complicatiile/"
+  to = "/interventii-mamare"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/operatie-de-hernie-de-disc-sau-tratamente-nechirurgicale-cand-si-ce-alegem/"
+  to = "/neurochirurgie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/orl/"
+  to = "/orl"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ortopedie-si-traumatologie/"
+  to = "/ortopedie-si-traumatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/parteneri/"
+  to = "/parteneri"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/pediatrie/"
+  to = "/pediatrie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/plata-in-rate/"
+  to = "/plata-in-rate"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/pneumologie/"
+  to = "/pneumologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/poze-pacienti/"
+  to = "/testimoniale"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/prostatita-boala-care-afecteaza-milioane-de-barbati/"
+  to = "/urologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/radiologie-interventionala/"
+  to = "/radiologie-interventionala"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/registration/"
+  to = "https://cont.tratamente-turcia.ro/login"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/registrierung/"
+  to = "https://cont.tratamente-turcia.ro/login"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/remodelarea-si-ridicarea-coapselor-o-procedura-necesara-dupa-opertia-de-liposuctie/"
+  to = "/liposuctie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/reumatologie/"
+  to = "/reumatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/rhinoplasty/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/rinoplastie-cu-dr-sahin-ulu/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/riscurile-asociate-si-complicatiile-implanturilor-mamare/"
+  to = "/interventii-mamare"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/riscurile-obezitatii-si-avantajele-operatiei-de-micsorare-a-stomacului-gastrectomiei/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/secretul-depistarii-bolilor-renale-consta-in-controlul-de-rutina/"
+  to = "/nefrologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/shop/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/solutii-inovatoare-pentru-pierderea-in-greutate/"
+  to = "/chirurgie-bariatrica"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/specialitati/"
+  to = "/specialitati"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/spitalul-liv/"
+  to = "/spitalul-liv"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/stentarea-esofagului-tehnica-si-eficienta/"
+  to = "/gastroenterologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/stomatologie-2/"
+  to = "/stomatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tarife/"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/testimoniale/"
+  to = "/testimoniale"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/thank-you/"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tot-ce-trebuie-sa-stii-despre-abdominoplastie/"
+  to = "/abdominoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/totul-despre-cancerul-colorectal-diagnostic-tratament-si-perspective/"
+  to = "/oncologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transplant-de-organe-si-tesuturi/"
+  to = "/transplant-de-organe-si-tesuturi"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transplantul-de-par-prin-metoda-fue-sau-strip/"
+  to = "/transplant-de-par"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tumorile-cerebrale-simptome-diagnostic-tratament/"
+  to = "/oncologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/turcia-lider-indiscutabil-in-transplantul-hepatic/"
+  to = "/transplant-de-organe-si-tesuturi"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/vielen-dank/"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/vm-medical-park-florya/"
+  to = "/vm-medical-park-florya"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-bariatrica/balon-gastric/"
+  to = "/balon-gastric"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-bariatrica/gastric-bypass/"
+  to = "/gastric-bypass"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-bariatrica/gastric-sleeve/"
+  to = "/gastric-sleeve"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-plastica-estetica/abdominoplastie/"
+  to = "/abdominoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-plastica-estetica/interventii-mamare/"
+  to = "/interventii-mamare"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-plastica-estetica/liposuctie/"
+  to = "/liposuctie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-plastica-estetica/rinoplastie/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/chirurgie-plastica-estetica/transplant-de-par/"
+  to = "/transplant-de-par"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/client/activare-card/"
+  to = "https://cont.tratamente-turcia.ro/login"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/client/inregistrare/"
+  to = "https://cont.tratamente-turcia.ro/login"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/abdominoplastie/"
+  to = "/abdominoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/fertilizare-in-vitro/"
+  to = "/fertilizare-in-vitro"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/implant-dentar/"
+  to = "/stomatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/implant-mamar/"
+  to = "/interventii-mamare"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/implantul-all-on-4/"
+  to = "/stomatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/implantul-de-o-zi/"
+  to = "/stomatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/liposuctie/"
+  to = "/liposuctie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/operatie-balon-gastric/"
+  to = "/balon-gastric"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/operatie-de-micsorare-de-stomac-gastric-bypass/"
+  to = "/gastric-bypass"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/operatie-de-micsorare-de-stomac-gastric-sleeve/"
+  to = "/gastric-sleeve"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/operatie-de-varice/"
+  to = "/chirurgie-vasculara"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-gold-screening-cancer-barbati/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-gold-screening-cancer-femei-2/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-gold-screening-cancer-femei/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-silver-screening-cancer-barbati/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-verificare-sanatate-barbati-peste-40-de-ani/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-verificare-sanatate-copii/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-verificare-sanatate-femei-peste-40-de-ani/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-verificare-sanatate-standard-de-viata-barbati/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-verificare-sanatate-standard-de-viata-femei-2/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/pachet-verificare-sanatate-standard-de-viata-femei/"
+  to = "/oferte"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/rinoplastie/"
+  to = "/rinoplastie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/sistemul-port-acces/"
+  to = "/chirurgie-vasculara"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/stomatologie-hollywood-smile/"
+  to = "/stomatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/stomatologie-laminate-dentare/"
+  to = "/stomatologie"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/transplant-de-par/"
+  to = "/transplant-de-par"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/transplant-de-rinichi/"
+  to = "/transplant-de-organe-si-tesuturi"
+  status = 301
+  force = true
+
+## Custom post types and archives, collapsed wholesale.
+## These are listed last: Netlify applies the first match, so the
+## exact rules above always win over these catch-alls.
+
+[[redirects]]
+  from = "/testimonial/*"
+  to = "/testimoniale"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/success/*"
+  to = "/testimoniale"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/partener/*"
+  to = "/parteneri"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/echipa/*"
+  to = "/despre"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interventii/*"
+  to = "/specialitati"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tara/*"
+  to = "/specialitati"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/category/*"
+  to = "/blog"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tag/*"
+  to = "/blog"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/author/*"
+  to = "/blog"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/wp-content/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/wp-admin/*"
+  to = "/"
+  status = 301
+  force = true
+
