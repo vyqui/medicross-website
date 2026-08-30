@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Autentificare — Medicross</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/auth.css" />
+  <style>
+    /* login-only states */
+    .denied {
+      margin-bottom: 20px; padding: 13px 15px; border-radius: 12px;
+      background: #fdf3e7; border: 1px solid #f0d3ad; color: #8a5216;
+      font-size: 13px; font-weight: 600; line-height: 1.6;
+    }
+    .denied strong { color: #6d3f0f; }
+    .already {
+      margin-bottom: 20px; padding: 13px 15px; border-radius: 12px;
+      background: #eef3ee; color: #2f6b41; font-size: 13px; font-weight: 600;
+    }
+    .already strong { color: #1f4a2c; }
+    .already-row { display: flex; gap: 8px; margin-top: 11px; }
+    .agobtn {
+      font: inherit; font-weight: 700; font-size: 13px; padding: 9px 15px;
+      border-radius: 999px; border: none; cursor: pointer; text-decoration: none;
+      background: #2f6b41; color: #fff;
+    }
+    .agobtn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .agobtn.ghost:hover { border-color: var(--brand); color: var(--brand); }
+    label { margin-top: 14px; }
+    .demo {
+      margin-top: 22px; padding: 13px 15px; border: 1px dashed var(--line); border-radius: 12px;
+      font-size: 12px; color: var(--muted); line-height: 1.7;
+    }
+    .demo strong { color: var(--ink); }
+    .demo code { font-family: ui-monospace, Menlo, monospace; background: #F3EEE7; padding: 1px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo"><span class="dot"></span>Medicross</div>
+    <div class="sub">Autentifică-te în contul tău de pacient sau în consola de administrare.</div>
+
+    <div class="denied" id="denied" hidden>
+      Contul <strong id="deniedWho"></strong> nu are acces la consola de administrare.
+      Autentifică-te cu un cont de administrator.
+    </div>
+
+    <div class="already" id="already" hidden>
+      Ești deja autentificat ca <strong id="alreadyWho"></strong>.
+      <div class="already-row">
+        <a class="agobtn" id="alreadyGo" href="portal.html">Continuă</a>
+        <button class="agobtn ghost" id="alreadyOut" type="button">Schimbă contul</button>
+      </div>
+    </div>
+
+    <form id="loginForm" novalidate>
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" autocomplete="username" required />
+      <label for="pass">Parolă</label>
+      <input id="pass" name="pass" type="password" autocomplete="current-password" required />
+      <button type="submit">Intră în cont</button>
+      <div class="err" id="err">E-mail sau parolă incorecte. Încearcă din nou.</div>
+    </form>
+
+    <div class="alt">Nu ai cont? <a href="register.html">Creează unul</a></div>
+
+    <div class="demo">
+      <strong>Conturi demo</strong> (site static — autentificarea reală vine odată cu backend-ul):<br />
+      Pacient: <code>andreea@demo.ro</code> / <code>demo</code><br />
+      Admin: <code>admin@medicross.ro</code> / <code>admin</code>
+    </div>
+
+    <a class="back" href="index.html">← Înapoi la site</a>
+  </main>
+
+  <script src="assets/portal-data.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      var params = new URLSearchParams(location.search);
+      // only same-page relative targets — never an arbitrary redirect
+      var next = /^[a-z0-9-]+\.html$/.test(params.get('next') || '') ? params.get('next') : null;
+      var denied = params.get('denied') === '1';
+      var ADMIN_ONLY = { 'admin.html': true };
+
+      function homeFor(role) { return role === 'admin' ? 'admin.html' : 'portal.html'; }
+      function destinationFor(role) {
+        // honour where they were headed, unless that page is out of their reach
+        if (next && !(ADMIN_ONLY[next] && role !== 'admin')) return next;
+        return homeFor(role);
+      }
+
+      // An existing session must never trap you here: the form stays reachable so
+      // you can switch between the patient and admin accounts.
+      var s = MedicrossDB.session();
+      if (s) {
+        if (denied) {
+          document.getElementById('deniedWho').textContent = s.email;
+          document.getElementById('denied').hidden = false;
+        }
+        document.getElementById('alreadyWho').textContent =
+          s.email + (s.role === 'admin' ? ' (administrator)' : ' (pacient)');
+        document.getElementById('alreadyGo').href = homeFor(s.role);
+        document.getElementById('alreadyGo').textContent =
+          s.role === 'admin' ? 'Continuă în consolă' : 'Continuă în portal';
+        document.getElementById('already').hidden = false;
+        document.getElementById('alreadyOut').addEventListener('click', function () {
+          MedicrossDB.logout();
+          location.replace('login.html' + (next ? '?next=' + encodeURIComponent(next) : ''));
+        });
+        if (denied) document.getElementById('email').focus();
+      }
+
+      document.getElementById('loginForm').addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var sess = MedicrossDB.login(
+          document.getElementById('email').value,
+          document.getElementById('pass').value
+        );
+        if (sess) location.replace(destinationFor(sess.role));
+        else document.getElementById('err').classList.add('show');
+      });
+    })();
+  </script>
+</body>
+</html>

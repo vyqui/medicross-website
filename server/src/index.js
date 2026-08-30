@@ -79,12 +79,18 @@ await app.register(documentRoutes);
 await app.register(portalRoutes);
 await app.register(adminRoutes);
 
-/* The platform serves the portal's own pages. Phase 5 moves login.html,
-   register.html, portal.html, admin.html and their assets here permanently; for
-   now the repository root is served so the whole thing runs from one process
-   during development. */
-const STATIC_DIR = path.resolve(process.env.STATIC_DIR ?? path.join(import.meta.dirname, '..', '..'));
-await app.register(fastifyStatic, { root: STATIC_DIR, index: ['index.html'], extensions: ['html'] });
+/* The platform serves the portal's own pages — login.html, register.html,
+   portal.html, admin.html — plus exactly the assets they use, copied into
+   server/public/ (see server/README.md for the exact file list). This
+   directory travels with the server everywhere it deploys, whereas the
+   repository root does not: Railway's Root Directory setting means only
+   server/ itself is ever present in the deployed container. */
+const STATIC_DIR = path.resolve(process.env.STATIC_DIR ?? path.join(import.meta.dirname, '..', 'public'));
+await app.register(fastifyStatic, { root: STATIC_DIR, extensions: ['html'] });
+
+/* There is no marketing homepage here — that lives on the main domain. The
+   platform's own front door is the sign-in page. */
+app.get('/', (request, reply) => reply.redirect('/login'));
 
 app.setNotFoundHandler((request, reply) => {
   if (request.url.startsWith('/api/')) {

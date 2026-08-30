@@ -1,0 +1,231 @@
+/* ===========================================================
+   Medicross — admin console (client portal management)
+   Shares the portal's design tokens (assets/portal.css).
+   =========================================================== */
+.admin-badge {
+  font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  color: #fff; background: var(--ink); padding: 4px 9px; border-radius: 999px;
+}
+/* .ph-logout comes from portal.css */
+
+/* layout */
+.acol { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+
+/* patient table */
+.ptbl-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.ptbl-search {
+  display: flex; align-items: center; gap: 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 9px 16px; min-width: 280px; color: var(--muted);
+  transition: border-color .2s;
+}
+.ptbl-search:focus-within { border-color: var(--brand); color: var(--ink); }
+.ptbl-search svg { width: 16px; height: 16px; flex: none; }
+.ptbl-search input {
+  border: none; outline: none; background: none; font: inherit;
+  font-size: 13.5px; color: inherit; width: 100%;
+}
+.ptbl-search input::placeholder { color: var(--muted); }
+.ptbl-scroll { overflow-x: auto; }
+.ptbl { width: 100%; border-collapse: collapse; min-width: 640px; }
+.ptbl th {
+  text-align: left; font-size: 11px; font-weight: 800; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 0 14px 10px; border-bottom: 1px solid var(--line);
+}
+.ptbl td {
+  padding: 12px 14px; border-bottom: 1px solid var(--line);
+  font-size: 13.5px; vertical-align: middle;
+}
+.ptbl tbody tr { cursor: pointer; transition: background .15s; }
+.ptbl tbody tr:hover { background: var(--chip); }
+.ptbl tbody tr.sel { background: color-mix(in srgb, var(--brand) 6%, #fff); }
+.ptbl tbody tr:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+.ptbl tbody tr:last-child td { border-bottom: none; }
+.ptbl .pname { display: flex; align-items: center; gap: 10px; }
+.ptbl .pname .av {
+  width: 32px; height: 32px; border-radius: 50%; flex: none;
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark)); color: #fff;
+  display: grid; place-items: center; font-weight: 700; font-size: 11.5px;
+}
+.ptbl .pname-txt { min-width: 0; }
+.ptbl .pname-txt .nm { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ptbl .muted-cell { color: var(--muted); }
+.ptbl-empty { padding: 30px 14px; text-align: center; color: var(--muted); font-size: 13.5px; }
+/* GDPR badge — used both in the patient table and the "Cont & consimțământ" card */
+.gdpr-badge {
+  display: inline-flex; align-items: center; gap: 4px; margin-top: 3px;
+  font-size: 10px; font-weight: 800; letter-spacing: .04em;
+  color: var(--success); background: var(--success-bg);
+  padding: 2px 7px; border-radius: 999px;
+}
+.gdpr-badge.missing { color: #8a5216; background: #fdf3e7; }
+.gdpr-badge svg { width: 11px; height: 11px; }
+
+/* GDPR status — read-only display, not a control. Staff can see whether the
+   patient has accepted the agreement and when; there is nothing here to
+   click, because consent is the patient's own act. */
+.gdpr-status {
+  display: flex; align-items: center; gap: 9px; margin-top: 12px;
+  padding: 10px 12px; border-radius: 10px;
+  font-size: 13px; font-weight: 700;
+  color: var(--success); background: var(--success-bg);
+}
+.gdpr-status.missing { color: #8a5216; background: #fdf3e7; }
+.gdpr-status svg { width: 15px; height: 15px; flex: none; }
+.gdpr-status .gdpr-when { margin-left: auto; font-weight: 600; font-size: 11.5px; color: inherit; opacity: .8; }
+.acct-line { display: flex; gap: 10px; font-size: 13px; padding: 6px 0; }
+.acct-line .k { font-weight: 700; min-width: 132px; }
+.acct-line .v { color: var(--muted); word-break: break-word; }
+.aerr { padding: 9px 12px; border-radius: 10px; background: #fdeaea; color: #a11d1d; font-size: 12.5px; font-weight: 600; }
+.fhint { font-size: 11px; color: var(--muted); margin-top: 5px; }
+.iform.stack { grid-template-columns: 1fr; }
+.iform .opt { font-weight: 600; color: var(--muted); }
+/* collapsible card */
+.acard.collapse { padding: 0; }
+.acard.collapse > summary {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  padding: 16px 20px; list-style: none; border-radius: 20px;
+}
+.acard.collapse > summary::-webkit-details-marker { display: none; }
+.acard.collapse > summary .ctitle {
+  font-family: var(--font-display); font-weight: 600; font-size: 19px; flex: 1;
+}
+.acard.collapse > summary .chev { width: 16px; height: 16px; flex: none; color: var(--muted); transition: transform .25s ease; }
+.acard.collapse[open] > summary .chev { transform: rotate(180deg); }
+.acard.collapse > summary:hover .chev { color: var(--brand); }
+.acard.collapse > .sub { padding: 0 20px; }
+.acard.collapse > form { padding: 0 20px 20px; }
+
+/* the 3D zone is assigned by the procedure — shown, not editable */
+.zoneinfo {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 10px 13px; border-radius: 11px;
+  background: color-mix(in srgb, var(--accent) 7%, #fff);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  font-size: 12px; font-weight: 600; color: #24408c; line-height: 1.55;
+}
+.zoneinfo.none { background: #fdf3e7; border-color: #f0d3ad; color: #8a5216; }
+.zoneinfo code {
+  font-family: ui-monospace, Menlo, monospace; font-size: 11.5px;
+  background: rgba(255, 255, 255, .7); padding: 1px 6px; border-radius: 5px;
+}
+
+/* long partner list scrolls natively; keep the closed control compact */
+select.scroll-select { max-width: 100%; }
+
+/* Detalii */
+#detailsText {
+  width: 100%; padding: 12px 14px; font: inherit; font-size: 13.5px; line-height: 1.65;
+  border: 1px solid var(--line); border-radius: 12px; background: #fff; color: inherit;
+  resize: vertical; min-height: 120px;
+}
+#detailsText:focus { outline: 2px solid var(--brand); outline-offset: 1px; border-color: transparent; }
+.saved-note { align-self: center; font-size: 12.5px; font-weight: 700; color: var(--success); }
+
+/* section cards */
+.acard { padding: 18px 20px 20px; }
+.acard > h2 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin-bottom: 3px; }
+.acard > .sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+
+/* generic admin table rows */
+.itemrow {
+  display: flex; align-items: center; gap: 12px; padding: 11px 13px;
+  border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px;
+}
+.itemrow .grow { flex: 1; min-width: 0; }
+.itemrow .t { font-weight: 700; font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.itemrow .m { font-size: 11.5px; color: var(--muted); }
+.itemrow.surgery-row { border-color: color-mix(in srgb, var(--brand) 35%, transparent); background: color-mix(in srgb, var(--brand) 4%, #fff); }
+
+.ibtn {
+  border: 1px solid var(--line); background: #fff; color: var(--ink);
+  font: inherit; font-weight: 700; font-size: 12px; padding: 7px 12px;
+  border-radius: 9px; cursor: pointer; white-space: nowrap;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.ibtn:hover { border-color: var(--brand); color: var(--brand); }
+.ibtn.danger:hover { border-color: #a11d1d; color: #a11d1d; background: #fdeaea; }
+.ibtn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.ibtn.primary:hover { background: var(--brand-dark); }
+.ibtn:disabled { opacity: .4; cursor: default; }
+
+/* single-line add forms (referrals, referral code) */
+.addrow { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.addrow input {
+  flex: 1; min-width: 180px; font: inherit; font-size: 13px;
+  padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--ink);
+}
+.addrow input:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+.addrow button {
+  border: 1px solid var(--brand); background: var(--brand); color: #fff;
+  font: inherit; font-weight: 700; font-size: 12.5px; padding: 9px 15px;
+  border-radius: 9px; cursor: pointer; white-space: nowrap;
+}
+.addrow button:hover { background: var(--brand-dark); }
+.err { margin-top: 8px; font-size: 12.5px; font-weight: 600; color: #a11d1d; }
+.err[hidden] { display: none; }
+
+/* referral rows */
+.ref-line { display: flex; align-items: center; gap: 9px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.ref-line:last-child { border-bottom: none; }
+.ref-line .grow { flex: 1; min-width: 0; }
+.ref-line .t { font-weight: 700; font-size: 13.5px; }
+.ref-line .m { font-size: 11.5px; color: var(--muted); }
+.ref-line select {
+  font: inherit; font-size: 12px; font-weight: 600; padding: 6px 9px;
+  border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink);
+}
+.ref-empty { font-size: 12.5px; color: var(--muted); padding: 6px 0; }
+
+/* status pills (mirror the portal's) */
+.st { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.st.programata { color: var(--brand-dark); background: color-mix(in srgb, var(--brand) 12%, #fff); }
+.st.evaluare { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, #fff); }
+.st.finalizata { color: var(--success); background: var(--success-bg); }
+
+/* discount summary */
+.disc-sum { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.disc-actions { flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 7px; }
+.disc-line { display: flex; align-items: center; gap: 9px; font-size: 13px; }
+.disc-line .k { font-weight: 700; min-width: 168px; }
+.disc-line .v { color: var(--muted); font-size: 12px; }
+.disc-line .pctv { margin-left: auto; font-weight: 800; white-space: nowrap; }
+.disc-line.on .pctv { color: var(--success); }
+.disc-line.off .pctv { color: var(--muted); text-decoration: line-through; }
+
+/* inline edit form */
+.iform {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;
+  padding: 14px; border: 1px dashed var(--line); border-radius: 12px; margin-top: 10px;
+}
+.iform[hidden] { display: none; }
+.iform label { font-size: 11px; font-weight: 700; display: block; margin-bottom: 4px; color: var(--muted); }
+.iform input, .iform select {
+  width: 100%; padding: 9px 11px; font: inherit; font-size: 13px;
+  border: 1px solid var(--line); border-radius: 9px; background: #fff; color: inherit;
+}
+.iform input:focus, .iform select:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+.iform .full { grid-column: 1 / -1; }
+.iform .frow { display: flex; gap: 8px; align-items: center; }
+
+/* activity log */
+.logl { list-style: none; max-height: 320px; overflow-y: auto; }
+.logl li { display: flex; gap: 10px; padding: 9px 4px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
+.logl li:last-child { border-bottom: none; }
+.logl .lt { color: var(--muted); font-size: 11px; white-space: nowrap; flex: none; width: 118px; }
+.logl .lw { font-weight: 700; flex: none; width: 56px; }
+
+/* doc preview thumb */
+.doc-thumb { width: 40px; height: 40px; border-radius: 9px; object-fit: cover; flex: none; border: 1px solid var(--line); }
+.doc-ph { width: 40px; height: 40px; border-radius: 9px; flex: none; background: var(--chip); display: grid; place-items: center; color: var(--muted); }
+
+@media (max-width: 720px) {
+  .iform { grid-template-columns: 1fr 1fr; }
+  .itemrow { flex-wrap: wrap; }
+  .disc-line .k { min-width: 120px; }
+  .ptbl-search { min-width: 0; width: 100%; }
+}
