@@ -90,7 +90,7 @@ app.setNotFoundHandler((request, reply) => {
   if (request.url.startsWith('/api/')) {
     return reply.code(404).send({ error: 'Rută inexistentă.' });
   }
-  return reply.code(404).type('text/html').send('<h1>404</h1><p>Pagina nu există.</p>');
+  return reply.code(404).type('text/html; charset=utf-8').send('<h1>404</h1><p>Pagina nu există.</p>');
 });
 
 app.setErrorHandler((error, request, reply) => {
