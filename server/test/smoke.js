@@ -76,14 +76,18 @@ const created = await admin('POST', '/api/admin/patients', {
   phone: '+40 700 111 222',
   sex: 'f',
   password: 'parola-initiala',
+  // An admin cannot assert GDPR consent on the patient's behalf — passing it
+  // anyway must be silently ignored, checked just below.
   gdprAccepted: true,
 });
 check('the patient is created', () => assert.equal(created.status, 201));
 check('initials are derived from the name', () => assert.equal(created.body.initials, 'ȘP'));
 check('diacritics are stripped from the referral code',
   () => assert.match(created.body.referralCode, /^MEDI-STEFANIA-[A-Z2-9]{3}$/));
-check('GDPR consent is timestamped',
-  () => assert.ok(created.body.gdprAcceptedAt, 'expected a consent timestamp'));
+check('an admin-created account starts with GDPR unaccepted, regardless of what was sent',
+  () => assert.equal(created.body.gdprAccepted, false));
+check('and no acceptance timestamp exists yet',
+  () => assert.equal(created.body.gdprAcceptedAt, null));
 
 const pid = created.body.id;
 
@@ -97,6 +101,11 @@ console.log('\nadmin fills in the medical record');
 await admin('PATCH', `/api/admin/patients/${pid}`, {
   details: 'Pacientă evaluată pentru Mommy Makeover la Liv Hospital.',
 });
+
+const gdprPatchAttempt = await admin('PATCH', `/api/admin/patients/${pid}`,
+  { gdprAccepted: true });
+check('admin has no way to flip GDPR consent through PATCH either',
+  () => assert.equal(gdprPatchAttempt.body.gdprAccepted, false));
 const withOp = await admin('PUT', `/api/admin/patients/${pid}/operations`, {
   name: 'Mommy Makeover',
   detail: 'Abdominoplastie + Mamare · Liv Hospital',
@@ -130,6 +139,24 @@ const pLogin = await patient('POST', '/api/auth/login',
 check('the patient can sign in', () => assert.equal(pLogin.status, 200));
 check('the patient is told to change the issued password',
   () => assert.equal(pLogin.body.mustChangePassword, true));
+
+console.log('\nGDPR consent is the patient\'s own act, not admin\'s');
+
+const beforeAccept = await patient('GET', '/api/me');
+check('the freshly created account is unaccepted, exactly as the admin left it',
+  () => assert.equal(beforeAccept.body.gdprAccepted, false));
+
+const adminGdprAttempt = await admin('POST', '/api/me/gdpr');
+check('an admin session has no patient_id of its own to call this with',
+  () => assert.equal(adminGdprAttempt.status, 400));
+
+const accepted = await patient('POST', '/api/me/gdpr');
+check('the patient accepting sets it to true', () => assert.equal(accepted.body.gdprAccepted, true));
+check('with a timestamp', () => assert.ok(accepted.body.gdprAcceptedAt));
+
+const acceptAgain = await patient('POST', '/api/me/gdpr');
+check('accepting a second time is a harmless no-op, not a new timestamp',
+  () => assert.equal(acceptAgain.body.gdprAcceptedAt, accepted.body.gdprAcceptedAt));
 
 const me = await patient('GET', '/api/me');
 check('the patient sees the admin-written details',

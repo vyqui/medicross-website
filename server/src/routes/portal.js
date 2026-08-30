@@ -27,6 +27,26 @@ export default async function portalRoutes(app) {
     return patient;
   });
 
+  /* The only way gdpr_accepted ever becomes true. One-directional (there is
+     no reverse of this endpoint) and always logged as the patient, because
+     this can only run inside the patient's own authenticated session — an
+     admin viewing on the patient's behalf has no patient_id of their own to
+     call it with. A patient who wants to withdraw consent contacts the team
+     directly (see acord-gdpr.html); that is handled off-system, not by an
+     in-app toggle. */
+  app.post('/api/me/gdpr', async (request, reply) => {
+    const id = ownPatientId(request, reply);
+    if (!id) return;
+
+    const { rowCount } = await query(
+      `update patients set gdpr_accepted = true, gdpr_accepted_at = now()
+        where id = $1 and not gdpr_accepted`,
+      [id]);
+    if (rowCount > 0) await logEvent(id, 'pacient', 'Acord GDPR acceptat');
+
+    return loadPatient(id);
+  });
+
   /* The patient claims a social action. It earns nothing until a member of
      staff verifies it — see src/discounts.js. */
   app.post('/api/me/actions/:key', async (request, reply) => {

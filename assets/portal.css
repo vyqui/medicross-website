@@ -286,3 +286,57 @@ body.portal button { font-family: inherit; }
 @media (max-width: 720px) {
   .portal-disclaimer { padding-bottom: 84px; }
 }
+
+/* ===================== GDPR GATE =====================
+   A mandatory overlay a patient cannot get past without ticking consent.
+   z-index sits above the sticky header (50) and the mobile tab bar. There is
+   no close affordance beyond the two buttons inside the card — no backdrop
+   click handler, no Escape handler — by design. */
+.gdpr-gate {
+  position: fixed; inset: 0; z-index: 999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  background: rgba(33, 30, 26, .55);
+  backdrop-filter: blur(3px);
+}
+/* The class above sets its own `display`, which otherwise wins the cascade
+   over the UA stylesheet's `[hidden] { display: none }` — without this rule
+   the gate stays visible even while the `hidden` attribute is set. */
+.gdpr-gate[hidden] { display: none; }
+.gdpr-gate-card {
+  width: 100%; max-width: 460px;
+  background: var(--card); border-radius: 20px;
+  padding: 32px 30px 28px;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,.35);
+}
+.gdpr-gate-card h2 {
+  font-family: var(--font-display); font-weight: 600; font-size: 23px;
+  margin-bottom: 12px; letter-spacing: -.01em;
+}
+.gdpr-gate-card p { font-size: 14.5px; line-height: 1.6; color: var(--muted); margin-bottom: 20px; }
+.gdpr-gate-check {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px;
+  cursor: pointer; margin-bottom: 18px;
+}
+.gdpr-gate-check input {
+  width: 19px; height: 19px; flex: none; margin-top: 1px; accent-color: var(--brand);
+}
+.gdpr-gate-check span { font-size: 13.5px; line-height: 1.55; }
+.gdpr-gate-check a { color: var(--brand); text-decoration: underline; font-weight: 700; }
+.gdpr-gate-btn {
+  width: 100%; border: none; border-radius: 999px; padding: 14px;
+  background: var(--brand); color: #fff; font: inherit; font-weight: 800; font-size: 14.5px;
+  cursor: pointer; transition: opacity .2s, background .2s;
+}
+.gdpr-gate-btn:disabled { background: var(--ring-track); color: var(--muted); cursor: not-allowed; }
+.gdpr-gate-btn:not(:disabled):hover { background: var(--brand-dark); }
+.gdpr-gate-logout {
+  display: block; width: 100%; margin-top: 14px; padding: 6px;
+  border: none; background: none; font: inherit; font-size: 12.5px; font-weight: 700;
+  color: var(--muted); cursor: pointer; text-decoration: underline;
+}
+.gdpr-gate-logout:hover { color: var(--brand); }
+@media (max-width: 480px) {
+  .gdpr-gate-card { padding: 26px 22px 22px; }
+}

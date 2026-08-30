@@ -66,15 +66,26 @@ earlier build.
 
 Accounts live in the store (`db.accounts`) so both paths persist:
 - **Patients sign themselves up** at `register.html`. Sex is captured because it picks
-  the 3D body model.
-- **Admins create accounts** from the "Cont nou" card in the console.
+  the 3D body model. The GDPR tick is required at submit — this is valid consent
+  because the patient ticks it themselves, in the same moment they create their
+  own account.
+- **Admins create accounts** from the "Cont nou" card in the console — deliberately
+  with **no GDPR field at all**. An admin cannot assert consent on a patient's
+  behalf, so the account is created unaccepted (`gdprAccepted: false`) and the
+  patient is shown a full-screen, unskippable consent gate on their first login to
+  `portal.html` (see the IIFE right after `P()` is defined in `assets/portal.js`).
+  There is no way past it except ticking the box or signing out.
 
-Both paths **require the GDPR tick** and refuse to create the account without it. The
-acceptance is stored with a timestamp (`gdprAccepted`, `gdprAcceptedAt`) and written to
-the activity log. The patient list in the admin console shows **✓ GDPR** next to each
-patient, or an amber "GDPR lipsă" when unsigned, and the selected patient's card has a
-tick-box to record or withdraw it (also logged). The GDPR agreement text itself is a
-placeholder — drop the real copy in and link it from the checkbox on `register.html`.
+Whichever path creates the account, acceptance is stored with a timestamp
+(`gdprAccepted`, `gdprAcceptedAt`) and written to the activity log as `who: 'pacient'`
+or `who: 'sistem'` — **never** `'admin'`. The patient list in the admin console shows
+**✓ GDPR** next to each patient, or an amber "GDPR lipsă" when unaccepted, and the
+selected patient's "Cont & consimțământ" card shows the same status **read-only** — no
+checkbox, no click handler, nothing staff can toggle. `MedicrossDB.acceptGdpr(pid)` is
+the only function that can set it to `true`; it is one-directional (there is no
+`false` path once accepted) and always logs as the patient. A patient who wants to
+withdraw consent does so by contacting the team directly, per the note on
+`acord-gdpr.html` — that is handled off-system, not by an in-app toggle.
 
 **Demo accounts** — patient `andreea@demo.ro` / `demo`, admin `admin@medicross.ro` / `admin`.
 Accounts created by the admin get the initial password shown in the form (`medicross` by

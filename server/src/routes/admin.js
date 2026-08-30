@@ -32,7 +32,7 @@ export default async function adminRoutes(app) {
      transaction — a patient without an account cannot sign in, and an account
      without a patient has nothing to show. */
   app.post('/api/admin/patients', async (request, reply) => {
-    const { name, email, phone, sex, password, gdprAccepted } = request.body ?? {};
+    const { name, email, phone, sex, password } = request.body ?? {};
 
     if (!name || !String(name).trim()) {
       return reply.code(400).send({ error: 'Numele este obligatoriu.' });
@@ -62,13 +62,15 @@ export default async function adminRoutes(app) {
         let patient;
         for (let attempt = 0; attempt < 5 && !patient; attempt += 1) {
           try {
+            /* No gdpr_accepted field here, ever: an admin cannot assert
+               consent on a patient's behalf. Every row is born unaccepted;
+               only the patient can move it to true, from their own session,
+               via POST /api/me/gdpr. */
             const res = await client.query(
-              `insert into patients (name, initials, email, phone, sex, referral_code,
-                                     gdpr_accepted, gdpr_accepted_at)
-               values ($1, $2, $3, $4, $5, $6, $7, $8) returning *`,
+              `insert into patients (name, initials, email, phone, sex, referral_code)
+               values ($1, $2, $3, $4, $5, $6) returning *`,
               [String(name).trim(), initialsFor(name), String(email).trim(),
-                phone ?? '', sex ?? 'f', generateReferralCode(name),
-                Boolean(gdprAccepted), gdprAccepted ? new Date() : null]);
+                phone ?? '', sex ?? 'f', generateReferralCode(name)]);
             patient = res.rows[0];
           } catch (err) {
             if (err.constraint !== 'patients_referral_code_key') throw err;
@@ -83,7 +85,8 @@ export default async function adminRoutes(app) {
 
         await client.query(
           'insert into activity_log (patient_id, who, what) values ($1, $2, $3)',
-          [patient.id, who(request), 'A creat contul pacientului']);
+          [patient.id, who(request),
+            'Cont creat de echipa Medicross — necesită acceptarea acordului GDPR de către pacient la prima autentificare']);
 
         return patient.id;
       });
@@ -95,44 +98,36 @@ export default async function adminRoutes(app) {
     }
   });
 
-  /* Identity, contact details, the free-text "Detalii" card and GDPR consent. */
+  /* Identity, contact details and the free-text "Detalii" card. Deliberately
+     no gdprAccepted field anywhere in this route: consent is the patient's
+     own act (POST /api/me/gdpr, below the portal routes), and staff has no
+     endpoint capable of touching it — not "must not use", but no code path
+     exists that could. The admin UI shows the status read-only. */
   app.patch('/api/admin/patients/:id', async (request, reply) => {
     const id = request.params.id;
     const current = await query('select * from patients where id = $1 and deleted_at is null', [id]);
     if (current.rowCount === 0) return reply.code(404).send({ error: 'Pacient inexistent.' });
     const before = current.rows[0];
 
-    const { name, phone, sex, details, gdprAccepted } = request.body ?? {};
+    const { name, phone, sex, details } = request.body ?? {};
     if (sex && !['f', 'm'].includes(sex)) {
       return reply.code(400).send({ error: 'Sexul trebuie să fie „f” sau „m”.' });
     }
 
-    const nextGdpr = gdprAccepted === undefined ? before.gdpr_accepted : Boolean(gdprAccepted);
-
     await query(
       `update patients set
-         name             = coalesce($2, name),
-         initials         = case when $2::text is null then initials else $3 end,
-         phone            = coalesce($4, phone),
-         sex              = coalesce($5, sex),
-         details          = coalesce($6, details),
-         gdpr_accepted    = $7,
-         gdpr_accepted_at = case
-                              when $7 and not gdpr_accepted then now()
-                              when not $7 then null
-                              else gdpr_accepted_at
-                            end
+         name     = coalesce($2, name),
+         initials = case when $2::text is null then initials else $3 end,
+         phone    = coalesce($4, phone),
+         sex      = coalesce($5, sex),
+         details  = coalesce($6, details)
        where id = $1`,
       [id, name ?? null, name ? initialsFor(name) : null, phone ?? null,
-        sex ?? null, details ?? null, nextGdpr]);
+        sex ?? null, details ?? null]);
 
     if (details !== undefined && details !== before.details) {
       await logEvent(id, who(request),
         details ? 'A actualizat descrierea pacientului' : 'A șters descrierea pacientului');
-    }
-    if (nextGdpr !== before.gdpr_accepted) {
-      await logEvent(id, who(request),
-        nextGdpr ? 'Acord GDPR marcat ca semnat' : 'Acord GDPR retras');
     }
 
     return loadPatient(id);

@@ -22,6 +22,54 @@
 
   function P() { return MedicrossDB.patient(PID); }
 
+  /* ---------------- mandatory GDPR consent gate ----------------
+     Shown only to the patient themselves, never to an admin viewing the
+     portal read-only — staff cannot accept consent on a patient's behalf,
+     so there is nothing for them to skip past here in the first place.
+     No close button, no click-outside handler, no Escape handler: the only
+     ways out are ticking the box and continuing, or signing out. */
+  (function () {
+    var p = P();
+    if (!p || AS_ADMIN || p.gdprAccepted) return;
+
+    var gate = document.getElementById('gdprGate');
+    var box = document.getElementById('gdprGateBox');
+    var btn = document.getElementById('gdprGateBtn');
+    var logoutBtn = document.getElementById('gdprGateLogout');
+    if (!gate || !box || !btn) return;
+
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    gate.hidden = false;
+    box.focus();
+
+    box.addEventListener('change', function () { btn.disabled = !box.checked; });
+
+    btn.addEventListener('click', function () {
+      if (!box.checked) return;
+      MedicrossDB.acceptGdpr(PID);
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      gate.remove();
+    });
+
+    if (logoutBtn) logoutBtn.addEventListener('click', function () {
+      MedicrossDB.logout();
+      location.href = 'login.html';
+    });
+
+    // Keep keyboard focus inside the card while the gate is up.
+    gate.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape') { ev.preventDefault(); return; }
+      if (ev.key !== 'Tab') return;
+      var focusables = gate.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])');
+      if (!focusables.length) return;
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+      else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+    });
+  })();
+
   /* ---------------- header: identity + logout ---------------- */
   (function () {
     var p = P();

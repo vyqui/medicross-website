@@ -13,8 +13,14 @@ Node 22+, Fastify, Postgres. No build step, no native modules.
   so there is nothing to compile). Sessions live in Postgres behind a signed,
   httpOnly cookie and can be revoked.
 - **The medical record.** Operations, the Istanbul trip agenda, free-text
-  details, GDPR consent and uploaded documents — all authored by staff, all
-  visible to exactly one patient.
+  details and uploaded documents — all authored by staff, all visible to
+  exactly one patient.
+- **GDPR consent, exclusively the patient's own act.** Admin creates the
+  account unaccepted — there is no `gdprAccepted` field anywhere in the admin
+  routes, not even in `PATCH`, so staff has no code path that could touch it.
+  The patient accepts it themselves via `POST /api/me/gdpr`, which only runs
+  inside their own session and only moves the flag false → true. The admin
+  console shows the status read-only.
 - **Discounts, decided server-side.** A patient claiming a follow earns nothing.
   Only a member of staff confirming it writes `verified_at`, and only
   `verified_at` counts. Amounts live in `src/discounts.js` and are never read
@@ -76,6 +82,7 @@ Everything is under `/api`. Session comes from the cookie; no tokens in URLs.
 | `POST` | `/api/auth/login` · `/logout` · `/password` | anyone / signed in |
 | `GET` | `/api/auth/session` | anyone |
 | `GET` | `/api/me` | patient |
+| `POST` | `/api/me/gdpr` | patient — the only way consent is ever accepted |
 | `POST` | `/api/me/actions/:key` · `/api/me/view` | patient |
 | `POST`/`DELETE` | `/api/me/documents[/:id]` | patient |
 | `GET` | `/api/documents/:id` | owner or staff |

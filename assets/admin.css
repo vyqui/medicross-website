@@ -40,13 +40,18 @@
 .gdpr-badge.missing { color: #8a5216; background: #fdf3e7; }
 .gdpr-badge svg { width: 11px; height: 11px; }
 
-/* GDPR toggle */
-.gdpr-toggle {
+/* GDPR status — read-only display, not a control. Staff can see whether the
+   patient has accepted the agreement and when; there is nothing here to
+   click, because consent is the patient's own act. */
+.gdpr-status {
   display: flex; align-items: center; gap: 9px; margin-top: 12px;
-  font-size: 13px; font-weight: 700; cursor: pointer;
+  padding: 10px 12px; border-radius: 10px;
+  font-size: 13px; font-weight: 700;
+  color: var(--success); background: var(--success-bg);
 }
-.gdpr-toggle input { width: 17px; height: 17px; flex: none; accent-color: var(--brand); }
-.gdpr-toggle .gdpr-when { margin-left: auto; font-weight: 600; font-size: 11.5px; color: var(--muted); }
+.gdpr-status.missing { color: #8a5216; background: #fdf3e7; }
+.gdpr-status svg { width: 15px; height: 15px; flex: none; }
+.gdpr-status .gdpr-when { margin-left: auto; font-weight: 600; font-size: 11.5px; color: inherit; opacity: .8; }
 .acct-line { display: flex; gap: 10px; font-size: 13px; padding: 6px 0; }
 .acct-line .k { font-weight: 700; min-width: 132px; }
 .acct-line .v { color: var(--muted); word-break: break-word; }

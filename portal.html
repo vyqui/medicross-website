@@ -14,6 +14,24 @@
 </head>
 <body class="portal" id="top">
 
+  <!-- ================= GDPR GATE =================
+       Unskippable: no close button, no click-outside, no Escape handler.
+       Shown only when the logged-in patient (never an admin viewing the
+       portal) has not yet accepted the agreement — see the mandatory-consent
+       gate in assets/portal.js. -->
+  <div class="gdpr-gate" id="gdprGate" hidden>
+    <div class="gdpr-gate-card" role="dialog" aria-modal="true" aria-labelledby="gdprGateTitle">
+      <h2 id="gdprGateTitle">Un ultim pas înainte să continui</h2>
+      <p>Pentru a-ți folosi contul, te rugăm să confirmi că ai citit și accepți acordul privind prelucrarea datelor tale personale și medicale.</p>
+      <label class="gdpr-gate-check">
+        <input type="checkbox" id="gdprGateBox" />
+        <span>Am citit și accept <a href="acord-gdpr.html" target="_blank" rel="noopener">acordul GDPR</a> privind prelucrarea datelor mele personale și medicale.</span>
+      </label>
+      <button type="button" class="gdpr-gate-btn" id="gdprGateBtn" disabled>Continuă în cont</button>
+      <button type="button" class="gdpr-gate-logout" id="gdprGateLogout">Ieși din cont</button>
+    </div>
+  </div>
+
   <!-- ================= HEADER ================= -->
   <header class="ph">
     <div class="ph-inner">

@@ -350,12 +350,19 @@
     var email = String(opts.email || '').trim().toLowerCase();
     var pass = String(opts.pass || '');
     var sex = opts.sex === 'm' ? 'm' : 'f';
+    var byAdmin = opts.by === 'admin';
 
     if (name.length < 3) return { error: 'Introdu numele complet.' };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return { error: 'Adresa de e-mail nu este validă.' };
     if (pass.length < 4) return { error: 'Parola trebuie să aibă minim 4 caractere.' };
     if (accountFor(email)) return { error: 'Există deja un cont cu acest e-mail.' };
-    if (!opts.gdpr) return { error: 'Trebuie să accepți prelucrarea datelor (GDPR) pentru a continua.' };
+    /* Self-service sign-up requires the patient's own tick, in the very
+       moment they create their own account — that is valid consent. An
+       admin creating the account on the patient's behalf cannot assert
+       consent for them, so there is no gdpr field to check here at all;
+       the account is created unaccepted and the patient confirms it
+       themselves at first login — see acceptGdprConsent() below. */
+    if (!byAdmin && !opts.gdpr) return { error: 'Trebuie să accepți prelucrarea datelor (GDPR) pentru a continua.' };
 
     var now = new Date().toISOString();
     var p = {
@@ -363,18 +370,19 @@
       phone: String(opts.phone || '').trim(), sex: sex,
       referralCode: referralCodeFor(name), referrals: [],
       usedCode: null,
-      gdprAccepted: true, gdprAcceptedAt: now,
+      gdprAccepted: !byAdmin, gdprAcceptedAt: byAdmin ? null : now,
       details: '',
       actions: freshActions(),
       activeOp: null, mode: 'surface',
       operations: [],
       trip: { title: 'Călătoria mea · Istanbul', subtitle: 'Se stabilește după evaluarea medicală.', items: [] },
       documents: [],
-      log: [
-        { t: now, who: 'sistem', what: 'Acord GDPR acceptat la crearea contului' },
-        { t: now, who: opts.by === 'admin' ? 'admin' : 'pacient',
-          what: opts.by === 'admin' ? 'Cont creat de echipa Medicross' : 'Cont creat prin înregistrare' }
-      ]
+      log: byAdmin
+        ? [{ t: now, who: 'admin', what: 'Cont creat de echipa Medicross — necesită acceptarea acordului GDPR de către pacient la prima autentificare' }]
+        : [
+            { t: now, who: 'sistem', what: 'Acord GDPR acceptat la crearea contului' },
+            { t: now, who: 'pacient', what: 'Cont creat prin înregistrare' }
+          ]
     };
     db.patients.push(p);
     db.accounts.push({ email: email, pass: pass, role: 'patient', patientId: p.id });
@@ -413,12 +421,21 @@
     save(db);
   }
 
-  function setGdpr(pid, accepted, who) {
-    var p = patient(pid); if (!p) return;
-    if (p.gdprAccepted === !!accepted) return;
-    p.gdprAccepted = !!accepted;
-    p.gdprAcceptedAt = accepted ? new Date().toISOString() : null;
-    logEvent(p, who || 'admin', accepted ? 'Acord GDPR marcat ca semnat' : 'Acord GDPR retras');
+  /* Consent is the patient's own act, always. There is deliberately no
+     parameter for who is accepting or which way — this can only be called
+     from the patient's own session (see the mandatory GDPR gate in
+     portal.js), it only ever moves false -> true, and it always logs as
+     "pacient". Nothing here is reachable from admin.js: staff can see the
+     status (rendered read-only in the "Cont & consimțământ" card) but has
+     no control that touches it, matching the note already in portal.js —
+     "staff must never be able to grant or revoke it on the patient's
+     behalf". A patient who wants to withdraw consent does so by contacting
+     the team directly (see acord-gdpr.html), handled off-system. */
+  function acceptGdprConsent(pid) {
+    var p = patient(pid); if (!p || p.gdprAccepted) return;
+    p.gdprAccepted = true;
+    p.gdprAcceptedAt = new Date().toISOString();
+    logEvent(p, 'pacient', 'Acord GDPR acceptat');
     save(db);
   }
 
@@ -450,7 +467,7 @@
   var API = window.MedicrossDB = {
     // auth
     login: login, logout: logout, session: session, requireRole: requireRole,
-    createPatient: createPatient, setGdpr: setGdpr, saveDetails: saveDetails,
+    createPatient: createPatient, acceptGdpr: acceptGdprConsent, saveDetails: saveDetails,
     HOSPITALS: HOSPITALS,
     accounts: function () { return db.accounts; },
     accountForPatient: function (pid) {

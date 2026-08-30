@@ -77,14 +77,15 @@
       box.appendChild(line);
     });
 
-    var boxg = document.getElementById('gdprBox');
-    boxg.checked = !!p.gdprAccepted;
-    document.getElementById('gdprWhen').textContent =
-      p.gdprAccepted && p.gdprAcceptedAt ? 'semnat ' + fmtTime(p.gdprAcceptedAt) : '';
-    boxg.onchange = function () {
-      MedicrossDB.setGdpr(p.id, boxg.checked, 'admin');
-      renderAll();
-    };
+    // Read-only status — there is no control here for staff to change, on
+    // purpose. Consent is the patient's own act; see acord-gdpr.html.
+    var statusBox = document.getElementById('gdprStatus');
+    statusBox.className = 'gdpr-status' + (p.gdprAccepted ? '' : ' missing');
+    statusBox.innerHTML = p.gdprAccepted
+      ? TICK + ' <strong>Acord GDPR acceptat</strong>' +
+        (p.gdprAcceptedAt ? '<span class="gdpr-when">' + fmtTime(p.gdprAcceptedAt) + '</span>' : '')
+      : '<strong>Acordul GDPR nu a fost acceptat încă</strong>' +
+        '<span class="gdpr-when">Pacientul va fi întrebat la prima autentificare</span>';
   }
 
   document.getElementById('newAcct').addEventListener('submit', function (ev) {
@@ -97,7 +98,6 @@
       phone: document.getElementById('naPhone').value,
       sex: document.getElementById('naSex').value,
       pass: document.getElementById('naPass').value,
-      gdpr: document.getElementById('naGdpr').checked,
       by: 'admin'
     });
     if (res.error) { errBox.textContent = res.error; errBox.hidden = false; return; }

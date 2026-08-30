@@ -58,11 +58,7 @@
               <select id="naSex"><option value="f">Feminin</option><option value="m">Masculin</option></select>
             </div>
             <div class="full"><label for="naPass">Parolă inițială</label><input id="naPass" type="text" value="medicross" required /></div>
-            <label class="gdpr-toggle full" for="naGdpr">
-              <input type="checkbox" id="naGdpr" />
-              <span>Pacientul a semnat acordul GDPR</span>
-            </label>
-            <div class="fhint full">Fără această bifă contul nu poate fi creat — consimțământul este pas obligatoriu.</div>
+            <div class="fhint full">Acordul GDPR nu poate fi bifat de echipă în numele pacientului — la prima autentificare, pacientul va trebui să îl accepte el însuși înainte de a intra în cont.</div>
             <div class="frow full"><button class="ibtn primary" type="submit">Creează contul</button></div>
             <div class="aerr full" id="naErr" hidden></div>
           </form>
@@ -82,11 +78,9 @@
           <h2>Cont &amp; consimțământ</h2>
           <div class="sub">Datele contului pacientului și starea acordului GDPR.</div>
           <div id="acctInfo"><!-- injected --></div>
-          <label class="gdpr-toggle">
-            <input type="checkbox" id="gdprBox" />
-            <span>Acord GDPR semnat</span>
-            <span class="gdpr-when" id="gdprWhen"></span>
-          </label>
+          <!-- Read-only, deliberately: consent is the patient's own act, never
+               something staff can tick or untick on their behalf. -->
+          <div class="gdpr-status" id="gdprStatus" aria-live="polite"></div>
         </div>
 
         <!-- general description -->
