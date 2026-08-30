@@ -1,0 +1,11 @@
+# Cloudflare Workers Static Assets refuses any file over 25 MiB. These four
+# videos exceed that (confirmed by an actual failed deploy, not a guess) and
+# are excluded from what gets published here — they stay in git untouched.
+# The pages that reference them (testimoniale.html,
+# medical-park-bahcelievler-hospital.html, stomatologie.html) will show a
+# missing video until these move to Cloudflare R2, which was already the
+# planned home for the site's video regardless of this size limit.
+materials/videos/sahin-ulu-video-1_4.mp4
+materials/videos/whatsapp-video-2025-04-14-at-4.03.01-pm.mp4
+materials/videos/img_1395.mov
+materials/videos/medicross-prezentare.mp4
