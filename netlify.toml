@@ -372,7 +372,7 @@
 
 [[redirects]]
   from = "/client/"
-  to = "https://cont.tratamente-turcia.ro/login"
+  to = "https://platforma.tratamente-turcia.ro/login"
   status = 301
   force = true
 
@@ -456,7 +456,7 @@
 
 [[redirects]]
   from = "/devino-membru/"
-  to = "https://cont.tratamente-turcia.ro/login"
+  to = "https://platforma.tratamente-turcia.ro/login"
   status = 301
   force = true
 
@@ -672,7 +672,7 @@
 
 [[redirects]]
   from = "/login/"
-  to = "https://cont.tratamente-turcia.ro/login"
+  to = "https://platforma.tratamente-turcia.ro/login"
   status = 301
   force = true
 
@@ -720,7 +720,7 @@
 
 [[redirects]]
   from = "/my-account/"
-  to = "https://cont.tratamente-turcia.ro/login"
+  to = "https://platforma.tratamente-turcia.ro/login"
   status = 301
   force = true
 
@@ -840,13 +840,13 @@
 
 [[redirects]]
   from = "/registration/"
-  to = "https://cont.tratamente-turcia.ro/login"
+  to = "https://platforma.tratamente-turcia.ro/login"
   status = 301
   force = true
 
 [[redirects]]
   from = "/registrierung/"
-  to = "https://cont.tratamente-turcia.ro/login"
+  to = "https://platforma.tratamente-turcia.ro/login"
   status = 301
   force = true
 
@@ -1044,13 +1044,13 @@
 
 [[redirects]]
   from = "/client/activare-card/"
-  to = "https://cont.tratamente-turcia.ro/login"
+  to = "https://platforma.tratamente-turcia.ro/login"
   status = 301
   force = true
 
 [[redirects]]
   from = "/client/inregistrare/"
-  to = "https://cont.tratamente-turcia.ro/login"
+  to = "https://platforma.tratamente-turcia.ro/login"
   status = 301
   force = true
 

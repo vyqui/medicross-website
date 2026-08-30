@@ -66,7 +66,7 @@ and lead capture. **Point it at a disposable database**, since it writes.
 6. Deploy. Migrations run on boot, so there is no release command to configure.
 7. Create the first administrator once, from the Railway shell:
    `ADMIN_EMAIL=... ADMIN_PASSWORD=... npm run seed:admin`
-8. Add the custom domain `cont.tratamente-turcia.ro` and point a CNAME at the
+8. Add the custom domain `platforma.tratamente-turcia.ro` and point a CNAME at the
    address Railway prints.
 
 Pick the **EU region** when creating the project. Patient records are

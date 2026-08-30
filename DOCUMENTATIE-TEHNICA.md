@@ -11,7 +11,7 @@ Proiectul are **două jumătăți separate**, care vor rula pe două adrese dife
 | Jumătate | Ce face | Unde va rula |
 |---|---|---|
 | **Site-ul de prezentare** | Paginile publice: specialități, prețuri, contact, blog | `tratamente-turcia.ro` |
-| **Platforma client** | Contul de pacient + panoul de administrare | `cont.tratamente-turcia.ro` |
+| **Platforma client** | Contul de pacient + panoul de administrare | `platforma.tratamente-turcia.ro` |
 
 Astăzi, ambele bucăți există în același loc — depozitul de cod (repository) `vyqui/medicross-website` — dar sunt scrise ca **două aplicații independente**, cu tehnologii diferite, pentru că fac lucruri fundamental diferite:
 
@@ -199,7 +199,7 @@ Fiecare astfel de adresă e verificată pe server: cine face cererea (din cookie
 |---|---|---|
 | **Cloudflare Pages** | site-ul de prezentare (fișierele statice) | gratuit fără limită reală la acest volum, publică automat la fiecare `git push`, infrastructură total separată de Railway |
 | **Railway** (regiune **EU West**) | serverul (`server/`) + baza de date PostgreSQL + documentele pacienților | găzduire simplă pentru Node.js + Postgres administrat, cost mic (~10-20€/lună); regiunea UE e obligatorie pentru date medicale (GDPR) |
-| **DNS-ul domeniului** | leagă `tratamente-turcia.ro` de Cloudflare Pages și `cont.tratamente-turcia.ro` de Railway | rămâne la registrator-ul (ROTLD) unde a fost cumpărat domeniul |
+| **DNS-ul domeniului** | leagă `tratamente-turcia.ro` de Cloudflare Pages și `platforma.tratamente-turcia.ro` de Railway | rămâne la registrator-ul (ROTLD) unde a fost cumpărat domeniul |
 
 Cele două servicii rulează pe infrastructuri complet separate, de la companii diferite — dacă platforma client are o problemă (sau chiar dacă Railway ca întreg ar avea o pană), site-ul public nu e afectat, și invers. Aceasta e o izolare mai puternică decât dacă am fi pus ambele servicii doar pe conturi separate în cadrul aceluiași furnizor.
 

@@ -3,7 +3,7 @@
 import glob, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PORTAL = 'https://cont.tratamente-turcia.ro/login'
+PORTAL = 'https://platforma.tratamente-turcia.ro/login'
 NEEDS_PAGE = '@@NEEDS_PAGE@@'
 
 local = {os.path.basename(f)[:-5] for f in glob.glob(os.path.join(ROOT, '*.html'))}
