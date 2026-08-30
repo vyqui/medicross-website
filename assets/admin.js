@@ -36,30 +36,78 @@
   var EUR = MedicrossDB.eur;
   var REF_STATUS = { inscris: 'Înscris — în așteptare', operat: 'Operat', anulat: 'Anulat' };
 
-  /* ---------------- patient list ---------------- */
+  /* ---------------- patient table ---------------- */
   var TICK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>';
 
+  // The intervention shown in the table, and the one "data intervenției"
+  // refers to: whichever operation the admin has flagged active drives the
+  // 3D highlight in the portal too, so it is the one that matters here.
+  // Falling back to a scheduled one, then to whatever exists, keeps the
+  // column meaningful even before an operation has been marked active.
+  function headlineOp(p) {
+    if (!p.operations || !p.operations.length) return null;
+    var active = p.operations.filter(function (o) { return o.active; })[0];
+    if (active) return active;
+    var scheduled = p.operations.filter(function (o) { return o.status === 'programata'; })[0];
+    return scheduled || p.operations[0];
+  }
+
+  function onlyDigits(s) { return String(s || '').replace(/\D/g, ''); }
+
+  // Name, phone (digit- or text-matched) and every intervention the patient
+  // has ever had — not just the one shown in the table — so a search for a
+  // finished procedure still finds the patient.
+  function matchesSearch(p, query) {
+    var q = query.trim().toLowerCase();
+    if (!q) return true;
+    if (p.name.toLowerCase().indexOf(q) > -1) return true;
+    var qDigits = onlyDigits(q);
+    if (qDigits && onlyDigits(p.phone).indexOf(qDigits) > -1) return true;
+    if (!qDigits && (p.phone || '').toLowerCase().indexOf(q) > -1) return true;
+    return (p.operations || []).some(function (o) { return o.name.toLowerCase().indexOf(q) > -1; });
+  }
+
   function renderPatients() {
-    var box = document.getElementById('patientList');
-    box.querySelectorAll('.prow').forEach(function (r) { r.remove(); });
-    MedicrossDB.patients().forEach(function (p) {
-      var b = el('button', 'prow' + (p.id === currentId ? ' sel' : ''));
-      b.type = 'button';
-      b.appendChild(el('span', 'av', p.initials));
-      var g = el('div', 'grow');
-      g.appendChild(el('div', 'nm', p.name));
-      g.appendChild(el('div', 'em', p.email));
-      // GDPR status right in the side menu
+    var body = document.getElementById('patientRows');
+    var emptyNote = document.getElementById('patientEmpty');
+    body.textContent = '';
+
+    var query = document.getElementById('patientSearch').value;
+    var list = MedicrossDB.patients().filter(function (p) { return matchesSearch(p, query); });
+
+    emptyNote.hidden = list.length > 0;
+
+    list.forEach(function (p) {
+      var op = headlineOp(p);
+      var tr = el('tr', p.id === currentId ? 'sel' : '');
+      tr.tabIndex = 0;
+
+      var tdName = el('td');
+      var wrap = el('div', 'pname');
+      wrap.appendChild(el('span', 'av', p.initials));
+      var txt = el('div', 'pname-txt');
+      txt.appendChild(el('div', 'nm', p.name));
       var badge = el('span', 'gdpr-badge' + (p.gdprAccepted ? '' : ' missing'));
       badge.innerHTML = p.gdprAccepted ? TICK + ' GDPR' : '! GDPR lipsă';
       badge.title = p.gdprAccepted
-        ? 'Acord GDPR semnat' + (p.gdprAcceptedAt ? ' · ' + fmtTime(p.gdprAcceptedAt) : '')
-        : 'Acordul GDPR nu este semnat';
-      g.appendChild(badge);
-      b.appendChild(g);
-      b.appendChild(el('span', 'disc', EUR(MedicrossDB.discount(p.id))));
-      b.addEventListener('click', function () { currentId = p.id; renderAll(); });
-      box.appendChild(b);
+        ? 'Acord GDPR acceptat' + (p.gdprAcceptedAt ? ' · ' + fmtTime(p.gdprAcceptedAt) : '')
+        : 'Acordul GDPR nu a fost acceptat încă';
+      txt.appendChild(badge);
+      wrap.appendChild(txt);
+      tdName.appendChild(wrap);
+      tr.appendChild(tdName);
+
+      tr.appendChild(el('td', p.phone ? null : 'muted-cell', p.phone || '—'));
+      tr.appendChild(el('td', op ? null : 'muted-cell', op ? op.name : '—'));
+      tr.appendChild(el('td', op && op.date ? null : 'muted-cell', (op && op.date) || '—'));
+      tr.appendChild(el('td', 'muted-cell', p.createdAt ? fmtTime(p.createdAt) : '—'));
+
+      function select() { currentId = p.id; renderAll(); }
+      tr.addEventListener('click', select);
+      tr.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select(); }
+      });
+      body.appendChild(tr);
     });
   }
 
@@ -87,6 +135,10 @@
       : '<strong>Acordul GDPR nu a fost acceptat încă</strong>' +
         '<span class="gdpr-when">Pacientul va fi întrebat la prima autentificare</span>';
   }
+
+  // Live filter — every keystroke re-renders just the table, not the whole
+  // detail panel, so the currently open patient stays selected underneath.
+  document.getElementById('patientSearch').addEventListener('input', renderPatients);
 
   document.getElementById('newAcct').addEventListener('submit', function (ev) {
     ev.preventDefault();

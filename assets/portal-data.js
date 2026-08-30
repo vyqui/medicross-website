@@ -15,7 +15,7 @@
 
   var DB_KEY = 'mcx_db_v3';
   var SESSION_KEY = 'mcx_session_v2';
-  var SCHEMA = 4;
+  var SCHEMA = 5;
   var MAX_STORED_FILE = 2 * 1024 * 1024;   // 2 MB per file kept inline (localStorage limit)
 
   /* ---------------- reward amounts (single source of truth) ---------------
@@ -140,6 +140,7 @@
         email: 'andreea@demo.ro',
         phone: '+40 7xx xxx xxx',
         sex: 'f',
+        createdAt: '2026-07-01T10:00:00Z',
         referralCode: 'MEDI-ANDREEA-2K6',
         // one friend signed up and operated (70 €), one is still only signed up (0 € yet)
         referrals: [
@@ -200,6 +201,14 @@
       if (typeof p.details !== 'string') p.details = '';
       if (typeof p.gdprAccepted !== 'boolean') p.gdprAccepted = false;
       if (!('gdprAcceptedAt' in p)) p.gdprAcceptedAt = null;
+      /* Schema 5 adds a real creation timestamp instead of inferring it from
+         the log. A patient saved before this existed gets the timestamp of
+         their oldest log entry (log is newest-first, so that's the last
+         element) — the closest available approximation of when the account
+         was actually created — or "now" if there is no log at all. */
+      if (!p.createdAt) {
+        p.createdAt = (p.log && p.log.length) ? p.log[p.log.length - 1].t : new Date().toISOString();
+      }
       /* Schema 4 moved discounts from percentages to fixed euro amounts.
          Carry old accounts over instead of wiping them: the four new social
          actions start from whatever the patient had already done (the old
@@ -371,6 +380,7 @@
       referralCode: referralCodeFor(name), referrals: [],
       usedCode: null,
       gdprAccepted: !byAdmin, gdprAcceptedAt: byAdmin ? null : now,
+      createdAt: now,
       details: '',
       actions: freshActions(),
       activeOp: null, mode: 'surface',
