@@ -3,6 +3,18 @@
 ##
 ## The site is plain static HTML with no build step, so the
 ## repository root is published exactly as it is committed.
+##
+## The production host is Cloudflare Pages, not Netlify — this file
+## stays the single hand-edited source of truth for every redirect and
+## header rule anyway, because named TOML fields are far easier to
+## review than raw _redirects/_headers lines. Cloudflare Pages reads
+## its own generated _redirects and _headers files instead (Pages has
+## no equivalent of Netlify's `pretty_urls`, and no [[redirects]]
+## table), produced from this file by tools/build-cf-redirects.py.
+## Run that script after any change here — new WordPress redirect, new
+## page, new header — so the two hosts never drift apart. Netlify
+## itself is kept working as a free fallback/staging deploy, in case
+## it's ever needed again.
 ## ---------------------------------------------------------------
 
 [build]
@@ -60,21 +72,21 @@
 ## here is otherwise reachable over HTTP. The API lives in server/ and
 ## is deployed separately to Railway; it has no business being served
 ## by the marketing site.
+##
+## Only the exact (non-wildcard) rules live here. /server/* and
+## /tools/* are wildcards, so they are grouped with the other wildcard
+## catch-alls near the end of this file instead — wrangler's Pages
+## emulator flags a wildcard rule sitting ahead of exact rules as
+## something that can shadow them, so every wildcard rule belongs
+## after every exact one, full stop.
 ## ---------------------------------------------------------------
 [[redirects]]
-  from = "/server/*"
-  to = "/"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/tools/*"
-  to = "/"
-  status = 301
-  force = true
-
-[[redirects]]
   from = "/README-PORTAL.md"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/DOCUMENTATIE-TEHNICA.md"
   to = "/"
   status = 301
 
@@ -1204,9 +1216,21 @@
   status = 301
   force = true
 
-## Custom post types and archives, collapsed wholesale.
-## These are listed last: Netlify applies the first match, so the
-## exact rules above always win over these catch-alls.
+## Wildcards, collapsed wholesale. Listed last, all together: Netlify
+## (and Cloudflare Pages) apply the first match, so every exact rule
+## above must win over every wildcard here — never the other way round.
+
+[[redirects]]
+  from = "/server/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tools/*"
+  to = "/"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/testimonial/*"

@@ -66,19 +66,22 @@ Fiecare pagină de tip "specialitate" sau "serviciu" (ex. `rinoplastie.html`, `g
 
 Faptul că header-ul și footer-ul sunt identice pe toate paginile e important de știut: orice modificare la ele (ex. schimbarea unui număr de telefon) trebuie aplicată pe toate fișierele deodată, cu un script, nu manual pagină cu pagină.
 
-### 3.3. Platforma de hosting: Netlify
+### 3.3. Platforma de hosting: Cloudflare Pages
 
-Site-ul se deployează pe [Netlify](https://netlify.com), un serviciu care ia fișierele direct din depozitul GitHub și le publică pe internet, automat, la fiecare modificare (`git push`). Configurația e în `netlify.toml`:
+Site-ul se deployează pe [Cloudflare Pages](https://pages.cloudflare.com), un serviciu gratuit care ia fișierele direct din depozitul GitHub și le publică pe internet, automat, la fiecare modificare (`git push`). A fost ales în locul unei alternative precum Netlify din două motive: e complet gratuit la acest volum de trafic, și — mai important — rulează pe o infrastructură total separată de Railway (unde stă platforma de client), deci o problemă la Railway nu poate pica și site-ul public.
 
-- **`pretty_urls = true`** — face ca `rinoplastie.html` să fie accesibil și ca `rinoplastie` (fără extensie), pentru că așa sunt scrise adresele "canonice" în cod și în harta site-ului (`sitemap.xml`).
-- **Headere de securitate** — reguli standard care împiedică anumite tipuri de atacuri (ex. afișarea site-ului într-un `<iframe>` de pe alt domeniu).
-- **Cache pentru imagini/video** — browserul ține minte fișierele din `materials/` o săptămână, ca paginile să se încarce mai repede la vizite repetate.
+Regulile de redirecționare și headerele de securitate se scriu o singură dată, în `netlify.toml` (păstrat ca sursă de adevăr ușor de citit/editat), iar scriptul `tools/build-cf-redirects.py` generează din el fișierele native pe care Cloudflare Pages știe să le citească:
+
+- **`_redirects`** — conține și regulile de "URL curat" (`rinoplastie` funcționează fără `.html`, exact cum apare în adresele "canonice" din cod și din harta site-ului `sitemap.xml`), și cele 200 de reguli de redirecționare de mai jos.
+- **`_headers`** — headerele de securitate (reguli standard care împiedică anumite tipuri de atacuri, ex. afișarea site-ului într-un `<iframe>` de pe alt domeniu) și cache-ul pentru `materials/` (o săptămână, ca paginile să se încarce mai repede la vizite repetate).
+
+Orice modificare viitoare la reguli se face în `netlify.toml`, apoi se rulează scriptul din nou — altfel cele două fișiere generate rămân în urmă.
 
 ### 3.4. Maparea de redirect-uri de la WordPress
 
 Domeniul `tratamente-turcia.ro` rulează **încă** un site WordPress vechi, cu aproximativ 217 adrese indexate de Google (pagini, articole de blog, etc.). Noul site are doar 69 de pagini. Dacă am muta pur și simplu domeniul pe noul site fără nimic altceva, toate acele 217 adrese ar începe brusc să dea eroare "pagina nu există" (404) — inclusiv articole de blog care aduc trafic real din căutări Google.
 
-Soluția: `netlify.toml` conține **199 de reguli de redirecționare** (redirect 301 — înseamnă "această adresă s-a mutat definitiv aici"), generate automat de scriptul `tools/build-redirects.py`. Fiecare adresă veche e mapată la cea mai apropiată pagină echivalentă de pe noul site. De exemplu:
+Soluția: `netlify.toml` conține **200 de reguli de redirecționare** (redirect 301 — înseamnă "această adresă s-a mutat definitiv aici"), generate automat de scriptul `tools/build-redirects.py`. Fiecare adresă veche e mapată la cea mai apropiată pagină echivalentă de pe noul site. De exemplu:
 
 - `/chirurgie-plastica-estetica/rinoplastie/` (vechea structură, cu foldere) → `/rinoplastie` (noua structură, plată)
 - Un articol de blog despre varice, care nu are echivalent exact pe noul site → pagina despre chirurgie vasculară (cel mai apropiat subiect)
@@ -194,11 +197,13 @@ Fiecare astfel de adresă e verificată pe server: cine face cererea (din cookie
 
 | Serviciu | Ce găzduiește | De ce acesta |
 |---|---|---|
-| **Netlify** | site-ul de prezentare (fișierele statice) | gratuit pentru acest volum, publică automat la fiecare `git push`, CDN global inclus |
-| **Railway** | serverul (`server/`) + baza de date PostgreSQL | găzduire simplă pentru Node.js + Postgres administrat, cost mic (~10-20€/lună) |
-| **DNS-ul domeniului** | leagă `tratamente-turcia.ro` de Netlify și `cont.tratamente-turcia.ro` de Railway | rămâne la registrator-ul unde a fost cumpărat domeniul |
+| **Cloudflare Pages** | site-ul de prezentare (fișierele statice) | gratuit fără limită reală la acest volum, publică automat la fiecare `git push`, infrastructură total separată de Railway |
+| **Railway** (regiune **EU West**) | serverul (`server/`) + baza de date PostgreSQL + documentele pacienților | găzduire simplă pentru Node.js + Postgres administrat, cost mic (~10-20€/lună); regiunea UE e obligatorie pentru date medicale (GDPR) |
+| **DNS-ul domeniului** | leagă `tratamente-turcia.ro` de Cloudflare Pages și `cont.tratamente-turcia.ro` de Railway | rămâne la registrator-ul (ROTLD) unde a fost cumpărat domeniul |
 
-Cele două servicii rulează complet independent — dacă platforma client are o problemă, site-ul public nu e afectat, și invers.
+Cele două servicii rulează pe infrastructuri complet separate, de la companii diferite — dacă platforma client are o problemă (sau chiar dacă Railway ca întreg ar avea o pană), site-ul public nu e afectat, și invers. Aceasta e o izolare mai puternică decât dacă am fi pus ambele servicii doar pe conturi separate în cadrul aceluiași furnizor.
+
+**Important, juridic:** Railway este un "procesator de date" în sensul GDPR, pentru că stochează efectiv datele pacienților (nume, telefon, documente medicale). Înainte de a pune date reale de pacienți acolo, trebuie semnat un **DPA** (Data Processing Agreement / Acord de prelucrare a datelor) cu Railway — disponibil ca proces self-service la `railway.com/legal/dpa`. Acest document trebuie semnat în numele societății Medicross (operatorul de date, conform propriei pagini de Acord GDPR: Medicross Medical Soulutions SRL, CUI RO 43759021), nu în numele persoanei care administrează tehnic contul, iar semnătura trebuie să aparțină cuiva cu autoritate legală în firmă. Cloudflare Pages, în schimb, **nu** are nevoie de un asemenea acord: servește doar fișiere statice publice (HTML/CSS/imagini), fără să atingă vreodată datele unui pacient — formularele de contact trimit datele direct către Railway, din browser, nu prin Cloudflare.
 
 ---
 
@@ -206,15 +211,17 @@ Cele două servicii rulează complet independent — dacă platforma client are 
 
 **Gata și testat:**
 - Site-ul de prezentare — 75 de pagini, funcțional
-- Configurația Netlify + harta de 199 redirect-uri de pe WordPress
+- Configurația de hosting (`netlify.toml` ca sursă de adevăr → `_redirects`/`_headers` pentru Cloudflare Pages) + harta de 200 redirect-uri de pe WordPress
 - Serverul platformei — testat cu 46+ verificări automate, care confirmă că: un pacient nou nu are nicio reducere, reducerea apare doar după confirmarea echipei, un pacient nu poate vedea datele altui pacient, documentele se descarcă corect și doar de cine are voie
 - Pagina de Acord GDPR (text complet, conform documentului furnizat) și disclaimer-ul medical, afișate pe toate paginile relevante
 
 **Rămas de făcut:**
-- Deployment efectiv pe Netlify și Railway (în curs)
+- Deployment efectiv pe Cloudflare Pages și Railway (în curs)
+- Semnarea DPA-ului cu Railway, în numele societății Medicross, de către cineva cu autoritate legală acolo
 - Mutarea DNS-ului domeniului de pe WordPress-ul actual către noile servicii
 - O pagină lipsă: politica de confidențialitate (există doar pe WordPress-ul vechi)
 - Depozitarea video-urilor (214 MB) într-un serviciu dedicat (Cloudflare R2), în loc să stea direct în codul sursă
+- Trimiterea de e-mailuri (resetare parolă, notificări) — nu e încă implementată; Resend (gratuit până la 3000/lună) e opțiunea propusă
 
 ---
 
