@@ -1,3 +1,23 @@
+# IMPORTANT: unlike .gitignore, this file does not add to Wrangler's default
+# ignore behaviour — it REPLACES it. Confirmed by an actual failed deploy:
+# the moment this file existed (even listing just the videos below), Wrangler
+# stopped implicitly skipping .git and tried to upload a 329 MiB pack file
+# from it. So every directory that must never be served as a public asset has
+# to be listed here explicitly, not just whatever caused today's failure.
+
+# Never a public asset, whatever it contains.
+.git/
+.wrangler/
+
+# The API's source code and internal tooling — deployed separately to
+# Railway, not part of the marketing site. netlify.toml's _redirects
+# already bounces a direct visitor away from these paths, but there's no
+# reason to upload them as assets in the first place.
+server/
+tools/
+README-PORTAL.md
+DOCUMENTATIE-TEHNICA.md
+
 # Cloudflare Workers Static Assets refuses any file over 25 MiB. These four
 # videos exceed that (confirmed by an actual failed deploy, not a guess) and
 # are excluded from what gets published here — they stay in git untouched.
