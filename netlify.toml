@@ -4,17 +4,18 @@
 ## The site is plain static HTML with no build step, so the
 ## repository root is published exactly as it is committed.
 ##
-## The production host is Cloudflare Pages, not Netlify — this file
-## stays the single hand-edited source of truth for every redirect and
-## header rule anyway, because named TOML fields are far easier to
-## review than raw _redirects/_headers lines. Cloudflare Pages reads
-## its own generated _redirects and _headers files instead (Pages has
-## no equivalent of Netlify's `pretty_urls`, and no [[redirects]]
-## table), produced from this file by tools/build-cf-redirects.py.
-## Run that script after any change here — new WordPress redirect, new
-## page, new header — so the two hosts never drift apart. Netlify
-## itself is kept working as a free fallback/staging deploy, in case
-## it's ever needed again.
+## The production host is Cyberfolks (cPanel/Apache) — the same
+## account that already holds the domain's DNS and the outgoing
+## WordPress site, so the cutover is a file swap, not a DNS change.
+## This file stays the single hand-edited source of truth for every
+## redirect and header rule anyway, because named TOML fields are far
+## easier to review than raw .htaccess/_redirects lines. Two generator
+## scripts read it and must be re-run after any change here — new
+## WordPress redirect, new page, new header:
+##   tools/build-htaccess.py     -> .htaccess, materials/.htaccess (Cyberfolks)
+##   tools/build-cf-redirects.py -> _redirects, _headers (Cloudflare Pages)
+## Netlify and Cloudflare Pages are both kept working as free
+## fallback/staging deploys, in case either is ever needed again.
 ## ---------------------------------------------------------------
 
 [build]
