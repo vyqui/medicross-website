@@ -1,0 +1,12 @@
+{
+  // Committed so Cloudflare's build uses these settings instead of silently
+  // auto-generating a bare config each deploy — the auto-generated default
+  // has assets.not_found_handling = "none", which serves an empty-body 404
+  // (Chrome then shows its own generic error page instead of our 404.html).
+  "name": "medicross-website",
+  "compatibility_date": "2026-08-31",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "404-page"
+  }
+}
