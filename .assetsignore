@@ -15,6 +15,9 @@
 # reason to upload them as assets in the first place.
 server/
 tools/
+site-server/
+package.json
+package-lock.json
 README-PORTAL.md
 DOCUMENTATIE-TEHNICA.md
 

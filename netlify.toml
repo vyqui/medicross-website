@@ -4,18 +4,24 @@
 ## The site is plain static HTML with no build step, so the
 ## repository root is published exactly as it is committed.
 ##
-## The production host is Cyberfolks (cPanel/Apache) — the same
-## account that already holds the domain's DNS and the outgoing
-## WordPress site, so the cutover is a file swap, not a DNS change.
+## The production host is Railway — site-server/index.js is a small
+## Fastify app that parses this file directly at boot (see
+## site-server/index.js), so there is nothing to regenerate for it.
+## www.tratamente-turcia.ro and platforma.tratamente-turcia.ro both
+## CNAME to Railway; the bare apex can't (no CNAME at a zone apex), so
+## it stays a plain domain-forward to www at Cyberfolks, which also
+## still holds the domain's DNS.
+##
 ## This file stays the single hand-edited source of truth for every
 ## redirect and header rule anyway, because named TOML fields are far
 ## easier to review than raw .htaccess/_redirects lines. Two generator
-## scripts read it and must be re-run after any change here — new
-## WordPress redirect, new page, new header:
-##   tools/build-htaccess.py     -> .htaccess, materials/.htaccess (Cyberfolks)
-##   tools/build-cf-redirects.py -> _redirects, _headers (Cloudflare Pages)
-## Netlify and Cloudflare Pages are both kept working as free
-## fallback/staging deploys, in case either is ever needed again.
+## scripts read it for the hosts that can't parse TOML themselves, and
+## must be re-run after any change here — new WordPress redirect, new
+## page, new header:
+##   tools/build-htaccess.py     -> .htaccess, materials/.htaccess (Cyberfolks, fallback)
+##   tools/build-cf-redirects.py -> _redirects, _headers (Cloudflare Pages, fallback)
+## Netlify, Cloudflare Pages and Cyberfolks are all kept working as free
+## fallback/staging deploys, in case any of them is ever needed again.
 ## ---------------------------------------------------------------
 
 [build]
