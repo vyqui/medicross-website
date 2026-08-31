@@ -91,6 +91,60 @@
   to = "/"
   status = 301
 
+## ---------------------------------------------------------------
+## Platform pages
+##
+## login.html, register.html, portal.html and admin.html used to be
+## served from here too (a leftover copy from before the platform got
+## its own subdomain), and every page's shared header still links to
+## "portal.html" as a plain relative href — so a visitor landed on the
+## stale, disconnected copy instead of the real platform on Railway.
+## The copies are deleted from the repository; these redirects are
+## what make that old relative link land in the right place. Add a
+## new one here (not a repo-wide find/replace of the href) any time a
+## page turns out to still link to one of these paths directly — the
+## no-build-step site duplicates its header markup across every file.
+## ---------------------------------------------------------------
+[[redirects]]
+  from = "/login"
+  to = "https://platforma.tratamente-turcia.ro/login"
+  status = 301
+
+[[redirects]]
+  from = "/login.html"
+  to = "https://platforma.tratamente-turcia.ro/login"
+  status = 301
+
+[[redirects]]
+  from = "/register"
+  to = "https://platforma.tratamente-turcia.ro/register"
+  status = 301
+
+[[redirects]]
+  from = "/register.html"
+  to = "https://platforma.tratamente-turcia.ro/register"
+  status = 301
+
+[[redirects]]
+  from = "/portal"
+  to = "https://platforma.tratamente-turcia.ro/portal"
+  status = 301
+
+[[redirects]]
+  from = "/portal.html"
+  to = "https://platforma.tratamente-turcia.ro/portal"
+  status = 301
+
+[[redirects]]
+  from = "/admin"
+  to = "https://platforma.tratamente-turcia.ro/admin"
+  status = 301
+
+[[redirects]]
+  from = "/admin.html"
+  to = "https://platforma.tratamente-turcia.ro/admin"
+  status = 301
+
 ## ===============================================================
 ## WordPress cutover redirect map
 ##

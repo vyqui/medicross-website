@@ -11,6 +11,14 @@
 # excluding server/, tools/ and the internal .md docs from being served) ---
 /README-PORTAL.md / 301
 /DOCUMENTATIE-TEHNICA.md / 301
+/login https://platforma.tratamente-turcia.ro/login 301
+/login.html https://platforma.tratamente-turcia.ro/login 301
+/register https://platforma.tratamente-turcia.ro/register 301
+/register.html https://platforma.tratamente-turcia.ro/register 301
+/portal https://platforma.tratamente-turcia.ro/portal 301
+/portal.html https://platforma.tratamente-turcia.ro/portal 301
+/admin https://platforma.tratamente-turcia.ro/admin 301
+/admin.html https://platforma.tratamente-turcia.ro/admin 301
 /2728-septembrie-dr-sahin-ulu-revine-in-romania-ploiesti/ /rinoplastie 301
 /404-2/ / 301
 /academic-hospital-istanbul/ /academic-hospital-istanbul 301
