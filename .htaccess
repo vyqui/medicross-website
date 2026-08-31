@@ -3,6 +3,22 @@
 
 RewriteEngine On
 
+# --- Force the apex to www, which is what actually runs the site ---
+#
+# Cyberfolks is a fallback host now (see this file's own top comment) —
+# the real site is on Railway, reached via CNAMEs on www and platforma.
+# A CNAME can't target a bare apex, so tratamente-turcia.ro itself still
+# resolves here, and this rule is what sends it on to www instead of
+# serving this host's own (increasingly stale) copy of the site. It has
+# to be the very first rule in the file: every other rule below either
+# redirects (some real page) or serves a file straight off disk, and
+# whichever fires first wins with `[L]` — so if this ran after them, a
+# request matching any real page would never reach it. (This is exactly
+# the bug cPanel's own Redirect tool shipped by default: it appends
+# this same rule at the bottom of the file instead of the top.)
+RewriteCond %{HTTP_HOST} ^tratamente\-turcia\.ro$
+RewriteRule ^(.*)$ https://www.tratamente-turcia.ro/$1 [R=301,L]
+
 # --- Security headers (netlify.toml [[headers]] for = "/*") ---
 Header always set X-Content-Type-Options "nosniff"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
