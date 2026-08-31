@@ -250,7 +250,10 @@ RewriteRule ^(.*)$ $1.html [L]
 
 # The reverse direction: a request for the literal .html file redirects
 # to the extensionless URL, so every canonical tag on the site (all of
-# them extensionless) matches what is actually served.
+# them extensionless) matches what is actually served. index.html is
+# special-cased ahead of the generic rule below it: that one strips just
+# the extension, which would send it to "/index" instead of "/".
+RewriteRule ^index\.html$ / [R=301,L]
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
 RewriteRule ^ /%1 [R=301,L]
 

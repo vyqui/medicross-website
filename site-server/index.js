@@ -87,7 +87,8 @@ app.addHook('onRequest', async (request, reply) => {
   }
 
   if (TOP_LEVEL_PAGE.test(urlPath) && urlPath.endsWith('.html')) {
-    return reply.code(301).redirect(urlPath.slice(0, -'.html'.length) || '/');
+    const stripped = urlPath.slice(0, -'.html'.length);
+    return reply.code(301).redirect(stripped === '/index' || stripped === '' ? '/' : stripped);
   }
 
   if (!isServable(urlPath)) {
