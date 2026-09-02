@@ -67,7 +67,7 @@
 
   <script src="assets/portal-data.js"></script>
   <script>
-    (function () {
+    (async function () {
       'use strict';
       var params = new URLSearchParams(location.search);
       // only same-page relative targets — never an arbitrary redirect
@@ -84,7 +84,7 @@
 
       // An existing session must never trap you here: the form stays reachable so
       // you can switch between the patient and admin accounts.
-      var s = MedicrossDB.session();
+      var s = await MedicrossDB.session();
       if (s) {
         if (denied) {
           document.getElementById('deniedWho').textContent = s.email;
@@ -96,16 +96,17 @@
         document.getElementById('alreadyGo').textContent =
           s.role === 'admin' ? 'Continuă în consolă' : 'Continuă în portal';
         document.getElementById('already').hidden = false;
-        document.getElementById('alreadyOut').addEventListener('click', function () {
-          MedicrossDB.logout();
+        document.getElementById('alreadyOut').addEventListener('click', async function () {
+          await MedicrossDB.logout();
           location.replace('login.html' + (next ? '?next=' + encodeURIComponent(next) : ''));
         });
         if (denied) document.getElementById('email').focus();
       }
 
-      document.getElementById('loginForm').addEventListener('submit', function (ev) {
+      document.getElementById('loginForm').addEventListener('submit', async function (ev) {
         ev.preventDefault();
-        var sess = MedicrossDB.login(
+        document.getElementById('err').classList.remove('show');
+        var sess = await MedicrossDB.login(
           document.getElementById('email').value,
           document.getElementById('pass').value
         );

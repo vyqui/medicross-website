@@ -1,18 +1,19 @@
-/* Medicross admin console — manages the same demo store the patient portal
- * reads (assets/portal-data.js). Every mutation here is visible in
- * portal.html on its next load, and vice-versa. */
-(function () {
+/* Medicross admin console — talks to the real API in server/src (see
+ * assets/portal-data.js). Every mutation here is visible in portal.html on
+ * its next load, and vice-versa, because both read the same Postgres rows. */
+(async function () {
   'use strict';
 
-  var sess = MedicrossDB.requireRole('admin');
+  var sess = await MedicrossDB.requireRole('admin');
   if (!sess) return;
 
-  document.getElementById('logoutBtn').addEventListener('click', function () {
-    MedicrossDB.logout();
+  document.getElementById('logoutBtn').addEventListener('click', async function () {
+    await MedicrossDB.logout();
     location.href = 'login.html';
   });
 
   var currentId = MedicrossDB.patients()[0] && MedicrossDB.patients()[0].id;
+  if (currentId) await MedicrossDB.refreshCurrentPatient(currentId);
 
   /* ---------------- helpers ---------------- */
   function el(tag, cls, text) {
@@ -102,7 +103,11 @@
       tr.appendChild(el('td', op && op.date ? null : 'muted-cell', (op && op.date) || '—'));
       tr.appendChild(el('td', 'muted-cell', p.createdAt ? fmtTime(p.createdAt) : '—'));
 
-      function select() { currentId = p.id; renderAll(); }
+      async function select() {
+        currentId = p.id;
+        await MedicrossDB.refreshCurrentPatient(currentId);
+        renderAll();
+      }
       tr.addEventListener('click', select);
       tr.addEventListener('keydown', function (ev) {
         if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select(); }
@@ -140,20 +145,20 @@
   // detail panel, so the currently open patient stays selected underneath.
   document.getElementById('patientSearch').addEventListener('input', renderPatients);
 
-  document.getElementById('newAcct').addEventListener('submit', function (ev) {
+  document.getElementById('newAcct').addEventListener('submit', async function (ev) {
     ev.preventDefault();
+    var form = this;
     var errBox = document.getElementById('naErr');
     errBox.hidden = true;
-    var res = MedicrossDB.createPatient({
+    var res = await MedicrossDB.createPatient({
       name: document.getElementById('naName').value,
       email: document.getElementById('naEmail').value,
       phone: document.getElementById('naPhone').value,
       sex: document.getElementById('naSex').value,
-      pass: document.getElementById('naPass').value,
-      by: 'admin'
+      pass: document.getElementById('naPass').value
     });
     if (res.error) { errBox.textContent = res.error; errBox.hidden = false; return; }
-    this.reset();
+    form.reset();
     document.getElementById('naPass').value = 'medicross';
     currentId = res.patient.id;
     renderAll();
@@ -164,9 +169,9 @@
     document.getElementById('detailsText').value = p.details || '';
     document.getElementById('detailsSaved').hidden = true;
   }
-  document.getElementById('detailsForm').addEventListener('submit', function (ev) {
+  document.getElementById('detailsForm').addEventListener('submit', async function (ev) {
     ev.preventDefault();
-    MedicrossDB.saveDetails(currentId, document.getElementById('detailsText').value, 'admin');
+    await MedicrossDB.saveDetails(currentId, document.getElementById('detailsText').value);
     var note = document.getElementById('detailsSaved');
     note.hidden = false;
     setTimeout(function () { note.hidden = true; }, 1800);
@@ -186,10 +191,21 @@
     box.textContent = '';
     d.lines.forEach(function (ln) {
       var line = el('div', 'disc-line ' + (ln.earned ? 'on' : 'off'));
-      if (ln.kind === 'social') {
+      if (ln.kind === 'action') {
         line.appendChild(el('span', 'k', ACTION_LABEL[ln.key] || ln.key));
-        line.appendChild(el('span', 'v', ln.earned ? 'confirmată de pacient' : 'neînceput'));
+        line.appendChild(el('span', 'v', ln.earned ? 'confirmată — plătită'
+          : ln.claimed ? 'declarată de pacient — așteaptă confirmarea ta' : 'neînceput'));
         line.appendChild(el('span', 'pctv', EUR(ln.eur)));
+        if (ln.claimed) {
+          var verifyBtn = el('button', 'ibtn' + (ln.earned ? '' : ' primary'),
+            ln.earned ? 'Retrage confirmarea' : 'Confirmă');
+          verifyBtn.type = 'button';
+          verifyBtn.addEventListener('click', async function () {
+            await MedicrossDB.verifyAction(p.id, ln.key, !ln.earned);
+            renderAll();
+          });
+          line.appendChild(verifyBtn);
+        }
       } else if (ln.kind === 'referral') {
         line.appendChild(el('span', 'k', 'Prieteni operați'));
         line.appendChild(el('span', 'v', ln.count + ' × ' + EUR(ln.eur) +
@@ -227,16 +243,16 @@
         if (r.status === k) o.selected = true;
         sel.appendChild(o);
       });
-      sel.addEventListener('change', function () {
-        MedicrossDB.setReferralStatus(p.id, r.id, sel.value, 'admin');
+      sel.addEventListener('change', async function () {
+        await MedicrossDB.setReferralStatus(p.id, r.id, sel.value);
         renderAll();
       });
       line.appendChild(sel);
 
       var del = el('button', 'ibtn danger', 'Șterge');
       del.type = 'button';
-      del.addEventListener('click', function () {
-        MedicrossDB.removeReferral(p.id, r.id, 'admin');
+      del.addEventListener('click', async function () {
+        await MedicrossDB.removeReferral(p.id, r.id);
         renderAll();
       });
       line.appendChild(del);
@@ -247,16 +263,16 @@
     document.getElementById('codeErr').hidden = true;
   }
 
-  document.getElementById('refAdd').addEventListener('submit', function (ev) {
+  document.getElementById('refAdd').addEventListener('submit', async function (ev) {
     ev.preventDefault();
     var input = document.getElementById('refName');
-    if (MedicrossDB.addReferral(currentId, input.value, 'admin')) { input.value = ''; renderAll(); }
+    if (await MedicrossDB.addReferral(currentId, input.value)) { input.value = ''; renderAll(); }
   });
 
-  document.getElementById('codeForm').addEventListener('submit', function (ev) {
+  document.getElementById('codeForm').addEventListener('submit', async function (ev) {
     ev.preventDefault();
     var errBox = document.getElementById('codeErr');
-    var res = MedicrossDB.setUsedCode(currentId, document.getElementById('codeInput').value, 'admin');
+    var res = await MedicrossDB.setUsedCode(currentId, document.getElementById('codeInput').value);
     if (res.error) { errBox.textContent = res.error; errBox.hidden = false; return; }
     errBox.hidden = true;
     renderAll();
@@ -280,9 +296,9 @@
       edit.addEventListener('click', function () { openOpForm(op); });
       row.appendChild(edit);
       var del = el('button', 'ibtn danger', 'Șterge'); del.type = 'button';
-      del.addEventListener('click', function () {
+      del.addEventListener('click', async function () {
         if (confirm('Ștergi intervenția „' + op.name + '”?')) {
-          MedicrossDB.removeOperation(p.id, op.id);
+          await MedicrossDB.removeOperation(p.id, op.id);
           renderAll();
         }
       });
@@ -404,14 +420,14 @@
   document.getElementById('opCancel').addEventListener('click', function () {
     document.getElementById('opForm').hidden = true; editingOp = null;
   });
-  document.getElementById('opForm').addEventListener('submit', function (ev) {
+  document.getElementById('opForm').addEventListener('submit', async function (ev) {
     ev.preventDefault();
     var key = document.getElementById('opCatalog').value;
     var name = key === '__custom'
       ? document.getElementById('opName').value.trim()
       : (MedicrossDB.procedure(key) || {}).name;
     if (!name) { document.getElementById('opName').focus(); return; }
-    MedicrossDB.saveOperation(currentId, {
+    await MedicrossDB.saveOperation(currentId, {
       id: editingOp ? editingOp.id : null,
       name: name,
       detail: document.getElementById('opDetail').value.trim(),
@@ -456,18 +472,18 @@
       row.appendChild(g);
       var up = el('button', 'ibtn', '↑'); up.type = 'button'; up.disabled = i === 0;
       up.setAttribute('aria-label', 'Mută mai sus');
-      up.addEventListener('click', function () { MedicrossDB.moveTripItem(p.id, it.id, -1); renderAll(); });
+      up.addEventListener('click', async function () { await MedicrossDB.moveTripItem(p.id, it.id, -1); renderAll(); });
       row.appendChild(up);
       var down = el('button', 'ibtn', '↓'); down.type = 'button'; down.disabled = i === p.trip.items.length - 1;
       down.setAttribute('aria-label', 'Mută mai jos');
-      down.addEventListener('click', function () { MedicrossDB.moveTripItem(p.id, it.id, 1); renderAll(); });
+      down.addEventListener('click', async function () { await MedicrossDB.moveTripItem(p.id, it.id, 1); renderAll(); });
       row.appendChild(down);
       var edit = el('button', 'ibtn', 'Editează'); edit.type = 'button';
       edit.addEventListener('click', function () { openTripForm(it); });
       row.appendChild(edit);
       var del = el('button', 'ibtn danger', 'Șterge'); del.type = 'button';
-      del.addEventListener('click', function () {
-        if (confirm('Ștergi etapa „' + it.desc + '”?')) { MedicrossDB.removeTripItem(p.id, it.id); renderAll(); }
+      del.addEventListener('click', async function () {
+        if (confirm('Ștergi etapa „' + it.desc + '”?')) { await MedicrossDB.removeTripItem(p.id, it.id); renderAll(); }
       });
       row.appendChild(del);
       box.appendChild(row);
@@ -488,12 +504,12 @@
   document.getElementById('tripCancel').addEventListener('click', function () {
     document.getElementById('tripForm').hidden = true; editingTrip = null;
   });
-  document.getElementById('tripForm').addEventListener('submit', function (ev) {
+  document.getElementById('tripForm').addEventListener('submit', async function (ev) {
     ev.preventDefault();
     var date = document.getElementById('tiDate').value.trim();
     var desc = document.getElementById('tiDesc').value.trim();
     if (!date || !desc) return;
-    MedicrossDB.saveTripItem(currentId, {
+    await MedicrossDB.saveTripItem(currentId, {
       id: editingTrip ? editingTrip.id : null,
       date: date, desc: desc,
       icon: document.getElementById('tiIcon').value,
@@ -504,9 +520,9 @@
     editingTrip = null;
     renderAll();
   });
-  document.getElementById('tripMeta').addEventListener('submit', function (ev) {
+  document.getElementById('tripMeta').addEventListener('submit', async function (ev) {
     ev.preventDefault();
-    MedicrossDB.saveTripMeta(currentId,
+    await MedicrossDB.saveTripMeta(currentId,
       document.getElementById('tmTitle').value.trim(),
       document.getElementById('tmSub').value.trim());
     renderAll();
@@ -519,50 +535,32 @@
     if (!p.documents.length) box.appendChild(el('div', 'm', 'Niciun document încă.'));
     p.documents.forEach(function (d) {
       var row = el('div', 'itemrow');
-      if (d.dataUrl && /^image\//.test(d.type)) {
-        var img = document.createElement('img');
-        img.className = 'doc-thumb'; img.src = d.dataUrl; img.alt = '';
-        row.appendChild(img);
-      } else {
-        row.appendChild(el('span', 'doc-ph', '📄'));
-      }
+      row.appendChild(el('span', 'doc-ph', '📄'));
       var g = el('div', 'grow');
       g.appendChild(el('div', 't', d.name));
       g.appendChild(el('div', 'm',
-        fmtSize(d.size) + ' · ' + (d.by === 'staff' ? 'echipă' : 'pacient') + ' · ' + fmtTime(d.uploadedAt) +
-        (d.dataUrl ? '' : ' · doar metadate (fișierul depășește limita demo de 2 MB)')));
+        fmtSize(d.size) + ' · ' + (d.by === 'staff' ? 'echipă' : 'pacient') + ' · ' + fmtTime(d.uploadedAt)));
       row.appendChild(g);
-      if (d.dataUrl) {
-        var dl = document.createElement('a');
-        dl.className = 'ibtn'; dl.textContent = 'Descarcă';
-        dl.href = d.dataUrl; dl.download = d.name;
-        row.appendChild(dl);
-      }
+      var dl = document.createElement('a');
+      dl.className = 'ibtn'; dl.textContent = 'Descarcă';
+      dl.href = d.url; dl.download = d.name;
+      row.appendChild(dl);
       var del = el('button', 'ibtn danger', 'Șterge'); del.type = 'button';
-      del.addEventListener('click', function () {
-        if (confirm('Ștergi „' + d.name + '”?')) { MedicrossDB.removeDocument(p.id, d.id); renderAll(); }
+      del.addEventListener('click', async function () {
+        if (confirm('Ștergi „' + d.name + '”?')) { await MedicrossDB.removeDocument(p.id, d.id); renderAll(); }
       });
       row.appendChild(del);
       box.appendChild(row);
     });
   }
-  document.getElementById('adminUpload').addEventListener('change', function () {
+  document.getElementById('adminUpload').addEventListener('change', async function () {
     var files = Array.prototype.slice.call(this.files || []);
-    var pending = files.length;
-    if (!pending) return;
-    files.forEach(function (f) {
-      var reader = new FileReader();
-      reader.onload = function () {
-        MedicrossDB.addDocument(currentId, f, reader.result, 'staff');
-        if (--pending === 0) renderAll();
-      };
-      reader.onerror = function () {
-        MedicrossDB.addDocument(currentId, f, null, 'staff');
-        if (--pending === 0) renderAll();
-      };
-      reader.readAsDataURL(f);
-    });
     this.value = '';
+    for (var i = 0; i < files.length; i++) {
+      try { await MedicrossDB.addDocument(currentId, files[i]); }
+      catch (err) { window.alert(err.message); }
+    }
+    renderAll();
   });
 
   /* ---------------- log ---------------- */

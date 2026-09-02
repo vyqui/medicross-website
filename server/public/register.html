@@ -13,105 +13,18 @@
 <body>
   <main class="card wide">
     <div class="logo"><span class="dot"></span>Medicross</div>
-    <div class="sub">Creează-ți contul de pacient ca să urmărești intervențiile, programul călătoriei și documentele tale.</div>
+    <div class="sub">Contul tău de pacient este creat de echipa Medicross, nu prin auto-înregistrare — așa
+      poate fi legat corect de dosarul și intervenția ta.</div>
 
-    <form id="regForm" novalidate>
-      <div class="grid">
-        <div class="full">
-          <label for="name">Nume și prenume</label>
-          <input id="name" name="name" autocomplete="name" required />
-        </div>
-        <div class="full">
-          <label for="email">E-mail</label>
-          <input id="email" name="email" type="email" autocomplete="email" required />
-        </div>
-        <div>
-          <label for="phone">Telefon <span class="opt">(opțional)</span></label>
-          <input id="phone" name="phone" type="tel" autocomplete="tel" />
-        </div>
-        <div>
-          <label for="sex">Sex</label>
-          <select id="sex" name="sex">
-            <option value="f">Feminin</option>
-            <option value="m">Masculin</option>
-          </select>
-          <div class="hint">Selectează modelul 3D folosit în harta corpului.</div>
-        </div>
-        <div>
-          <label for="pass">Parolă</label>
-          <input id="pass" name="pass" type="password" autocomplete="new-password" required minlength="4" />
-        </div>
-        <div>
-          <label for="pass2">Confirmă parola</label>
-          <input id="pass2" name="pass2" type="password" autocomplete="new-password" required minlength="4" />
-        </div>
-      </div>
-
-      <div>
-        <label for="code">Cod de reducere <span class="opt">(opțional)</span></label>
-        <input id="code" name="code" type="text" placeholder="ex. MEDI-ANDREEA-2K6" autocomplete="off" />
-        <div class="gdpr-note" style="margin-top:6px">
-          Ai primit un cod de la un prieten? Introdu-l aici și primești <strong>20 €</strong> reducere
-          la intervenția ta. Prietenul care ți l-a dat primește 70 € după ce te operezi.
-        </div>
-      </div>
-
-      <label class="check" for="gdpr">
-        <input type="checkbox" id="gdpr" name="gdpr" required />
-        <span>
-          Am citit și accept <a href="acord-gdpr.html" id="gdprLink" target="_blank" rel="noopener">acordul GDPR</a> privind prelucrarea datelor mele
-          personale și medicale. <span class="req">Obligatoriu</span>
-        </span>
-      </label>
-      <div class="gdpr-note">
-        Bifa este înregistrată cu dată și oră și poate fi retrasă oricând, scriindu-ne la
-        <a href="mailto:office@tratamente-turcia.ro">office@tratamente-turcia.ro</a>.
-      </div>
-
-      <button type="submit">Creează contul</button>
-      <div class="err" id="err"></div>
-    </form>
+    <div class="gdpr-note" style="margin-top:10px">
+      Ai fost deja în contact cu noi? Scrie-ne la
+      <a href="mailto:office@tratamente-turcia.ro">office@tratamente-turcia.ro</a> sau pe
+      <a href="https://wa.me/40746992222" target="_blank" rel="noopener">WhatsApp</a> și îți creăm contul,
+      cu datele de acces trimise direct de la noi.
+    </div>
 
     <div class="alt">Ai deja cont? <a href="login.html">Autentifică-te</a></div>
     <a class="back" href="https://www.tratamente-turcia.ro/">← Înapoi la site</a>
   </main>
-
-  <script src="assets/portal-data.js"></script>
-  <script>
-    (function () {
-      'use strict';
-      /* The agreement is a real page now — the link opens it in a new tab so a
-         half-filled form is never lost. */
-
-      document.getElementById('regForm').addEventListener('submit', function (ev) {
-        ev.preventDefault();
-        var err = document.getElementById('err');
-        var pass = document.getElementById('pass').value;
-        var pass2 = document.getElementById('pass2').value;
-
-        function fail(msg) { err.textContent = msg; err.classList.add('show'); }
-        err.classList.remove('show');
-
-        if (pass !== pass2) return fail('Parolele nu coincid.');
-        if (!document.getElementById('gdpr').checked)
-          return fail('Trebuie să accepți prelucrarea datelor (GDPR) pentru a continua.');
-
-        var res = MedicrossDB.createPatient({
-          name: document.getElementById('name').value,
-          email: document.getElementById('email').value,
-          phone: document.getElementById('phone').value,
-          sex: document.getElementById('sex').value,
-          pass: pass,
-          code: document.getElementById('code').value,
-          gdpr: true,
-          by: 'self'
-        });
-        if (res.error) return fail(res.error);
-
-        MedicrossDB.login(document.getElementById('email').value, pass);
-        location.replace('portal.html');
-      });
-    })();
-  </script>
 </body>
 </html>

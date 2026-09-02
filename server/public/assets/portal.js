@@ -1,18 +1,16 @@
 /* Medicross client portal — dashboard interactions.
  *
- * Data comes from assets/portal-data.js (MedicrossDB), a localStorage-backed
- * demo store shared with the admin console (admin.html): what the admin edits
- * shows up here, what the patient uploads shows up there. There is still no
- * real backend — see README-PORTAL.md for the production architecture and
- * the GDPR requirements (server-side verification of every discount action,
- * auditable consent records).
+ * Data comes from assets/portal-data.js (MedicrossDB), a thin client around
+ * the real API in server/src. What the admin edits shows up here, what the
+ * patient uploads shows up there, because both sides read/write the same
+ * Postgres rows now.
  */
-(function () {
+(async function () {
   'use strict';
 
-  var sess = MedicrossDB.requireRole('patient');
+  var sess = await MedicrossDB.requireRole('patient');
   if (!sess) return;
-  var PID = sess.patientId || (MedicrossDB.patients()[0] && MedicrossDB.patients()[0].id);
+  var PID = sess.patientId;
 
   // An admin may open this page to see what the patient sees. Everything they do
   // is attributed to the staff, and consent stays the patient's own act — staff
@@ -45,16 +43,17 @@
 
     box.addEventListener('change', function () { btn.disabled = !box.checked; });
 
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', async function () {
       if (!box.checked) return;
-      MedicrossDB.acceptGdpr(PID);
+      btn.disabled = true;
+      await MedicrossDB.acceptGdpr();
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
       gate.remove();
     });
 
-    if (logoutBtn) logoutBtn.addEventListener('click', function () {
-      MedicrossDB.logout();
+    if (logoutBtn) logoutBtn.addEventListener('click', async function () {
+      await MedicrossDB.logout();
       location.href = 'login.html';
     });
 
@@ -81,8 +80,8 @@
     var h1 = document.querySelector('.welcome h1');
     if (h1) h1.textContent = 'Bună, ' + p.name.split(' ')[0] + '.';
     var out = document.getElementById('logoutBtn');
-    if (out) out.addEventListener('click', function () {
-      MedicrossDB.logout();
+    if (out) out.addEventListener('click', async function () {
+      await MedicrossDB.logout();
       location.href = 'login.html';
     });
 
@@ -139,8 +138,8 @@
       b.className = 'opchip' + (p.activeOp === opKey(op) ? ' active' : '');
       b.textContent = op.name;
       b.setAttribute('aria-pressed', String(p.activeOp === opKey(op)));
-      b.addEventListener('click', function () {
-        MedicrossDB.setView(PID, opKey(op), op.viewMode || 'surface');
+      b.addEventListener('click', async function () {
+        await MedicrossDB.setView(PID, opKey(op), op.viewMode || 'surface');
         renderChips(); syncModeSeg(); pushBody();
       });
       box.appendChild(b);
@@ -156,8 +155,8 @@
     });
   }
   document.querySelectorAll('[data-mode-btn]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      MedicrossDB.setView(PID, null, btn.dataset.modeBtn);
+    btn.addEventListener('click', async function () {
+      await MedicrossDB.setView(PID, null, btn.dataset.modeBtn);
       syncModeSeg(); pushBody();
     });
   });
@@ -343,12 +342,20 @@
 
       var a = p.actions[key];
       if (!a) return;
-      row.classList.toggle('earned', a.done);
+      /* `done` is just the patient's own declaration; the reward only actually
+         applies once a member of staff verifies it (a.verified) — see
+         server/src/discounts.js. Rendering both the same way told a patient
+         they had already earned money the moment they merely claimed it. */
+      row.classList.toggle('earned', a.verified);
       if (amount) amount.textContent = EUR(a.eur);
-      if (status) status.textContent = a.done ? 'Confirmată · ' + EUR(a.eur) + ' aplicați' : 'Neînceput';
+      if (status) {
+        status.textContent = a.verified ? 'Confirmată · ' + EUR(a.eur) + ' aplicați'
+          : a.done ? 'Trimisă — așteaptă verificarea echipei'
+          : 'Neînceput';
+      }
       if (btn) {
         btn.textContent = a.done ? 'Gata ✓' : 'Am făcut';
-        btn.className = a.done ? 'a-btn earned-btn' : 'a-btn';
+        btn.className = a.verified ? 'a-btn earned-btn' : 'a-btn';
       }
       if (open) {
         var url = MedicrossDB.SOCIAL_LINKS[key];
@@ -384,8 +391,8 @@
       toggle.title = 'Doar pacientul poate confirma acțiunile.';
       return;
     }
-    toggle.addEventListener('click', function () {
-      MedicrossDB.setAction(PID, key, { done: !P().actions[key].done }, WHO);
+    toggle.addEventListener('click', async function () {
+      await MedicrossDB.setAction(PID, key, { done: !P().actions[key].done });
       updateUI();
     });
   });
@@ -428,14 +435,9 @@
     if (!list || !drop) return;
     list.querySelectorAll('.doc-row').forEach(function (r) { r.remove(); });
     P().documents.forEach(function (d) {
-      var row;
-      if (d.dataUrl) {
-        row = document.createElement('a');
-        row.href = d.dataUrl;
-        row.setAttribute('download', d.name);
-      } else {
-        row = document.createElement('div');
-      }
+      var row = document.createElement('a');
+      row.href = d.url;
+      row.setAttribute('download', d.name);
       row.className = 'doc-row';
       var ic = document.createElement('span');
       ic.className = 'ic';
@@ -456,10 +458,7 @@
   var fileInputMain = document.getElementById('fileInput');
   function handleFiles(files) {
     Array.prototype.slice.call(files).forEach(function (f) {
-      var reader = new FileReader();
-      reader.onload = function () { MedicrossDB.addDocument(PID, f, reader.result, 'pacient'); renderDocs(); };
-      reader.onerror = function () { MedicrossDB.addDocument(PID, f, null, 'pacient'); renderDocs(); };
-      reader.readAsDataURL(f);
+      MedicrossDB.addDocument(PID, f).then(renderDocs, function (err) { window.alert(err.message); });
     });
   }
   if (dropZone && fileInputMain) {
@@ -484,18 +483,6 @@
   });
 
   /* ---------------- init ---------------- */
-  // migrate the seed's activeOp key ('mommy') to the operation id it refers to
-  (function () {
-    var p = P();
-    var keys = p.operations.map(opKey);
-    if (keys.indexOf(p.activeOp) === -1) {
-      var active = null;
-      p.operations.forEach(function (op) { if (!active && op.active) active = op; });
-      p.activeOp = active ? opKey(active) : (keys[0] || null);
-      MedicrossDB._save();
-    }
-  })();
-
   renderChips();
   syncModeSeg();
   renderOps();
