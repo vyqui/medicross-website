@@ -282,7 +282,11 @@ body.home a.btn-ghost { color: var(--ink); }
 .ctaband-in .circle { position: absolute; right: 8%; top: -40%; width: 360px; height: 360px; border-radius: 50%; background: rgba(255,255,255,.08); }
 .ctaband-in h3 { position: relative; font-family: var(--font-display); font-weight: 600; font-size: 40px; line-height: 1.05; max-width: 620px; }
 .ctaband-in p { position: relative; color: rgba(255,255,255,.85); margin-top: 12px; }
-.ctaband .btn-white { position: relative; background: #fff; color: var(--brand-dark); box-shadow: none; }
+.ctaband .btn-white {
+  position: relative; background: #fff; color: var(--brand-dark); box-shadow: none;
+  font-size: 16px; padding: 17px 28px; border-radius: 999px;
+  transition: transform .25s ease;
+}
 .ctaband .btn-white:hover { transform: translateY(-2px); }
 
 /* ===================== FOOTER ===================== */
