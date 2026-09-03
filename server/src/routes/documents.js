@@ -24,14 +24,22 @@ export default async function documentRoutes(app) {
       return reply.code(410).send({ error: 'Fișierul nu mai este disponibil.' });
     }
 
-    /* Content-Disposition is always attachment: it stops a crafted upload from
-       being rendered as HTML in the context of the platform's own origin. */
+    /* Only a mime type a browser can safely just display — never Word docs,
+       which a browser can't render anyway and would otherwise try to hand off
+       to some other application — gets to be inline, and only alongside
+       X-Content-Type-Options: nosniff. That header is what actually makes
+       this safe: it stops the browser from reinterpreting a mismatched upload
+       as HTML no matter what Content-Type or disposition says, so inline
+       can't become a way to run a crafted upload in the platform's origin.
+       ?download forces the save-as prompt even for a previewable type. */
+    const PREVIEWABLE = new Set(['application/pdf', 'image/jpeg', 'image/png', 'image/webp', 'image/heic']);
+    const disposition = (PREVIEWABLE.has(doc.mime) && !request.query.download) ? 'inline' : 'attachment';
     const safeName = doc.name.replace(/["\\]/g, '');
     reply
       .header('Content-Type', doc.mime)
       .header('Content-Length', doc.size_bytes)
       .header('Content-Disposition',
-        `attachment; filename="${safeName}"; filename*=UTF-8''${encodeURIComponent(doc.name)}`)
+        `${disposition}; filename="${safeName}"; filename*=UTF-8''${encodeURIComponent(doc.name)}`)
       .header('Cache-Control', 'private, no-store')
       .header('X-Content-Type-Options', 'nosniff');
 

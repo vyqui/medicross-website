@@ -32,6 +32,31 @@
              d.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
     } catch (e) { return iso; }
   }
+
+  /* Operation/trip dates are stored as the free-text label shown everywhere
+     ("12 Aug 2026", "11 Aug") rather than a real date, so a native
+     <input type="date"> (which only speaks ISO yyyy-mm-dd) needs converting
+     both ways: to ISO to prefill the picker when editing, and back to the
+     existing label style when saving. A value that doesn't parse (an old
+     hand-typed range like "13–15 Aug", still supported as text elsewhere,
+     just not re-editable via the picker) leaves the field blank rather than
+     guessing at it. */
+  var MONTHS_RO = ['Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sep', 'Oct', 'Noi', 'Dec'];
+  function isoToDateLabel(iso, withYear) {
+    if (!iso) return '';
+    var parts = iso.split('-');
+    var month = MONTHS_RO[Number(parts[1]) - 1];
+    if (!month) return '';
+    return Number(parts[2]) + ' ' + month + (withYear ? ' ' + parts[0] : '');
+  }
+  function dateLabelToIso(label) {
+    var m = /^(\d{1,2})\s+([A-Za-zĂÂÎȘȚăâîșț]+)\.?\s*(\d{4})?$/.exec(String(label || '').trim());
+    if (!m) return '';
+    var idx = MONTHS_RO.findIndex(function (name) { return name.toLowerCase() === m[2].slice(0, 3).toLowerCase(); });
+    if (idx < 0) return '';
+    var year = m[3] || String(new Date().getFullYear());
+    return year + '-' + String(idx + 1).padStart(2, '0') + '-' + String(Number(m[1])).padStart(2, '0');
+  }
   var STATUS_LABEL = { programata: 'Programată', evaluare: 'În evaluare', finalizata: 'Finalizată' };
   var ACTION_LABEL = MedicrossDB.ACTION_LABEL;
   var EUR = MedicrossDB.eur;
@@ -413,7 +438,7 @@
       applyCatalog(sel.value, false);   // assigns the 3D zone for the default pick
     }
     document.getElementById('opStatus').value = op ? op.status : 'programata';
-    document.getElementById('opDate').value = op ? op.date : '';
+    document.getElementById('opDate').value = op ? dateLabelToIso(op.date) : '';
     document.getElementById('opActive').checked = !!(op && op.active);
   }
   document.getElementById('opAdd').addEventListener('click', function () { openOpForm(null); });
@@ -432,7 +457,7 @@
       name: name,
       detail: document.getElementById('opDetail').value.trim(),
       status: document.getElementById('opStatus').value,
-      date: document.getElementById('opDate').value.trim(),
+      date: isoToDateLabel(document.getElementById('opDate').value, true),
       regions: zoneState.regions,       // assigned by the procedure, not typed
       viewMode: zoneState.viewMode,
       active: document.getElementById('opActive').checked
@@ -493,7 +518,7 @@
     editingTrip = it || null;
     var f = document.getElementById('tripForm');
     f.hidden = false;
-    document.getElementById('tiDate').value = it ? it.date : '';
+    document.getElementById('tiDate').value = it ? dateLabelToIso(it.date) : '';
     document.getElementById('tiDesc').value = it ? it.desc : '';
     document.getElementById('tiIcon').value = it ? it.icon : 'plane';
     document.getElementById('tiHospital').value = (it && it.hospital) || '';
@@ -506,12 +531,12 @@
   });
   document.getElementById('tripForm').addEventListener('submit', async function (ev) {
     ev.preventDefault();
-    var date = document.getElementById('tiDate').value.trim();
+    var dateIso = document.getElementById('tiDate').value;
     var desc = document.getElementById('tiDesc').value.trim();
-    if (!date || !desc) return;
+    if (!dateIso || !desc) return;
     await MedicrossDB.saveTripItem(currentId, {
       id: editingTrip ? editingTrip.id : null,
-      date: date, desc: desc,
+      date: isoToDateLabel(dateIso, false), desc: desc,
       icon: document.getElementById('tiIcon').value,
       hospital: document.getElementById('tiHospital').value,
       surgery: document.getElementById('tiSurgery').checked
@@ -533,6 +558,7 @@
     var box = document.getElementById('docList');
     box.textContent = '';
     if (!p.documents.length) box.appendChild(el('div', 'm', 'Niciun document încă.'));
+    var PREVIEWABLE = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp', 'image/heic'];
     p.documents.forEach(function (d) {
       var row = el('div', 'itemrow');
       row.appendChild(el('span', 'doc-ph', '📄'));
@@ -541,9 +567,15 @@
       g.appendChild(el('div', 'm',
         fmtSize(d.size) + ' · ' + (d.by === 'staff' ? 'echipă' : 'pacient') + ' · ' + fmtTime(d.uploadedAt)));
       row.appendChild(g);
+      if (PREVIEWABLE.indexOf(d.type) > -1) {
+        var view = document.createElement('a');
+        view.className = 'ibtn'; view.textContent = 'Previzualizează';
+        view.href = d.url; view.target = '_blank'; view.rel = 'noopener';
+        row.appendChild(view);
+      }
       var dl = document.createElement('a');
       dl.className = 'ibtn'; dl.textContent = 'Descarcă';
-      dl.href = d.url; dl.download = d.name;
+      dl.href = d.url + '?download=1'; dl.download = d.name;
       row.appendChild(dl);
       var del = el('button', 'ibtn danger', 'Șterge'); del.type = 'button';
       del.addEventListener('click', async function () {
