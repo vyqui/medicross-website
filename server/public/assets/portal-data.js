@@ -108,6 +108,18 @@
       .catch(function () { return null; });
   }
 
+  /* Self-service signup. Unlike createPatient() (admin-only), this logs the
+     new patient straight in on success — gdprConsent is asserted true here
+     because the caller is the patient themselves, ticking the box on their
+     own registration form. */
+  function register(opts) {
+    return request('POST', '/api/auth/register', {
+      name: opts.name, email: opts.email, phone: opts.phone, sex: opts.sex,
+      password: opts.pass, gdprConsent: true
+    }).then(function (s) { sessionInfo = s; return { session: s }; })
+      .catch(function (err) { return { error: err.message }; });
+  }
+
   function logout() {
     return request('POST', '/api/auth/logout').catch(function () {}).then(function () {
       sessionInfo = null; patientsSummary = []; currentPatient = null;
@@ -292,7 +304,7 @@
   }
 
   window.MedicrossDB = {
-    login: login, logout: logout, session: session, requireRole: requireRole,
+    login: login, register: register, logout: logout, session: session, requireRole: requireRole,
     createPatient: createPatient, acceptGdpr: acceptGdpr, saveDetails: saveDetails,
     HOSPITALS: HOSPITALS,
     accountForPatient: accountForPatient,

@@ -13,10 +13,46 @@
 <body>
   <main class="card wide">
     <div class="logo"><span class="dot"></span>Medicross</div>
-    <div class="sub">Contul tău de pacient este creat de echipa Medicross, nu prin auto-înregistrare — așa
-      poate fi legat corect de dosarul și intervenția ta.</div>
+    <div class="sub">Creează-ți contul de pacient pentru a-ți urmări intervenția, programul călătoriei și documentele.</div>
 
-    <div class="gdpr-note" style="margin-top:10px">
+    <form id="registerForm" novalidate>
+      <div class="grid">
+        <div class="full">
+          <label for="rName">Nume și prenume</label>
+          <input id="rName" name="name" autocomplete="name" required />
+        </div>
+        <div>
+          <label for="rEmail">E-mail</label>
+          <input id="rEmail" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div>
+          <label for="rPhone">Telefon <span class="opt">(opțional)</span></label>
+          <input id="rPhone" name="phone" type="tel" autocomplete="tel" />
+        </div>
+        <div>
+          <label for="rSex">Sex <span class="opt">(pentru harta 3D)</span></label>
+          <select id="rSex" name="sex">
+            <option value="f">Feminin</option>
+            <option value="m">Masculin</option>
+          </select>
+        </div>
+        <div>
+          <label for="rPass">Parolă</label>
+          <input id="rPass" name="pass" type="password" autocomplete="new-password" minlength="8" required />
+          <div class="hint">Cel puțin 8 caractere.</div>
+        </div>
+      </div>
+
+      <label class="check" for="rGdpr">
+        <input type="checkbox" id="rGdpr" required />
+        <span>Am citit și accept <a href="acord-gdpr.html" target="_blank" rel="noopener">acordul GDPR</a> privind prelucrarea datelor mele personale și medicale.<span class="req">Obligatoriu</span></span>
+      </label>
+
+      <button type="submit" id="rSubmit" disabled>Creează contul</button>
+      <div class="err" id="rErr"></div>
+    </form>
+
+    <div class="gdpr-note" style="margin-top:18px">
       Ai fost deja în contact cu noi? Scrie-ne la
       <a href="mailto:office@tratamente-turcia.ro">office@tratamente-turcia.ro</a> sau pe
       <a href="https://wa.me/40746992222" target="_blank" rel="noopener">WhatsApp</a> și îți creăm contul,
@@ -26,5 +62,41 @@
     <div class="alt">Ai deja cont? <a href="login.html">Autentifică-te</a></div>
     <a class="back" href="https://www.tratamente-turcia.ro/">← Înapoi la site</a>
   </main>
+
+  <script src="assets/portal-data.js"></script>
+  <script>
+    (async function () {
+      'use strict';
+
+      // An existing session skips straight past this form.
+      var s = await MedicrossDB.session();
+      if (s) { location.replace(s.role === 'admin' ? 'admin.html' : 'portal.html'); return; }
+
+      var gdprBox = document.getElementById('rGdpr');
+      var submitBtn = document.getElementById('rSubmit');
+      gdprBox.addEventListener('change', function () { submitBtn.disabled = !gdprBox.checked; });
+
+      document.getElementById('registerForm').addEventListener('submit', async function (ev) {
+        ev.preventDefault();
+        var errBox = document.getElementById('rErr');
+        errBox.classList.remove('show');
+        if (!gdprBox.checked) return;
+
+        submitBtn.disabled = true;
+        var result = await MedicrossDB.register({
+          name: document.getElementById('rName').value,
+          email: document.getElementById('rEmail').value,
+          phone: document.getElementById('rPhone').value,
+          sex: document.getElementById('rSex').value,
+          pass: document.getElementById('rPass').value
+        });
+
+        if (result.session) { location.replace('portal.html'); return; }
+        errBox.textContent = result.error || 'Contul nu a putut fi creat.';
+        errBox.classList.add('show');
+        submitBtn.disabled = !gdprBox.checked;
+      });
+    })();
+  </script>
 </body>
 </html>

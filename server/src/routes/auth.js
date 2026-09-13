@@ -1,9 +1,9 @@
 import {
   verifyPassword, hashPassword, createSession, destroySession,
-  destroyAllSessions, requireAuth, SESSION_COOKIE,
+  destroyAllSessions, requireAuth, SESSION_COOKIE, generateReferralCode,
 } from '../auth.js';
-import { query } from '../db.js';
-import { logEvent } from '../patients.js';
+import { query, transaction } from '../db.js';
+import { logEvent, initialsFor } from '../patients.js';
 
 const SESSION_DAYS = 14;
 
@@ -63,6 +63,96 @@ export default async function authRoutes(app) {
       patientId: account.patient_id,
       mustChangePassword: account.must_change_password,
     };
+  });
+
+  /* Self-service signup, as an alternative to a staff-created account.
+     Unlike POST /api/admin/patients, gdpr_accepted is set right here — the
+     patient is the one ticking the box, as part of their own unauthenticated
+     signup request. That is still "the patient's own act", just captured a
+     moment earlier than a session exists rather than through POST /api/me/gdpr,
+     so a self-registered patient skips the post-login GDPR gate entirely. An
+     admin filling in the same fields on someone else's behalf is never the
+     patient consenting, which is why that endpoint still cannot touch it. */
+  app.post('/api/auth/register', {
+    config: {
+      rateLimit: { max: 10, timeWindow: '5 minutes' },
+    },
+  }, async (request, reply) => {
+    const { name, email, phone, sex, password, gdprConsent } = request.body ?? {};
+
+    if (!name || !String(name).trim()) {
+      return reply.code(400).send({ error: 'Numele este obligatoriu.' });
+    }
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(email).trim())) {
+      return reply.code(400).send({ error: 'Adresa de e-mail nu este validă.' });
+    }
+    if (!password || String(password).length < 8) {
+      return reply.code(400).send({ error: 'Parola trebuie să aibă cel puțin 8 caractere.' });
+    }
+    if (sex && !['f', 'm'].includes(sex)) {
+      return reply.code(400).send({ error: 'Sexul trebuie să fie „f” sau „m”.' });
+    }
+    if (gdprConsent !== true) {
+      return reply.code(400).send({ error: 'Trebuie să bifezi acordul GDPR pentru a-ți crea contul.' });
+    }
+
+    const existing = await query('select 1 from accounts where lower(email) = lower($1)',
+      [String(email).trim()]);
+    if (existing.rowCount > 0) {
+      return reply.code(409).send({ error: 'Există deja un cont cu acest e-mail.' });
+    }
+
+    const passwordHash = await hashPassword(String(password));
+
+    let accountId;
+    try {
+      accountId = await transaction(async (client) => {
+        let patient;
+        for (let attempt = 0; attempt < 5 && !patient; attempt += 1) {
+          try {
+            const res = await client.query(
+              `insert into patients (name, initials, email, phone, sex, referral_code,
+                                     gdpr_accepted, gdpr_accepted_at)
+               values ($1, $2, $3, $4, $5, $6, true, now()) returning id`,
+              [String(name).trim(), initialsFor(name), String(email).trim(),
+                phone ?? '', sex ?? 'f', generateReferralCode(name)]);
+            patient = res.rows[0];
+          } catch (err) {
+            if (err.constraint !== 'patients_referral_code_key') throw err;
+          }
+        }
+        if (!patient) throw new Error('Could not allocate a unique referral code.');
+
+        const acct = await client.query(
+          `insert into accounts (email, password_hash, role, patient_id, must_change_password)
+           values ($1, $2, 'patient', $3, false) returning id`,
+          [String(email).trim(), passwordHash, patient.id]);
+
+        await client.query(
+          'insert into activity_log (patient_id, who, what) values ($1, $2, $3)',
+          [patient.id, 'pacient', 'Cont creat prin auto-înregistrare — acord GDPR acceptat la înregistrare']);
+
+        return acct.rows[0].id;
+      });
+    } catch (err) {
+      request.log.error({ err }, 'failed to self-register patient');
+      return reply.code(500).send({ error: 'Contul nu a putut fi creat.' });
+    }
+
+    const session = await createSession(accountId, {
+      userAgent: request.headers['user-agent'],
+      ip: request.ip,
+    });
+    reply.setCookie(SESSION_COOKIE, session.id, cookieOptions());
+
+    const { rows } = await query(
+      'select email, role, patient_id, must_change_password from accounts where id = $1', [accountId]);
+    return reply.code(201).send({
+      email: rows[0].email,
+      role: rows[0].role,
+      patientId: rows[0].patient_id,
+      mustChangePassword: rows[0].must_change_password,
+    });
   });
 
   app.post('/api/auth/logout', async (request, reply) => {
