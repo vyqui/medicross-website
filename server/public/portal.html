@@ -6,7 +6,7 @@
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Contul meu — Medicross</title>
-  <meta name="description" content="Panoul de control al pacientului Medicross: harta 3D a corpului, operațiile tale, programul călătoriei în Istanbul, reducerile și documentele tale." />
+  <meta name="description" content="Panoul de control al pacientului Medicross: harta 3D a corpului, operațiile tale, programul călătoriei în Istanbul, consultația gratuită online și documentele tale." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -42,7 +42,7 @@
         <nav class="ph-nav" aria-label="Meniu portal">
           <a href="#panou" class="active">Panou</a>
           <a href="#operatii">Operațiile mele</a>
-          <a href="#reduceri">Reduceri</a>
+          <a href="#consultatie">Consultație gratuită</a>
           <a href="#documente">Documente</a>
         </nav>
       </div>
@@ -160,56 +160,14 @@
       </div>
     </div>
 
-    <!-- row: discounts + docs/referral -->
+    <!-- row: free consultation CTA + docs/referral -->
     <div class="row-2b">
-      <!-- discounts -->
-      <div class="card disc-card" id="reduceri">
-        <div class="disc-head">
-          <div><h2>Reducerea ta la următoarea operație</h2><div class="sub">Sumele se adună. <strong>30 €</strong> pentru cele patru acțiuni sociale, <strong>70 €</strong> pentru fiecare prieten care se operează cu codul tău, <strong>20 €</strong> dacă te-ai înscris cu codul altcuiva.</div></div>
-          <div class="ring-wrap">
-            <div class="ring" id="discRing"></div>
-            <div class="ring-inner"><span class="ring-num" id="discNum">0 €</span><span class="ring-lbl" id="discCap">DIN 0 €</span></div>
-          </div>
-        </div>
-        <div class="actions" id="actions">
-          <div class="arow" data-action="instagram">
-            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></span>
-            <div class="a-body"><div class="t">Follow pe Instagram <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
-            <a class="a-link" data-open target="_blank" rel="noopener" hidden>Deschide ↗</a>
-            <button class="a-btn" data-toggle>—</button>
-          </div>
-          <div class="arow" data-action="facebook">
-            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="currentColor"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.7c0-.87.24-1.46 1.49-1.46H17V4.55C16.7 4.5 15.75 4.4 14.65 4.4c-2.3 0-3.9 1.4-3.9 3.98v2.12H8.2v3h2.55V21z"/></svg></span>
-            <div class="a-body"><div class="t">Follow pe Facebook <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
-            <a class="a-link" data-open target="_blank" rel="noopener" hidden>Deschide ↗</a>
-            <button class="a-btn" data-toggle>—</button>
-          </div>
-          <div class="arow" data-action="review">
-            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.4 6.8L12 17.8 5.9 20.5l1.4-6.8L2.2 9l6.9-.7z"/></svg></span>
-            <div class="a-body"><div class="t">Recenzie <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
-            <a class="a-link" data-open target="_blank" rel="noopener" hidden>Deschide ↗</a>
-            <button class="a-btn" data-toggle>—</button>
-          </div>
-          <div class="arow" data-action="share">
-            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7.2 10.9a2.7 2.7 0 100 2.2m0-2.2l9.6-4.4m-9.6 6.6l9.6 4.4M19.5 5.5a2.7 2.7 0 11-5.4 0 2.7 2.7 0 015.4 0zm0 13a2.7 2.7 0 11-5.4 0 2.7 2.7 0 015.4 0z"/></svg></span>
-            <div class="a-body"><div class="t">Distribuie o postare <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
-            <a class="a-link" data-open target="_blank" rel="noopener" hidden>Deschide ↗</a>
-            <button class="a-btn" data-toggle>—</button>
-          </div>
-
-          <!-- the two stacking rewards the patient cannot self-declare:
-               the admin confirms the surgery before the 70 € is paid -->
-          <div class="arow" data-action="referral">
-            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.1 9.1 0 003.74-.48 3 3 0 00-4.68-3.09M18 18.72V16.5a5.97 5.97 0 00-.94-3.19M18 18.72H6m0 0a9.1 9.1 0 01-3.74-.48 3 3 0 014.68-3.09M6 18.72V16.5c0-1.17.34-2.27.94-3.19m0 0a6 6 0 0110.12 0M12 6.38a3 3 0 11-6 0 3 3 0 016 0zm7.5 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg></span>
-            <div class="a-body"><div class="t">Prieteni care s-au operat cu codul tău <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
-            <button class="a-btn outline-btn" data-toggle>Invită</button>
-          </div>
-          <div class="arow" data-action="usedCode">
-            <span class="a-ic"><svg viewBox="0 0 24 24" width="19" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M9.6 3.75h4.8l5.85 5.85v4.8L14.4 20.25H9.6L3.75 14.4V9.6zM12 8.25v4.5m0 3h.01"/></svg></span>
-            <div class="a-body"><div class="t">Te-ai înscris cu codul unui prieten <span class="pct" data-eur>—</span></div><div class="status" data-status>—</div></div>
-          </div>
-        </div>
-        <p class="disc-note">Acțiunile sociale sunt verificate de echipa Medicross înainte de a fi aplicate pe factură. Cei 70 € se acordă după ce prietenul recomandat trece efectiv prin intervenție.</p>
+      <!-- free online consultation -->
+      <div class="card cta-card" id="consultatie">
+        <span class="cta-ic"><svg viewBox="0 0 24 24" width="26" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8.25a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 8.25v7.5a2.25 2.25 0 01-2.25 2.25H8.25L4.5 21v-3H5.25A2.25 2.25 0 013 15.75v-7.5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 10.5h6M9 13.5h3.5"/></svg></span>
+        <h2>Consultație gratuită online</h2>
+        <p class="sub">Discută direct cu echipa Medicross despre situația ta — evaluare, opțiuni de tratament și pași următori, gratuit și fără obligații.</p>
+        <button class="cta-btn" id="freeConsultBtn" type="button">Programează consultația</button>
       </div>
 
       <!-- docs + referral code -->
@@ -260,7 +218,7 @@
   <nav class="ptabs" aria-label="Navigare rapidă">
     <a href="#top" class="active"><svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.95-8.95a1.13 1.13 0 011.6 0L21.75 12M4.5 9.75V21h15V9.75"/></svg>Panou</a>
     <a href="#operatii"><svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.75A2.25 2.25 0 018.25 4.5h7.5A2.25 2.25 0 0118 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-7.5A2.25 2.25 0 016 17.25V6.75z"/></svg>Operații</a>
-    <a href="#reduceri"><svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Reduceri</a>
+    <a href="#consultatie"><svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8.25a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 8.25v7.5a2.25 2.25 0 01-2.25 2.25H8.25L4.5 21v-3H5.25A2.25 2.25 0 013 15.75v-7.5z"/></svg>Consultație</a>
     <a href="https://www.tratamente-turcia.ro/"><svg viewBox="0 0 24 24" width="21" fill="none" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0"/></svg>Cont</a>
   </nav>
 

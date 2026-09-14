@@ -295,108 +295,6 @@
     }
   }
 
-  /* ---------------- discount ---------------- */
-  var EUR = MedicrossDB.eur;
-
-  function updateUI() {
-    var p = P();
-    var d = MedicrossDB.discountBreakdown(PID);
-    // the ring fills against what is actually on the table for this patient,
-    // not a fixed ceiling — the referral reward has no cap by design
-    var deg = d.potential > 0 ? Math.round((d.total / d.potential) * 360) : 0;
-    var ring = document.getElementById('discRing');
-    var num = document.getElementById('discNum');
-    var cap = document.getElementById('discCap');
-    if (ring) ring.style.background = 'conic-gradient(var(--brand) ' + deg + 'deg, var(--ring-track) ' + deg + 'deg)';
-    if (num) num.textContent = EUR(d.total);
-    if (cap) cap.textContent = 'DIN ' + EUR(d.potential);
-
-    document.querySelectorAll('.arow').forEach(function (row) {
-      var key = row.dataset.action;
-      var amount = row.querySelector('[data-eur]');
-      var status = row.querySelector('[data-status]');
-      var btn = row.querySelector('[data-toggle]');
-      var open = row.querySelector('[data-open]');
-
-      if (key === 'referral') {
-        row.classList.toggle('earned', d.operated > 0);
-        if (amount) amount.textContent = EUR(MedicrossDB.REWARDS.referralOperated) + ' / prieten';
-        if (status) {
-          status.textContent = d.operated
-            ? d.operated + (d.operated === 1 ? ' prieten operat' : ' prieteni operați') + ' · ' + EUR(d.referral) +
-              (d.pending ? ' · ' + d.pending + ' în așteptare' : '')
-            : (d.pending ? d.pending + (d.pending === 1 ? ' prieten înscris' : ' prieteni înscriși') +
-                ' · se acordă după intervenție' : 'Niciun prieten înscris încă');
-        }
-        return;
-      }
-
-      if (key === 'usedCode') {
-        row.classList.toggle('earned', !!p.usedCode);
-        if (amount) amount.textContent = EUR(MedicrossDB.REWARDS.codeUsed);
-        if (status) status.textContent = p.usedCode
-          ? 'Cod ' + p.usedCode.code + ' · ' + EUR(MedicrossDB.REWARDS.codeUsed) + ' aplicat'
-          : 'Niciun cod folosit la înscriere';
-        return;
-      }
-
-      var a = p.actions[key];
-      if (!a) return;
-      /* `done` is just the patient's own declaration; the reward only actually
-         applies once a member of staff verifies it (a.verified) — see
-         server/src/discounts.js. Rendering both the same way told a patient
-         they had already earned money the moment they merely claimed it. */
-      row.classList.toggle('earned', a.verified);
-      if (amount) amount.textContent = EUR(a.eur);
-      if (status) {
-        status.textContent = a.verified ? 'Confirmată · ' + EUR(a.eur) + ' aplicați'
-          : a.done ? 'Trimisă — așteaptă verificarea echipei'
-          : 'Neînceput';
-      }
-      if (btn) {
-        btn.textContent = a.done ? 'Gata ✓' : 'Am făcut';
-        btn.className = a.verified ? 'a-btn earned-btn' : 'a-btn';
-      }
-      if (open) {
-        var url = MedicrossDB.SOCIAL_LINKS[key];
-        open.hidden = !url;
-        if (url) open.href = url;
-      }
-    });
-  }
-
-  document.querySelectorAll('.arow').forEach(function (row) {
-    var key = row.dataset.action;
-    var toggle = row.querySelector('[data-toggle]');
-    if (!toggle) return;
-
-    if (key === 'referral') {
-      toggle.addEventListener('click', function () {
-        var msg = 'Salut! Îți las codul meu de reducere Medicross: ' + P().referralCode +
-          '\nTu primești ' + EUR(MedicrossDB.REWARDS.codeUsed) + ' reducere la intervenția ta.';
-        if (navigator.share) { navigator.share({ text: msg }).catch(function () {}); return; }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(msg).then(function () {
-            window.alert('Mesajul cu codul tău a fost copiat. Trimite-l prietenilor tăi.');
-          }, function () { window.alert(msg); });
-        } else { window.alert(msg); }
-      });
-      return;
-    }
-
-    // instagram / facebook / review / share — the patient declares it, the
-    // admin verifies before the amount ever reaches an invoice
-    if (AS_ADMIN) {
-      toggle.disabled = true;
-      toggle.title = 'Doar pacientul poate confirma acțiunile.';
-      return;
-    }
-    toggle.addEventListener('click', async function () {
-      await MedicrossDB.setAction(PID, key, { done: !P().actions[key].done });
-      updateUI();
-    });
-  });
-
   /* ---------------- referral code ---------------- */
   (function () {
     var codeEl = document.querySelector('.ref-code');
@@ -490,6 +388,5 @@
   renderTrip();
   renderNext();
   renderDocs();
-  updateUI();
   setTimeout(pushBody, 500); // also re-pushed on the bodymap-ready message
 })();
