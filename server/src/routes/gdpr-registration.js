@@ -116,6 +116,8 @@ export default async function gdprRegistrationRoutes(app) {
       return reply.code(500).send({ error: 'Formularul nu a putut fi trimis. Te rugăm să ne contactezi direct.' });
     }
 
+    const pdfFilename = `acord-gdpr-${name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.pdf`;
+
     let emailSent = false;
     try {
       await sendMail({
@@ -124,10 +126,7 @@ export default async function gdprRegistrationRoutes(app) {
         text: `Înregistrare nouă pentru ${procedure.label} (${procedure.category}).\n\n` +
           `Nume: ${name}\nE-mail: ${email}\nTelefon: ${phone}\n\n` +
           `Detaliile complete (inclusiv CNP și semnătura) sunt în PDF-ul atașat.`,
-        attachments: [{
-          filename: `acord-gdpr-${name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.pdf`,
-          content: pdfBuffer,
-        }],
+        attachments: [{ filename: pdfFilename, content: pdfBuffer }],
       });
       emailSent = true;
     } catch (err) {
@@ -135,6 +134,25 @@ export default async function gdprRegistrationRoutes(app) {
          unreachable right now — better a delayed follow-up than a silently
          lost signature that the patient believes was received. */
       request.log.error({ err }, 'failed to send GDPR registration e-mail');
+    }
+
+    /* The patient's own copy is a courtesy, not the record of truth — the
+       team follows up with each patient separately, so a failure here is
+       logged and otherwise ignored: it never touches emailSent, the stored
+       row, or what the patient sees in the response. */
+    try {
+      await sendMail({
+        to: email,
+        subject: `Acordul tău GDPR — ${procedure.label} — Tratamente Turcia by Medicross`,
+        text: `Salut, ${name}!\n\n` +
+          `Îți mulțumim pentru completare. Atașat găsești o copie a acordului GDPR ` +
+          `trimis echipei Tratamente Turcia by Medicross pentru ${procedure.label}.\n\n` +
+          `Dacă ai întrebări, ne găsești la office@tratamente-turcia.ro sau pe WhatsApp.\n\n` +
+          `Echipa Tratamente Turcia`,
+        attachments: [{ filename: pdfFilename, content: pdfBuffer }],
+      });
+    } catch (err) {
+      request.log.error({ err }, 'failed to send the patient their own copy of the GDPR registration e-mail');
     }
 
     const fullAddress = [addressLine1, addressLine2].filter(Boolean).join(', ');
