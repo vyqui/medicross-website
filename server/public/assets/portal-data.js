@@ -111,11 +111,12 @@
   /* Self-service signup. Unlike createPatient() (admin-only), this logs the
      new patient straight in on success — gdprConsent is asserted true here
      because the caller is the patient themselves, ticking the box on their
-     own registration form. */
+     own registration form. mediaConsent is the patient's own separate DA/NU
+     answer, required to be an actual boolean (never inferred). */
   function register(opts) {
     return request('POST', '/api/auth/register', {
       name: opts.name, email: opts.email, phone: opts.phone, sex: opts.sex,
-      password: opts.pass, gdprConsent: true
+      password: opts.pass, gdprConsent: true, mediaConsent: !!opts.mediaConsent
     }).then(function (s) { sessionInfo = s; return { session: s }; })
       .catch(function (err) { return { error: err.message }; });
   }
@@ -211,6 +212,10 @@
   function acceptGdpr() {
     return request('POST', '/api/me/gdpr').then(function (p) { currentPatient = p; return p; });
   }
+  function setMediaConsent(consent) {
+    return request('POST', '/api/me/media-consent', { consent: !!consent })
+      .then(function (p) { currentPatient = p; return p; });
+  }
   function setAction(pid, key, patch) {
     return request('POST', '/api/me/actions/' + key, { done: !!patch.done })
       .then(function (p) { currentPatient = p; return p; });
@@ -305,7 +310,7 @@
 
   window.MedicrossDB = {
     login: login, register: register, logout: logout, session: session, requireRole: requireRole,
-    createPatient: createPatient, acceptGdpr: acceptGdpr, saveDetails: saveDetails,
+    createPatient: createPatient, acceptGdpr: acceptGdpr, setMediaConsent: setMediaConsent, saveDetails: saveDetails,
     HOSPITALS: HOSPITALS,
     accountForPatient: accountForPatient,
 

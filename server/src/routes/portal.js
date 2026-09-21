@@ -47,6 +47,30 @@ export default async function portalRoutes(app) {
     return loadPatient(id);
   });
 
+  /* Separate from gdpr_accepted above: whether the patient agrees to let
+     their photos/video/testimonials be used in marketing. Unlike the core
+     GDPR acknowledgment this is optional and reversible either way — a "NU"
+     is a complete, valid answer, never a block on anything else, and the
+     patient may call this again later to change their mind. */
+  app.post('/api/me/media-consent', async (request, reply) => {
+    const id = ownPatientId(request, reply);
+    if (!id) return;
+
+    const consent = request.body?.consent;
+    if (typeof consent !== 'boolean') {
+      return reply.code(400).send({ error: 'Alege DA sau NU.' });
+    }
+
+    await query(
+      `update patients set media_consent = $2, media_consent_at = now() where id = $1`,
+      [id, consent]);
+    await logEvent(id, 'pacient', consent
+      ? 'Acord fotografii/video/testimoniale: DA'
+      : 'Acord fotografii/video/testimoniale: NU');
+
+    return loadPatient(id);
+  });
+
   /* The patient claims a social action. It earns nothing until a member of
      staff verifies it — see src/discounts.js. */
   app.post('/api/me/actions/:key', async (request, reply) => {

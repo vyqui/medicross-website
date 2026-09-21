@@ -20,36 +20,78 @@
 
   function P() { return MedicrossDB.patient(PID); }
 
-  /* ---------------- mandatory GDPR consent gate ----------------
+  /* ---------------- mandatory consent gate ----------------
      Shown only to the patient themselves, never to an admin viewing the
      portal read-only — staff cannot accept consent on a patient's behalf,
      so there is nothing for them to skip past here in the first place.
      No close button, no click-outside handler, no Escape handler: the only
-     ways out are ticking the box and continuing, or signing out. */
+     ways out are finishing the steps below, or signing out.
+
+     Two independent steps: step 1 (core GDPR acknowledgment) is always
+     required and gates everything. Step 2 (media consent) only requires an
+     explicit DA/NU — either answer finishes the flow the same way, so it
+     never blocks anything on its own. A patient who already has one but not
+     the other (e.g. an older account that accepted GDPR before media
+     consent existed) opens straight on whichever step is still open. */
   (function () {
     var p = P();
-    if (!p || AS_ADMIN || p.gdprAccepted) return;
+    if (!p || AS_ADMIN) return;
+
+    var needsStep1 = !p.gdprAccepted;
+    var needsStep2 = p.mediaConsent === null || p.mediaConsent === undefined;
+    if (!needsStep1 && !needsStep2) return;
 
     var gate = document.getElementById('gdprGate');
-    var box = document.getElementById('gdprGateBox');
-    var btn = document.getElementById('gdprGateBtn');
+    var step1 = document.getElementById('gdprStep1');
+    var step2 = document.getElementById('gdprStep2');
+    var step1Btn = document.getElementById('gdprStep1Btn');
+    var step2Btn = document.getElementById('gdprStep2Btn');
+    var mcYes = document.getElementById('mcYesBtn');
+    var mcNo = document.getElementById('mcNoBtn');
     var logoutBtn = document.getElementById('gdprGateLogout');
-    if (!gate || !box || !btn) return;
+    if (!gate || !step1 || !step2 || !step1Btn || !step2Btn || !mcYes || !mcNo) return;
+
+    var selectedConsent = null; // true | false, until the patient picks one
+
+    function openStep(n) {
+      step1.hidden = n !== 1;
+      step2.hidden = n !== 2;
+      (n === 1 ? step1Btn : mcYes).focus();
+    }
+
+    function closeGate() {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      gate.remove();
+    }
 
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     gate.hidden = false;
-    box.focus();
+    openStep(needsStep1 ? 1 : 2);
 
-    box.addEventListener('change', function () { btn.disabled = !box.checked; });
-
-    btn.addEventListener('click', async function () {
-      if (!box.checked) return;
-      btn.disabled = true;
+    step1Btn.addEventListener('click', async function () {
+      step1Btn.disabled = true;
       await MedicrossDB.acceptGdpr();
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      gate.remove();
+      if (needsStep2) openStep(2); else closeGate();
+    });
+
+    function selectChoice(consent) {
+      selectedConsent = consent;
+      mcYes.classList.toggle('selected', consent === true);
+      mcYes.setAttribute('aria-checked', String(consent === true));
+      mcNo.classList.toggle('selected', consent === false);
+      mcNo.setAttribute('aria-checked', String(consent === false));
+      step2Btn.disabled = false;
+    }
+    mcYes.addEventListener('click', function () { selectChoice(true); });
+    mcNo.addEventListener('click', function () { selectChoice(false); });
+
+    step2Btn.addEventListener('click', async function () {
+      if (selectedConsent === null) return;
+      step2Btn.disabled = true;
+      await MedicrossDB.setMediaConsent(selectedConsent);
+      closeGate();
     });
 
     if (logoutBtn) logoutBtn.addEventListener('click', async function () {
@@ -57,7 +99,9 @@
       location.href = 'login.html';
     });
 
-    // Keep keyboard focus inside the card while the gate is up.
+    // Keep keyboard focus inside the card while the gate is up. Whichever
+    // step is `hidden` contributes no focusables, so this needs no extra
+    // step-awareness beyond what's already in the DOM.
     gate.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape') { ev.preventDefault(); return; }
       if (ev.key !== 'Tab') return;

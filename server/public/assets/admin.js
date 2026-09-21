@@ -164,6 +164,20 @@
         (p.gdprAcceptedAt ? '<span class="gdpr-when">' + fmtTime(p.gdprAcceptedAt) + '</span>' : '')
       : '<strong>Acordul GDPR nu a fost acceptat încă</strong>' +
         '<span class="gdpr-when">Pacientul va fi întrebat la prima autentificare</span>';
+
+    // Separate, optional consent — a "NU" is a complete, valid answer, so it
+    // gets its own neutral look rather than the "missing" amber, which is
+    // reserved for "not answered yet".
+    var mcBox = document.getElementById('mediaConsentStatus');
+    var mc = p.mediaConsent;
+    mcBox.className = 'gdpr-status' + (mc === true ? '' : mc === false ? ' declined' : ' missing');
+    mcBox.innerHTML = mc === true
+      ? TICK + ' <strong>Fotografii/video/testimoniale: DA</strong>' +
+        (p.mediaConsentAt ? '<span class="gdpr-when">' + fmtTime(p.mediaConsentAt) + '</span>' : '')
+      : mc === false
+      ? '<strong>Fotografii/video/testimoniale: NU</strong>' +
+        (p.mediaConsentAt ? '<span class="gdpr-when">' + fmtTime(p.mediaConsentAt) + '</span>' : '')
+      : '<strong>Nu a răspuns încă la acordul pentru fotografii/video/testimoniale</strong>';
   }
 
   // Live filter — every keystroke re-renders just the table, not the whole

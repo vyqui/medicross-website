@@ -78,7 +78,7 @@ export default async function authRoutes(app) {
       rateLimit: { max: 10, timeWindow: '5 minutes' },
     },
   }, async (request, reply) => {
-    const { name, email, phone, sex, password, gdprConsent } = request.body ?? {};
+    const { name, email, phone, sex, password, gdprConsent, mediaConsent } = request.body ?? {};
 
     if (!name || !String(name).trim()) {
       return reply.code(400).send({ error: 'Numele este obligatoriu.' });
@@ -93,7 +93,13 @@ export default async function authRoutes(app) {
       return reply.code(400).send({ error: 'Sexul trebuie să fie „f” sau „m”.' });
     }
     if (gdprConsent !== true) {
-      return reply.code(400).send({ error: 'Trebuie să bifezi acordul GDPR pentru a-ți crea contul.' });
+      return reply.code(400).send({ error: 'Trebuie să confirmi informarea GDPR pentru a-ți crea contul.' });
+    }
+    /* Media consent is optional in substance (either answer is fine) but
+       mandatory in form — the registration form forces an explicit DA/NU,
+       never a silent default, so the same is enforced here. */
+    if (typeof mediaConsent !== 'boolean') {
+      return reply.code(400).send({ error: 'Alege DA sau NU pentru fotografii/video/testimoniale.' });
     }
 
     const existing = await query('select 1 from accounts where lower(email) = lower($1)',
@@ -112,10 +118,11 @@ export default async function authRoutes(app) {
           try {
             const res = await client.query(
               `insert into patients (name, initials, email, phone, sex, referral_code,
-                                     gdpr_accepted, gdpr_accepted_at)
-               values ($1, $2, $3, $4, $5, $6, true, now()) returning id`,
+                                     gdpr_accepted, gdpr_accepted_at,
+                                     media_consent, media_consent_at)
+               values ($1, $2, $3, $4, $5, $6, true, now(), $7, now()) returning id`,
               [String(name).trim(), initialsFor(name), String(email).trim(),
-                phone ?? '', sex ?? 'f', generateReferralCode(name)]);
+                phone ?? '', sex ?? 'f', generateReferralCode(name), mediaConsent]);
             patient = res.rows[0];
           } catch (err) {
             if (err.constraint !== 'patients_referral_code_key') throw err;
@@ -130,7 +137,9 @@ export default async function authRoutes(app) {
 
         await client.query(
           'insert into activity_log (patient_id, who, what) values ($1, $2, $3)',
-          [patient.id, 'pacient', 'Cont creat prin auto-înregistrare — acord GDPR acceptat la înregistrare']);
+          [patient.id, 'pacient',
+            'Cont creat prin auto-înregistrare — acord GDPR acceptat; fotografii/video/testimoniale: ' +
+              (mediaConsent ? 'DA' : 'NU')]);
 
         return acct.rows[0].id;
       });

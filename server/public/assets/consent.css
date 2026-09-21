@@ -1,0 +1,39 @@
+/* ===========================================================
+   Medicross — shared two-step consent flow.
+   Used both inside the mandatory post-login gate (portal.html) and inline
+   in the self-registration form (register.html), so it only relies on the
+   handful of CSS variables both auth.css and portal.css define the same way
+   (--brand, --brand-dark, --ink, --muted, --line) rather than either page's
+   own layout variables.
+   =========================================================== */
+
+.consent-eyebrow {
+  display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--brand-dark); margin-bottom: 8px;
+}
+.consent-step h2 {
+  font-family: 'Newsreader', Georgia, serif; font-weight: 600; font-size: 21px;
+  letter-spacing: -.01em; margin-bottom: 12px; color: var(--ink);
+}
+.consent-summary { font-size: 13.5px; line-height: 1.6; color: var(--muted); margin-bottom: 10px; }
+.consent-summary a { color: var(--brand); font-weight: 700; }
+.consent-fulltext {
+  display: inline-block; font-size: 12.5px; font-weight: 700; color: var(--brand);
+  margin-bottom: 20px; text-decoration: none;
+}
+.consent-fulltext:hover { text-decoration: underline; }
+
+.consent-choice-row { display: flex; gap: 10px; margin-bottom: 18px; }
+.consent-choice {
+  flex: 1; padding: 14px 10px; border: 1.5px solid var(--line); border-radius: 14px;
+  background: #fff; font: inherit; font-weight: 700; font-size: 13.5px; color: var(--ink);
+  cursor: pointer; transition: border-color .2s ease, background .2s ease, color .2s ease;
+}
+.consent-choice:hover { border-color: var(--brand); }
+.consent-choice.selected {
+  border-color: var(--brand); background: var(--brand); color: #fff;
+}
+
+@media (max-width: 420px) {
+  .consent-choice-row { flex-direction: column; }
+}

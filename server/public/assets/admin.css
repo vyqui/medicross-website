@@ -75,6 +75,7 @@
   color: var(--success); background: var(--success-bg);
 }
 .gdpr-status.missing { color: #8a5216; background: #fdf3e7; }
+.gdpr-status.declined { color: var(--muted); background: var(--chip); }
 .gdpr-status svg { width: 15px; height: 15px; flex: none; }
 .gdpr-status .gdpr-when { margin-left: auto; font-weight: 600; font-size: 11.5px; color: inherit; opacity: .8; }
 .acct-line { display: flex; gap: 10px; font-size: 13px; padding: 6px 0; }

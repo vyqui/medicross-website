@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/auth.css" />
+  <link rel="stylesheet" href="assets/consent.css" />
 </head>
 <body>
   <main class="card wide">
@@ -43,12 +44,28 @@
         </div>
       </div>
 
-      <label class="check" for="rGdpr">
+      <!-- Step 1 of the consent flow: short informare + a plain acknowledgment,
+           kept separate from the optional media consent below. The full legal
+           text stays one tap away rather than being forced inline. -->
+      <p class="consent-summary" style="margin-top:22px">Colectăm datele tale de contact și medicale doar pentru a pregăti oferta, dosarul și intervenția ta, le păstrăm cât durează colaborarea și le distribuim exclusiv spitalelor partenere implicate în tratamentul tău.</p>
+      <a class="consent-fulltext" href="acord-gdpr.html" target="_blank" rel="noopener">Citește acordul GDPR complet ↗</a>
+      <label class="check" for="rGdpr" style="margin-top:6px">
         <input type="checkbox" id="rGdpr" required />
-        <span>Am citit și accept <a href="acord-gdpr.html" target="_blank" rel="noopener">acordul GDPR</a> privind prelucrarea datelor mele personale și medicale.<span class="req">Obligatoriu</span></span>
+        <span>Am citit și am luat la cunoștință acordul GDPR privind prelucrarea datelor mele personale și medicale.<span class="req">Obligatoriu</span></span>
       </label>
 
-      <button type="submit" id="rSubmit" disabled>Creează contul</button>
+      <!-- Step 2: separate, optional consent — a "NU" here never blocks the
+           account or anything else, only leaving the choice unmade does. -->
+      <div style="margin-top:24px">
+        <label style="margin-bottom:6px;display:block">Fotografii, video și testimoniale <span class="opt">(opțional)</span></label>
+        <p class="consent-summary" style="margin-bottom:12px">Ne-ar plăcea să putem folosi fotografiile, testimonialul sau un scurt video cu experiența ta, pe site și pe rețelele sociale. Alegerea ta nu influențează accesul tău la serviciile Medicross.</p>
+        <div class="consent-choice-row" role="radiogroup" aria-label="Fotografii, video și testimoniale" id="mcRow">
+          <button type="button" class="consent-choice" id="mcYesBtn" role="radio" aria-checked="false">DA, sunt de acord</button>
+          <button type="button" class="consent-choice" id="mcNoBtn" role="radio" aria-checked="false">NU, nu sunt de acord</button>
+        </div>
+      </div>
+
+      <button type="submit" id="rSubmit" disabled style="margin-top:22px">Creează contul</button>
       <div class="err" id="rErr"></div>
     </form>
 
@@ -74,13 +91,29 @@
 
       var gdprBox = document.getElementById('rGdpr');
       var submitBtn = document.getElementById('rSubmit');
-      gdprBox.addEventListener('change', function () { submitBtn.disabled = !gdprBox.checked; });
+      var mcYes = document.getElementById('mcYesBtn');
+      var mcNo = document.getElementById('mcNoBtn');
+      var mediaConsent = null; // true | false, until the applicant picks one
+
+      function syncSubmit() { submitBtn.disabled = !gdprBox.checked || mediaConsent === null; }
+      gdprBox.addEventListener('change', syncSubmit);
+
+      function selectMedia(consent) {
+        mediaConsent = consent;
+        mcYes.classList.toggle('selected', consent === true);
+        mcYes.setAttribute('aria-checked', String(consent === true));
+        mcNo.classList.toggle('selected', consent === false);
+        mcNo.setAttribute('aria-checked', String(consent === false));
+        syncSubmit();
+      }
+      mcYes.addEventListener('click', function () { selectMedia(true); });
+      mcNo.addEventListener('click', function () { selectMedia(false); });
 
       document.getElementById('registerForm').addEventListener('submit', async function (ev) {
         ev.preventDefault();
         var errBox = document.getElementById('rErr');
         errBox.classList.remove('show');
-        if (!gdprBox.checked) return;
+        if (!gdprBox.checked || mediaConsent === null) return;
 
         submitBtn.disabled = true;
         var result = await MedicrossDB.register({
@@ -88,13 +121,14 @@
           email: document.getElementById('rEmail').value,
           phone: document.getElementById('rPhone').value,
           sex: document.getElementById('rSex').value,
-          pass: document.getElementById('rPass').value
+          pass: document.getElementById('rPass').value,
+          mediaConsent: mediaConsent
         });
 
         if (result.session) { location.replace('portal.html'); return; }
         errBox.textContent = result.error || 'Contul nu a putut fi creat.';
         errBox.classList.add('show');
-        submitBtn.disabled = !gdprBox.checked;
+        syncSubmit();
       });
     })();
   </script>

@@ -296,21 +296,6 @@ body.portal button { font-family: inherit; }
   padding: 32px 30px 28px;
   box-shadow: 0 30px 60px -20px rgba(0,0,0,.35);
 }
-.gdpr-gate-card h2 {
-  font-family: var(--font-display); font-weight: 600; font-size: 23px;
-  margin-bottom: 12px; letter-spacing: -.01em;
-}
-.gdpr-gate-card p { font-size: 14.5px; line-height: 1.6; color: var(--muted); margin-bottom: 20px; }
-.gdpr-gate-check {
-  display: flex; align-items: flex-start; gap: 11px;
-  padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px;
-  cursor: pointer; margin-bottom: 18px;
-}
-.gdpr-gate-check input {
-  width: 19px; height: 19px; flex: none; margin-top: 1px; accent-color: var(--brand);
-}
-.gdpr-gate-check span { font-size: 13.5px; line-height: 1.55; }
-.gdpr-gate-check a { color: var(--brand); text-decoration: underline; font-weight: 700; }
 .gdpr-gate-btn {
   width: 100%; border: none; border-radius: 999px; padding: 14px;
   background: var(--brand); color: #fff; font: inherit; font-weight: 800; font-size: 14.5px;

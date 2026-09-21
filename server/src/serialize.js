@@ -42,6 +42,11 @@ export function serializePatient({ patient, operations, tripItems, documents, re
 
     gdprAccepted: patient.gdpr_accepted,
     gdprAcceptedAt: iso(patient.gdpr_accepted_at),
+    /* null = not asked yet, distinct from either explicit answer. Unlike
+       gdprAccepted, a "false" here is a fully valid, final state — see
+       POST /api/me/media-consent. */
+    mediaConsent: patient.media_consent,
+    mediaConsentAt: iso(patient.media_consent_at),
 
     details: patient.details,
     activeOp: patient.active_op,

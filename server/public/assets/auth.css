@@ -60,6 +60,7 @@ button[type=submit] {
   transition: background .2s ease, transform .2s ease;
 }
 button[type=submit]:hover { background: var(--brand-dark); transform: translateY(-1px); }
+button[type=submit]:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
 .err { display: none; margin-top: 14px; padding: 10px 13px; border-radius: 10px; background: #fdeaea; color: #a11d1d; font-size: 13px; font-weight: 600; }
 .err.show { display: block; }
