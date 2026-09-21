@@ -43,6 +43,24 @@ function decodeSignaturePng(dataUrl) {
   return buffer.length > 0 && buffer.length <= 500_000 ? buffer : null;
 }
 
+/** Best-effort row in the office's Google Sheet, via an Apps Script Web App
+    bound to it (see server/README.md) — there is no Sheets API credential
+    anywhere in this app, deliberately, so this is the entire integration.
+    Never sends the CNP or the signature image itself, only whether one was
+    drawn; a failure here never blocks the actual registration. */
+async function logToSheet(row) {
+  const url = process.env.GDPR_SHEET_WEBHOOK_URL;
+  if (!url) return false;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(row),
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!res.ok) throw new Error(`sheet webhook responded ${res.status}`);
+  return true;
+}
+
 export default async function gdprRegistrationRoutes(app) {
   app.post('/api/gdpr-registration', {
     config: { rateLimit: { max: 20, timeWindow: '10 minutes' } },
@@ -118,12 +136,28 @@ export default async function gdprRegistrationRoutes(app) {
       request.log.error({ err }, 'failed to send GDPR registration e-mail');
     }
 
+    const fullAddress = [addressLine1, addressLine2].filter(Boolean).join(', ');
+
     await query(
       `insert into gdpr_registrations
          (name, email, phone, address, date_of_birth, procedure_category, procedure_name, source_page, email_sent)
        values ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [name, email, phone, [addressLine1, addressLine2].filter(Boolean).join(', '),
+      [name, email, phone, fullAddress,
         dateOfBirth, procedure.category, procedure.label, sourcePage, emailSent]);
+
+    try {
+      await logToSheet({
+        name, email, phone,
+        address: fullAddress,
+        dateOfBirth,
+        procedureName: procedure.label,
+        procedureCategory: procedure.category,
+        sourcePage,
+        hasSignature: true,
+      });
+    } catch (err) {
+      request.log.error({ err }, 'failed to log GDPR registration to Google Sheet');
+    }
 
     if (!emailSent) {
       return reply.code(502).send({

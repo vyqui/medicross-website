@@ -24,6 +24,13 @@ function getTransport() {
        and upgrades via STARTTLS, which nodemailer handles on its own. */
     secure: Number(SMTP_PORT) === 465,
     auth: { user: SMTP_USER, pass: SMTP_PASS },
+    /* nodemailer's defaults (2 minutes each) leave a patient staring at a
+       spinner for minutes before the form can tell them anything. A mail
+       host that's actually reachable responds in well under this; if it
+       doesn't, failing fast matters more than waiting out a hung socket. */
+    connectionTimeout: 15_000,
+    greetingTimeout: 15_000,
+    socketTimeout: 15_000,
   });
   return transport;
 }

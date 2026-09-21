@@ -97,11 +97,70 @@ Everything is under `/api`. Session comes from the cookie; no tokens in URLs.
 | `POST`/`DELETE` | `…/documents[/:docId]` | staff |
 | `GET`/`PATCH` | `/api/admin/leads[/:id]` | staff |
 | `POST` | `/api/leads` | anyone, rate limited |
+| `POST` | `/api/gdpr-registration` | anyone, rate limited |
 | `GET` | `/api/config` | anyone |
 
 Patient-facing routes read the patient id from the session, never from the URL,
 so there is no identifier to tamper with. Admin routes return **404** rather
 than 403 to a patient, so probing them reveals nothing.
+
+## GDPR travel-registration form
+
+`POST /api/gdpr-registration` (called from `acord-gdpr-completare.html` on the
+marketing site) validates the submission — including a real Romanian CNP
+checksum — renders a PDF matching the old form's layout (`src/gdpr-pdf.js`,
+via a bundled DejaVu Sans font: pdfkit's built-in Helvetica mangles ă/â/î/ș/ț),
+e-mails it to `GDPR_NOTIFY_EMAIL` over SMTP (`src/mailer.js`), and inserts a
+row into `gdpr_registrations`. The CNP and the signature image are never
+written to the database — they exist only in the emailed PDF.
+
+Required env: `SMTP_HOST`/`PORT`/`USER`/`PASS`, `GDPR_NOTIFY_EMAIL`. Optional:
+`GDPR_SHEET_WEBHOOK_URL`, if the team also wants each registration logged to
+a Google Sheet — see below.
+
+### Logging to Google Sheets
+
+There is no Google Sheets API credential anywhere in this app, on purpose.
+Instead, `GDPR_SHEET_WEBHOOK_URL` points at a Google Apps Script Web App
+bound to the sheet, which the route POSTs a plain JSON row to after every
+registration (never the CNP, and only whether a signature was drawn, not the
+image itself). Setting it up, once, on the sheet itself:
+
+1. Open the sheet → **Extensions → Apps Script**.
+2. Replace whatever's in `Code.gs` with:
+
+   ```javascript
+   function doPost(e) {
+     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+     var data = JSON.parse(e.postData.contents);
+
+     var headers = ['Data înregistrării', 'Nume', 'E-mail', 'Telefon',
+       'Intervenție', 'Categorie', 'Adresă', 'Data nașterii', 'Semnătură', 'Pagina sursă'];
+     if (sheet.getLastRow() === 0) sheet.appendRow(headers);
+
+     sheet.appendRow([
+       new Date(),
+       data.name || '', data.email || '', data.phone || '',
+       data.procedureName || '', data.procedureCategory || '',
+       data.address || '', data.dateOfBirth || '',
+       data.hasSignature ? 'SEMNAT' : '—',
+       data.sourcePage || ''
+     ]);
+
+     return ContentService.createTextOutput(JSON.stringify({ ok: true }))
+       .setMimeType(ContentService.MimeType.JSON);
+   }
+   ```
+
+3. Save the project (any name).
+4. **Deploy → New deployment** → type **Web app**.
+   Execute as **Me**, who has access **Anyone**.
+5. **Deploy**, authorize the script when Google prompts (it needs permission
+   to edit this one spreadsheet), then copy the URL ending in `/exec`.
+6. Set that URL as `GDPR_SHEET_WEBHOOK_URL` in Railway on this service.
+
+Leaving the variable unset just skips the sheet row — the registration is
+still saved and still e-mailed.
 
 ## Still to do before real patients
 
