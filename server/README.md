@@ -112,7 +112,9 @@ checksum — renders a PDF matching the old form's layout (`src/gdpr-pdf.js`,
 via a bundled DejaVu Sans font: pdfkit's built-in Helvetica mangles ă/â/î/ș/ț),
 e-mails it to `GDPR_NOTIFY_EMAIL` over SMTP (`src/mailer.js`), and inserts a
 row into `gdpr_registrations`. The CNP and the signature image are never
-written to the database — they exist only in the emailed PDF.
+written to the database — they exist only in the emailed PDF (and, per
+explicit direction, the CNP is also sent to the Google Sheet below — the
+signature image itself still isn't, anywhere but the PDF).
 
 Required env: `SMTP_HOST`/`PORT`/`USER`/`PASS`, `GDPR_NOTIFY_EMAIL`. Optional:
 `GDPR_SHEET_WEBHOOK_URL`, if the team also wants each registration logged to
@@ -123,8 +125,8 @@ a Google Sheet — see below.
 There is no Google Sheets API credential anywhere in this app, on purpose.
 Instead, `GDPR_SHEET_WEBHOOK_URL` points at a Google Apps Script Web App
 bound to the sheet, which the route POSTs a plain JSON row to after every
-registration (never the CNP, and only whether a signature was drawn, not the
-image itself). Setting it up, once, on the sheet itself:
+registration (including the CNP; still never the signature image itself,
+only whether one was drawn). Setting it up, once, on the sheet itself:
 
 1. Open the sheet → **Extensions → Apps Script**.
 2. Replace whatever's in `Code.gs` with:
@@ -134,13 +136,19 @@ image itself). Setting it up, once, on the sheet itself:
      var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
      var data = JSON.parse(e.postData.contents);
 
-     var headers = ['Data înregistrării', 'Nume', 'E-mail', 'Telefon',
+     var headers = ['Data înregistrării', 'Nume', 'E-mail', 'Telefon', 'CNP',
        'Intervenție', 'Categorie', 'Adresă', 'Data nașterii', 'Semnătură', 'Pagina sursă'];
-     if (sheet.getLastRow() === 0) sheet.appendRow(headers);
+     if (sheet.getLastRow() === 0) {
+       sheet.appendRow(headers);
+       // CNP is 13 digits — as a number, Sheets would render it in
+       // scientific notation and could drop a leading digit. Column E (CNP)
+       // stays formatted as plain text so it always displays exactly as sent.
+       sheet.getRange('E:E').setNumberFormat('@');
+     }
 
      sheet.appendRow([
        new Date(),
-       data.name || '', data.email || '', data.phone || '',
+       data.name || '', data.email || '', data.phone || '', data.cnp || '',
        data.procedureName || '', data.procedureCategory || '',
        data.address || '', data.dateOfBirth || '',
        data.hasSignature ? 'SEMNAT' : '—',

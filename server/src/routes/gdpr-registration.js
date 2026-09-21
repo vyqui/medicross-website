@@ -46,8 +46,9 @@ function decodeSignaturePng(dataUrl) {
 /** Best-effort row in the office's Google Sheet, via an Apps Script Web App
     bound to it (see server/README.md) — there is no Sheets API credential
     anywhere in this app, deliberately, so this is the entire integration.
-    Never sends the CNP or the signature image itself, only whether one was
-    drawn; a failure here never blocks the actual registration. */
+    Includes the CNP (explicitly requested), but never the signature image
+    itself, only whether one was drawn; a failure here never blocks the
+    actual registration. */
 async function logToSheet(row) {
   const url = process.env.GDPR_SHEET_WEBHOOK_URL;
   if (!url) return false;
@@ -147,7 +148,7 @@ export default async function gdprRegistrationRoutes(app) {
 
     try {
       await logToSheet({
-        name, email, phone,
+        name, email, phone, cnp,
         address: fullAddress,
         dateOfBirth,
         procedureName: procedure.label,
