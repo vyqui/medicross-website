@@ -55,7 +55,7 @@ const headerBlocks = (cfg.headers ?? []).map((block) => ({
    root files search engines expect. */
 const TOP_LEVEL_PAGE = /^\/[a-z0-9-]+(\.html)?$/;
 const ALLOWED_STATIC_PREFIX = /^\/(assets|materials)\//;
-const ALLOWED_EXACT = new Set(['/', '/robots.txt', '/sitemap.xml']);
+const ALLOWED_EXACT = new Set(['/', '/robots.txt', '/sitemap.xml', '/favicon.ico']);
 const HAS_DOTFILE_SEGMENT = /(^|\/)\.[^/]+/;
 
 function isServable(urlPath) {
