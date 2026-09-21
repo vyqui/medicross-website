@@ -16,6 +16,7 @@ import portalRoutes from './routes/portal.js';
 import adminRoutes from './routes/admin.js';
 import documentRoutes from './routes/documents.js';
 import publicRoutes from './routes/public.js';
+import gdprRegistrationRoutes from './routes/gdpr-registration.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -75,6 +76,7 @@ app.get('/health', async () => {
 
 await app.register(authRoutes);
 await app.register(publicRoutes);
+await app.register(gdprRegistrationRoutes);
 await app.register(documentRoutes);
 await app.register(portalRoutes);
 await app.register(adminRoutes);

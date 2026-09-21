@@ -523,6 +523,18 @@
     .insurance-inner .btn { background: #fff; color: var(--red-dark); flex: none; }
     .insurance-inner .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0,0,0,.18); }
 
+    /* ============ GDPR travel-registration mini banner ============
+       A quieter secondary CTA for patients already going ahead with
+       treatment — distinct from "Evaluare gratuită", which is for new
+       leads. Sits between the page content and the insurance CTA. */
+    .gdpr-mini-cta { background: var(--sand, #F7F5F1); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .gdpr-mini-cta-inner {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      flex-wrap: wrap; text-align: center; padding: 20px 24px; font-size: 14px; color: var(--muted);
+    }
+    .gdpr-mini-cta-inner a { color: var(--red); font-weight: 800; text-decoration: none; }
+    .gdpr-mini-cta-inner a:hover { text-decoration: underline; }
+
     /* ============ Testimonials ============ */
     .testimonials { background: #fff; }
     .t-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 54px; }
