@@ -110,13 +110,23 @@ than 403 to a patient, so probing them reveals nothing.
 marketing site) validates the submission — including a real Romanian CNP
 checksum — renders a PDF matching the old form's layout (`src/gdpr-pdf.js`,
 via a bundled DejaVu Sans font: pdfkit's built-in Helvetica mangles ă/â/î/ș/ț),
-e-mails it to `GDPR_NOTIFY_EMAIL` over SMTP (`src/mailer.js`), and inserts a
-row into `gdpr_registrations`. The CNP and the signature image are never
-written to the database — they exist only in the emailed PDF (and, per
-explicit direction, the CNP is also sent to the Google Sheet below — the
-signature image itself still isn't, anywhere but the PDF).
+e-mails it to `GDPR_NOTIFY_EMAIL` (`src/mailer.js`), and inserts a row into
+`gdpr_registrations`. The CNP and the signature image are never written to
+the database — they exist only in the emailed PDF (and, per explicit
+direction, the CNP is also sent to the Google Sheet below — the signature
+image itself still isn't, anywhere but the PDF).
 
-Required env: `SMTP_HOST`/`PORT`/`USER`/`PASS`, `GDPR_NOTIFY_EMAIL`. Optional:
+`src/mailer.js` sends via **Resend** (an HTTPS API call) if `RESEND_API_KEY`
+is set, otherwise via **SMTP** to the office@ mailbox directly. Resend is the
+one actually confirmed working from Railway — the SMTP path was hitting a
+clean `ETIMEDOUT` at the TCP connect stage (visible in Railway's own logs),
+meaning something between Railway and Cyberfolks' mail server is blocking
+the connection outright, before credentials are even checked. SMTP is kept
+as a fallback in case that gets resolved on Cyberfolks' end later, but
+Resend is what's actually recommended — see `.env.example` for both.
+
+Required env either way: `GDPR_NOTIFY_EMAIL`, plus `RESEND_API_KEY` +
+`RESEND_FROM`, or `SMTP_HOST`/`PORT`/`USER`/`PASS`. Optional:
 `GDPR_SHEET_WEBHOOK_URL`, if the team also wants each registration logged to
 a Google Sheet — see below.
 
