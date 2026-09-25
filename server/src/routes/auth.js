@@ -1,6 +1,7 @@
 import {
   verifyPassword, hashPassword, createSession, destroySession,
   destroyAllSessions, requireAuth, SESSION_COOKIE, generateReferralCode,
+  consumeMagicLink,
 } from '../auth.js';
 import { query, transaction } from '../db.js';
 import { logEvent, initialsFor } from '../patients.js';
@@ -162,6 +163,33 @@ export default async function authRoutes(app) {
       patientId: rows[0].patient_id,
       mustChangePassword: rows[0].must_change_password,
     });
+  });
+
+  /* Passwordless entry from a link staff sends over WhatsApp — see
+     migrations/004 and src/auth.js. A GET because it's a direct navigation
+     (someone tapping a link in a chat app), not a fetch call; it signs the
+     visitor in exactly like POST /api/auth/login does, then sends them to
+     the same place login would, e.g. straight at the GDPR gate on
+     portal.html if that's still open. An unknown or expired token bounces
+     to the login page rather than failing outright, in case the patient
+     still remembers their password. */
+  app.get('/api/auth/magic/:token', {
+    config: { rateLimit: { max: 30, timeWindow: '5 minutes' } },
+  }, async (request, reply) => {
+    const account = await consumeMagicLink(request.params.token);
+    if (!account) return reply.redirect('/login.html?expired=1');
+
+    const session = await createSession(account.id, {
+      userAgent: request.headers['user-agent'],
+      ip: request.ip,
+    });
+    await query('update accounts set last_login_at = now() where id = $1', [account.id]);
+    if (account.patient_id) {
+      await logEvent(account.patient_id, 'pacient', 'Autentificare prin link WhatsApp');
+    }
+
+    reply.setCookie(SESSION_COOKIE, session.id, cookieOptions());
+    return reply.redirect(account.role === 'admin' ? '/admin.html' : '/portal.html');
   });
 
   app.post('/api/auth/logout', async (request, reply) => {

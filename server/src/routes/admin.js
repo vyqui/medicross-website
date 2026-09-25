@@ -1,4 +1,4 @@
-import { requireAdmin, hashPassword, generateReferralCode } from '../auth.js';
+import { requireAdmin, hashPassword, generateReferralCode, createMagicLink } from '../auth.js';
 import { query, transaction } from '../db.js';
 import { loadPatient, listPatients, logEvent, initialsFor } from '../patients.js';
 import { ACTION_KEYS, ACTION_REWARD, REFERRAL_OPERATED, CODE_USED } from '../discounts.js';
@@ -26,6 +26,41 @@ export default async function adminRoutes(app) {
       [request.params.id]);
 
     return { ...patient, account: rows[0] ?? null };
+  });
+
+  /* A passwordless link staff can send over WhatsApp instead of asking a
+     patient to remember a password on their phone — see migrations/004 and
+     src/auth.js. Prefills the wa.me text when the stored phone number looks
+     like a Romanian mobile; otherwise the caller just gets the raw link to
+     paste in wherever they're already talking to the patient. */
+  app.post('/api/admin/patients/:id/magic-link', async (request, reply) => {
+    const patient = await loadPatient(request.params.id);
+    if (!patient) return reply.code(404).send({ error: 'Pacient inexistent.' });
+
+    const { rows } = await query(
+      `select id from accounts where patient_id = $1 and role = 'patient'`,
+      [request.params.id]);
+    const account = rows[0];
+    if (!account) return reply.code(404).send({ error: 'Pacientul nu are un cont în portal.' });
+
+    const { token } = await createMagicLink(account.id);
+    await logEvent(request.params.id, who(request), 'Link WhatsApp generat pentru autentificare');
+
+    /* request.hostname drops the port, which breaks this locally (everything
+       real runs behind Railway's HTTPS on the default port, where it's a
+       no-op) — the raw Host header round-trips correctly either way. */
+    const url = `${request.protocol}://${request.headers.host}/api/auth/magic/${token}`;
+
+    const digits = String(patient.phone || '').replace(/\D/g, '');
+    const waPhone = digits.startsWith('40') && digits.length === 11 ? digits
+      : digits.startsWith('0') && digits.length === 10 ? `40${digits.slice(1)}`
+      : null;
+    const waUrl = waPhone
+      ? `https://wa.me/${waPhone}?text=${encodeURIComponent(
+          `Bună, ${patient.name}! Pentru a continua, te rugăm să te conectezi și să confirmi acordul GDPR aici: ${url}`)}`
+      : null;
+
+    return { url, waUrl };
   });
 
   /* Creates the patient record and the login that goes with it, in one

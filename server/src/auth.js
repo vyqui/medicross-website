@@ -89,6 +89,35 @@ export async function purgeExpiredSessions() {
   return rowCount;
 }
 
+const MAGIC_LINK_DAYS = 30;
+
+/** A passwordless entry point for one account — see migrations/004. Staff-
+    generated only (see routes/admin.js); reusable until it expires. */
+export async function createMagicLink(accountId) {
+  const token = randomBytes(24).toString('base64url');
+  const expiresAt = new Date(Date.now() + MAGIC_LINK_DAYS * 86_400_000);
+  await query(
+    'insert into magic_links (token, account_id, expires_at) values ($1, $2, $3)',
+    [token, accountId, expiresAt]);
+  return { token, expiresAt };
+}
+
+/** Resolves a magic link straight to the account it signs in, or null if the
+    token is unknown or expired. Does not consume it — see migrations/004. */
+export async function consumeMagicLink(token) {
+  const { rows } = await query(
+    `select a.* from magic_links m
+       join accounts a on a.id = m.account_id
+      where m.token = $1 and m.expires_at > now()`,
+    [token]);
+  return rows[0] ?? null;
+}
+
+export async function purgeExpiredMagicLinks() {
+  const { rowCount } = await query('delete from magic_links where expires_at <= now()');
+  return rowCount;
+}
+
 /* --------------------------------------------------------------------------
    Route guards. Registered as Fastify preHandlers.
    -------------------------------------------------------------------------- */

@@ -43,6 +43,11 @@
       Autentifică-te cu un cont de administrator.
     </div>
 
+    <div class="denied" id="expired" hidden>
+      Linkul de conectare a expirat sau nu mai este valabil. Te rugăm să te
+      autentifici mai jos, sau să ne ceri un link nou.
+    </div>
+
     <div class="already" id="already" hidden>
       Ești deja autentificat ca <strong id="alreadyWho"></strong>.
       <div class="already-row">
@@ -73,6 +78,7 @@
       // only same-page relative targets — never an arbitrary redirect
       var next = /^[a-z0-9-]+\.html$/.test(params.get('next') || '') ? params.get('next') : null;
       var denied = params.get('denied') === '1';
+      if (params.get('expired') === '1') document.getElementById('expired').hidden = false;
       var ADMIN_ONLY = { 'admin.html': true };
 
       function homeFor(role) { return role === 'admin' ? 'admin.html' : 'portal.html'; }

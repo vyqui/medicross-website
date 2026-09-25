@@ -12,6 +12,12 @@ Node 22+, Fastify, Postgres. No build step, no native modules.
   what the team has written. Passwords are hashed with scrypt (built into Node,
   so there is nothing to compile). Sessions live in Postgres behind a signed,
   httpOnly cookie and can be revoked.
+- **WhatsApp magic links.** Staff can generate a passwordless link for a
+  patient (`POST /api/admin/patients/:id/magic-link`) instead of relying on
+  them having a password handy on their phone. Visiting it signs them
+  straight into their own account — same session a password login creates —
+  so it lands on whatever the portal shows first, GDPR gate included. Valid
+  30 days, reusable until then (see `migrations/004_magic_links.sql`).
 - **The medical record.** Operations, the Istanbul trip agenda, free-text
   details and uploaded documents — all authored by staff, all visible to
   exactly one patient.
@@ -81,6 +87,7 @@ Everything is under `/api`. Session comes from the cookie; no tokens in URLs.
 |---|---|---|
 | `POST` | `/api/auth/login` · `/logout` · `/password` | anyone / signed in |
 | `GET` | `/api/auth/session` | anyone |
+| `GET` | `/api/auth/magic/:token` | anyone with a valid link |
 | `GET` | `/api/me` | patient |
 | `POST` | `/api/me/gdpr` | patient — the only way consent is ever accepted |
 | `POST` | `/api/me/actions/:key` · `/api/me/view` | patient |
@@ -88,6 +95,7 @@ Everything is under `/api`. Session comes from the cookie; no tokens in URLs.
 | `GET` | `/api/documents/:id` | owner or staff |
 | `GET`/`POST` | `/api/admin/patients` | staff |
 | `GET`/`PATCH` | `/api/admin/patients/:id` | staff |
+| `POST` | `…/magic-link` | staff |
 | `PUT`/`DELETE` | `…/operations[/:opId]` | staff |
 | `PUT` | `…/trip`, `…/trip/items[/:itemId]` | staff |
 | `POST` | `…/trip/items/:itemId/move` | staff |

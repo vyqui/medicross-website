@@ -8,7 +8,7 @@ import fastifyStatic from '@fastify/static';
 
 import { pool } from './db.js';
 import { migrate } from './migrate.js';
-import { loadSession, purgeExpiredSessions, SESSION_COOKIE } from './auth.js';
+import { loadSession, purgeExpiredSessions, purgeExpiredMagicLinks, SESSION_COOKIE } from './auth.js';
 import * as storage from './storage.js';
 
 import authRoutes from './routes/auth.js';
@@ -117,6 +117,7 @@ if (applied > 0) app.log.info(`applied ${applied} migration(s)`);
 /* Expired rows are dead weight and, for sessions, a liability. */
 const sweeper = setInterval(() => {
   purgeExpiredSessions().catch((err) => app.log.error({ err }, 'session sweep failed'));
+  purgeExpiredMagicLinks().catch((err) => app.log.error({ err }, 'magic link sweep failed'));
 }, 6 * 60 * 60 * 1000);
 sweeper.unref();
 

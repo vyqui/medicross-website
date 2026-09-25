@@ -180,6 +180,33 @@
       : '<strong>Nu a răspuns încă la acordul pentru fotografii/video/testimoniale</strong>';
   }
 
+  // A passwordless link, valid 30 de zile, care conectează direct pacientul
+  // în contul lui — pentru cazurile în care trimitem linkul pe WhatsApp și nu
+  // ne putem baza pe faptul că are parola la îndemână pe telefon. Cu un
+  // număr de telefon valid deschide direct conversația WhatsApp cu mesajul
+  // pregătit; altfel, doar copiază linkul ca să-l trimitem manual.
+  document.getElementById('magicLinkBtn').addEventListener('click', async function () {
+    var btn = this;
+    btn.disabled = true;
+    try {
+      var res = await MedicrossDB.createMagicLink(currentId);
+      if (res.waUrl) {
+        window.open(res.waUrl, '_blank');
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(res.url);
+        var note = document.getElementById('magicLinkCopied');
+        note.hidden = false;
+        setTimeout(function () { note.hidden = true; }, 1800);
+      } else {
+        window.prompt('Copiază linkul:', res.url);
+      }
+    } catch (err) {
+      alert(err.message || 'Linkul nu a putut fi generat.');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
   // Live filter — every keystroke re-renders just the table, not the whole
   // detail panel, so the currently open patient stays selected underneath.
   document.getElementById('patientSearch').addEventListener('input', renderPatients);

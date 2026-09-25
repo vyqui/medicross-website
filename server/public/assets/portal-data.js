@@ -284,6 +284,9 @@
     return request('POST', '/api/admin/patients/' + pid + '/actions/' + key + '/verify', { verified: verified })
       .then(function (p) { currentPatient = p; return p; });
   }
+  function createMagicLink(pid) {
+    return request('POST', '/api/admin/patients/' + pid + '/magic-link');
+  }
   function addReferral(pid, name) {
     return request('POST', '/api/admin/patients/' + pid + '/referrals', { name: name })
       .then(function (p) { currentPatient = p; return p; }).catch(function () { return null; });
@@ -320,7 +323,7 @@
     refreshPatientsList: refreshPatientsList, refreshCurrentPatient: refreshCurrentPatient,
 
     setAction: setAction, setView: setView, discountBreakdown: discountBreakdown,
-    verifyAction: verifyAction,
+    verifyAction: verifyAction, createMagicLink: createMagicLink,
     addReferral: addReferral, setReferralStatus: setReferralStatus, removeReferral: removeReferral,
     setUsedCode: setUsedCode,
 
