@@ -12,13 +12,22 @@
     location.href = 'login.html';
   });
 
-  // Arriving from the "GDPR Approved" list or another admin page can ask for
-  // a specific patient (?patient=<id>) instead of defaulting to the first
-  // row — falls back to the default when the id is missing or unknown.
+  // Two mutually exclusive views, never both open at once — the list
+  // (#listView) and one patient's full record (#detailView), reached either
+  // by clicking a row (see renderPatients below, which navigates rather than
+  // swapping in place) or by a deep link from elsewhere, e.g.
+  // admin-gdpr.html's "Deschide contul →". No id in the URL means the list.
   var requestedId = new URLSearchParams(location.search).get('patient');
   var requested = requestedId && MedicrossDB.patients().filter(function (p) { return p.id === requestedId; })[0];
-  var currentId = (requested || MedicrossDB.patients()[0]) && (requested || MedicrossDB.patients()[0]).id;
+  var currentId = requested ? requested.id : null;
   if (currentId) await MedicrossDB.refreshCurrentPatient(currentId);
+
+  var listView = document.getElementById('listView');
+  var detailView = document.getElementById('detailView');
+  if (listView && detailView) {
+    listView.hidden = Boolean(currentId);
+    detailView.hidden = !currentId;
+  }
 
   /* ---------------- helpers ---------------- */
   function el(tag, cls, text) {
@@ -133,10 +142,11 @@
       tr.appendChild(el('td', op && op.date ? null : 'muted-cell', (op && op.date) || '—'));
       tr.appendChild(el('td', 'muted-cell', p.createdAt ? fmtTime(p.createdAt) : '—'));
 
-      async function select() {
-        currentId = p.id;
-        await MedicrossDB.refreshCurrentPatient(currentId);
-        renderAll();
+      // Opens the patient as its own view (see the top of this file) rather
+      // than swapping content in under the table — a real navigation, so
+      // the URL is shareable/bookmarkable and the back button works.
+      function select() {
+        location.href = 'admin-users.html?patient=' + encodeURIComponent(p.id);
       }
       tr.addEventListener('click', select);
       tr.addEventListener('keydown', function (ev) {
@@ -148,6 +158,14 @@
 
   /* ---------------- account + GDPR ---------------- */
   function renderAccount(p) {
+    // The welcome header otherwise just says "Useri cu cont" — naming the
+    // open patient here is what makes the detail view read as its own page
+    // rather than a panel that happened to fill in under the table.
+    var h1 = document.querySelector('.welcome h1');
+    var eyebrow = document.querySelector('.welcome .eyebrow');
+    if (h1) h1.textContent = p.name;
+    if (eyebrow) eyebrow.textContent = 'Fișă pacient';
+
     var box = document.getElementById('acctInfo');
     box.textContent = '';
     var acct = MedicrossDB.accountForPatient(p.id);
@@ -659,9 +677,9 @@
 
   /* ---------------- render ---------------- */
   function renderAll() {
+    renderPatients();
     var p = MedicrossDB.patient(currentId);
     if (!p) return;
-    renderPatients();
     renderAccount(p);
     renderDetails(p);
     renderDiscount(p);
@@ -674,11 +692,6 @@
   buildCatalogSelect();
   buildHospitalSelect();
   renderAll();
-
-  if (requested) {
-    var selRow = document.querySelector('.ptbl tbody tr.sel');
-    if (selRow) selRow.scrollIntoView({ block: 'nearest' });
-  }
 
   // Arriving from the hub's "Add a new user" card: open the collapsed "Cont
   // nou" card and put the cursor in its first field instead of making

@@ -224,6 +224,35 @@ select.scroll-select { max-width: 100%; }
 .doc-thumb { width: 40px; height: 40px; border-radius: 9px; object-fit: cover; flex: none; border: 1px solid var(--line); }
 .doc-ph { width: 40px; height: 40px; border-radius: 9px; flex: none; background: var(--chip); display: grid; place-items: center; color: var(--muted); }
 
+/* admin left sidebar — present on every admin page (hub, users, GDPR) */
+.admin-shell { display: flex; align-items: flex-start; max-width: 1280px; margin: 0 auto; }
+.admin-shell .pmain { flex: 1; min-width: 0; max-width: none; margin: 0; }
+.admin-sidebar {
+  position: sticky; top: 68px; flex: none; width: 208px;
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 26px 10px 40px 30px;
+}
+.asb-link {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 13px; border-radius: 12px;
+  font-weight: 700; font-size: 13.5px; color: var(--muted);
+  transition: background .15s, color .15s;
+}
+.asb-link svg { width: 17px; height: 17px; flex: none; }
+.asb-link:hover { background: var(--chip); color: var(--ink); }
+.asb-link.active { background: color-mix(in srgb, var(--brand) 10%, #fff); color: var(--brand); }
+.asb-divider { height: 1px; background: var(--line); margin: 10px 13px; }
+
+@media (max-width: 900px) {
+  .admin-shell { flex-direction: column; }
+  .admin-sidebar {
+    position: static; width: auto; flex-direction: row; gap: 6px;
+    padding: 14px 18px 4px; overflow-x: auto;
+  }
+  .asb-link { white-space: nowrap; }
+  .asb-divider { display: none; }
+}
+
 /* admin hub — the three landing cards */
 .hub-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px;

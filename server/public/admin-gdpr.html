@@ -32,44 +32,66 @@
     </div>
   </header>
 
-  <main class="pmain">
-    <div class="welcome">
-      <div>
-        <span class="eyebrow">Consolă de administrare</span>
-        <h1>GDPR Approved</h1>
-      </div>
-    </div>
+  <div class="admin-shell">
+    <nav class="admin-sidebar" aria-label="Navigare admin">
+      <a class="asb-link" href="admin.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-7 9 7"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+        Consolă
+      </a>
+      <a class="asb-link" href="admin-users.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Useri cu cont
+      </a>
+      <a class="asb-link active" href="admin-gdpr.html" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
+        GDPR Approved
+      </a>
+      <div class="asb-divider"></div>
+      <a class="asb-link" href="admin-users.html?new=1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
+        Adaugă user nou
+      </a>
+    </nav>
 
-    <div class="acol">
-      <div class="card acard" id="gdprTableCard">
-        <div class="ptbl-head">
-          <div>
-            <h2>Toate acordurile GDPR acceptate</h2>
-            <div class="sub" style="margin-bottom:0">Din portal (pacienți cu cont) și din formularul de pe site (acord-gdpr-completare) — un rând per persoană.</div>
-          </div>
-          <label class="ptbl-search" for="gdprSearch">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
-            <input type="search" id="gdprSearch" placeholder="Caută după nume, telefon sau e-mail…" autocomplete="off" />
-          </label>
+    <main class="pmain">
+      <div class="welcome">
+        <div>
+          <span class="eyebrow">Consolă de administrare</span>
+          <h1>GDPR Approved</h1>
         </div>
-        <div class="ptbl-scroll">
-          <table class="ptbl">
-            <thead>
-              <tr>
-                <th>Nume</th>
-                <th>Contact</th>
-                <th>Proveniență</th>
-                <th>Data acceptării</th>
-                <th>Acord semnat</th>
-              </tr>
-            </thead>
-            <tbody id="gdprRows"><!-- injected --></tbody>
-          </table>
-        </div>
-        <div class="ptbl-empty" id="gdprEmpty" hidden>Nimeni nu se potrivește căutării.</div>
       </div>
-    </div>
-  </main>
+
+      <div class="acol">
+        <div class="card acard" id="gdprTableCard">
+          <div class="ptbl-head">
+            <div>
+              <h2>Toate acordurile GDPR acceptate</h2>
+              <div class="sub" style="margin-bottom:0">Din portal (pacienți cu cont) și din formularul de pe site (acord-gdpr-completare) — un rând per persoană.</div>
+            </div>
+            <label class="ptbl-search" for="gdprSearch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
+              <input type="search" id="gdprSearch" placeholder="Caută după nume, telefon sau e-mail…" autocomplete="off" />
+            </label>
+          </div>
+          <div class="ptbl-scroll">
+            <table class="ptbl">
+              <thead>
+                <tr>
+                  <th>Nume</th>
+                  <th>Contact</th>
+                  <th>Proveniență</th>
+                  <th>Data acceptării</th>
+                  <th>Acord semnat</th>
+                </tr>
+              </thead>
+              <tbody id="gdprRows"><!-- injected --></tbody>
+            </table>
+          </div>
+          <div class="ptbl-empty" id="gdprEmpty" hidden>Nimeni nu se potrivește căutării.</div>
+        </div>
+      </div>
+    </main>
+  </div>
 
   <script src="assets/portal-data.js"></script>
   <script src="assets/admin-gdpr.js"></script>

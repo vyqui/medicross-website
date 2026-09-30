@@ -33,6 +33,27 @@
     </div>
   </header>
 
+  <div class="admin-shell">
+    <nav class="admin-sidebar" aria-label="Navigare admin">
+      <a class="asb-link" href="admin.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-7 9 7"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+        Consolă
+      </a>
+      <a class="asb-link active" href="admin-users.html" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Useri cu cont
+      </a>
+      <a class="asb-link" href="admin-gdpr.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
+        GDPR Approved
+      </a>
+      <div class="asb-divider"></div>
+      <a class="asb-link" href="admin-users.html?new=1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
+        Adaugă user nou
+      </a>
+    </nav>
+
   <main class="pmain">
     <div class="welcome">
       <div>
@@ -42,58 +63,68 @@
     </div>
 
     <div class="acol">
-      <!-- create a patient account (collapsed by default) -->
-      <details class="card acard collapse" id="newAcctCard">
-        <summary>
-          <span class="ctitle">Cont nou</span>
-          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
-        </summary>
-        <div class="sub">Creează un cont de pacient. Pacientul se poate înregistra și singur din <a href="register.html">pagina de înregistrare</a>.</div>
-        <form class="iform stack" id="newAcct" style="margin-top:0">
-          <div class="full"><label for="naName">Nume și prenume</label><input id="naName" required /></div>
-          <div class="full"><label for="naEmail">E-mail</label><input id="naEmail" type="email" required /></div>
-          <div class="full"><label for="naPhone">Telefon <span class="opt">(opțional)</span></label><input id="naPhone" type="tel" /></div>
-          <div class="full"><label for="naSex">Sex (model 3D)</label>
-            <select id="naSex"><option value="f">Feminin</option><option value="m">Masculin</option></select>
-          </div>
-          <div class="full"><label for="naPass">Parolă inițială</label><input id="naPass" type="text" value="medicross" required /></div>
-          <div class="fhint full">Acordul GDPR nu poate fi bifat de echipă în numele pacientului — la prima autentificare, pacientul va trebui să îl accepte el însuși înainte de a intra în cont.</div>
-          <div class="frow full"><button class="ibtn primary" type="submit">Creează contul</button></div>
-          <div class="aerr full" id="naErr" hidden></div>
-        </form>
-      </details>
+      <!-- list view: create-account card + patient table. Shown when no
+           patient is open (see admin.js). -->
+      <div id="listView">
+        <!-- create a patient account (collapsed by default) -->
+        <details class="card acard collapse" id="newAcctCard">
+          <summary>
+            <span class="ctitle">Cont nou</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+          </summary>
+          <div class="sub">Creează un cont de pacient. Pacientul se poate înregistra și singur din <a href="register.html">pagina de înregistrare</a>.</div>
+          <form class="iform stack" id="newAcct" style="margin-top:0">
+            <div class="full"><label for="naName">Nume și prenume</label><input id="naName" required /></div>
+            <div class="full"><label for="naEmail">E-mail</label><input id="naEmail" type="email" required /></div>
+            <div class="full"><label for="naPhone">Telefon <span class="opt">(opțional)</span></label><input id="naPhone" type="tel" /></div>
+            <div class="full"><label for="naSex">Sex (model 3D)</label>
+              <select id="naSex"><option value="f">Feminin</option><option value="m">Masculin</option></select>
+            </div>
+            <div class="full"><label for="naPass">Parolă inițială</label><input id="naPass" type="text" value="medicross" required /></div>
+            <div class="fhint full">Acordul GDPR nu poate fi bifat de echipă în numele pacientului — la prima autentificare, pacientul va trebui să îl accepte el însuși înainte de a intra în cont.</div>
+            <div class="frow full"><button class="ibtn primary" type="submit">Creează contul</button></div>
+            <div class="aerr full" id="naErr" hidden></div>
+          </form>
+        </details>
 
-      <!-- patient table -->
-      <div class="card acard" id="patientTableCard">
-        <div class="ptbl-head">
-          <div>
-            <h2>Pacienți</h2>
-            <div class="sub" style="margin-bottom:0">Click pe un rând pentru a deschide fișa completă mai jos.</div>
+        <!-- patient table -->
+        <div class="card acard" id="patientTableCard">
+          <div class="ptbl-head">
+            <div>
+              <h2>Pacienți</h2>
+              <div class="sub" style="margin-bottom:0">Click pe un rând pentru a deschide fișa lui completă.</div>
+            </div>
+            <label class="ptbl-search" for="patientSearch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
+              <input type="search" id="patientSearch" placeholder="Caută după nume, telefon sau intervenție…" autocomplete="off" />
+            </label>
           </div>
-          <label class="ptbl-search" for="patientSearch">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.3-4.3"/></svg>
-            <input type="search" id="patientSearch" placeholder="Caută după nume, telefon sau intervenție…" autocomplete="off" />
-          </label>
+          <div class="ptbl-scroll">
+            <table class="ptbl">
+              <thead>
+                <tr>
+                  <th>Nume și prenume</th>
+                  <th>Telefon</th>
+                  <th>Intervenție</th>
+                  <th>Data intervenției</th>
+                  <th>Cont creat</th>
+                </tr>
+              </thead>
+              <tbody id="patientRows"><!-- rows injected --></tbody>
+            </table>
+          </div>
+          <div class="ptbl-empty" id="patientEmpty" hidden>Niciun pacient nu se potrivește căutării.</div>
         </div>
-        <div class="ptbl-scroll">
-          <table class="ptbl">
-            <thead>
-              <tr>
-                <th>Nume și prenume</th>
-                <th>Telefon</th>
-                <th>Intervenție</th>
-                <th>Data intervenției</th>
-                <th>Cont creat</th>
-              </tr>
-            </thead>
-            <tbody id="patientRows"><!-- rows injected --></tbody>
-          </table>
-        </div>
-        <div class="ptbl-empty" id="patientEmpty" hidden>Niciun pacient nu se potrivește căutării.</div>
       </div>
 
-      <!-- detail column -->
-      <div class="acol" id="detail">
+      <!-- detail view: one patient's full record, reached only by clicking a
+           row above (or a deep link, e.g. from admin-gdpr.html) — never both
+           at once with the table, so it reads as its own page rather than a
+           panel bolted under the list. -->
+      <div id="detailView" hidden>
+        <a class="ibtn" id="backToList" href="admin-users.html">← Înapoi la pacienți</a>
+
+        <div class="acol" id="detail" style="margin-top:14px">
 
         <!-- account + GDPR -->
         <div class="card acard">
@@ -238,8 +269,10 @@
         </div>
 
       </div>
+      </div>
     </div>
   </main>
+  </div>
 
   <script src="assets/portal-data.js"></script>
   <script src="assets/admin.js"></script>

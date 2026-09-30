@@ -32,42 +32,64 @@
     </div>
   </header>
 
-  <main class="pmain">
-    <div class="welcome">
-      <div>
-        <span class="eyebrow">Consolă de administrare</span>
-        <h1>Ce vrei să faci?</h1>
+  <div class="admin-shell">
+    <nav class="admin-sidebar" aria-label="Navigare admin">
+      <a class="asb-link active" href="admin.html" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-7 9 7"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+        Consolă
+      </a>
+      <a class="asb-link" href="admin-users.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Useri cu cont
+      </a>
+      <a class="asb-link" href="admin-gdpr.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
+        GDPR Approved
+      </a>
+      <div class="asb-divider"></div>
+      <a class="asb-link" href="admin-users.html?new=1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
+        Adaugă user nou
+      </a>
+    </nav>
+
+    <main class="pmain">
+      <div class="welcome">
+        <div>
+          <span class="eyebrow">Consolă de administrare</span>
+          <h1>Ce vrei să faci?</h1>
+        </div>
       </div>
-    </div>
 
-    <div class="hub-grid">
-      <a class="card acard hub-card" href="admin-users.html">
-        <span class="hub-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </span>
-        <h2>Useri cu cont</h2>
-        <div class="sub">Pacienții cu cont în portal — fișă completă, intervenții, agenda călătoriei, documente.</div>
-        <div class="hub-count" id="countUsers">…</div>
-      </a>
+      <div class="hub-grid">
+        <a class="card acard hub-card" href="admin-users.html">
+          <span class="hub-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <h2>Useri cu cont</h2>
+          <div class="sub">Pacienții cu cont în portal — fișă completă, intervenții, agenda călătoriei, documente.</div>
+          <div class="hub-count" id="countUsers">…</div>
+        </a>
 
-      <a class="card acard hub-card" href="admin-gdpr.html">
-        <span class="hub-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
-        </span>
-        <h2>GDPR Approved</h2>
-        <div class="sub">Toți cei care au acceptat GDPR — cu cont în portal sau doar prin formularul de pe site, cu PDF-ul semnat acolo unde există.</div>
-        <div class="hub-count" id="countGdpr">…</div>
-      </a>
+        <a class="card acard hub-card" href="admin-gdpr.html">
+          <span class="hub-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
+          </span>
+          <h2>GDPR Approved</h2>
+          <div class="sub">Toți cei care au acceptat GDPR — cu cont în portal sau doar prin formularul de pe site, cu PDF-ul semnat acolo unde există.</div>
+          <div class="hub-count" id="countGdpr">…</div>
+        </a>
 
-      <a class="card acard hub-card" href="admin-users.html?new=1">
-        <span class="hub-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
-        </span>
-        <h2>Adaugă un user nou</h2>
-        <div class="sub">Creează un cont de pacient — primește acces în portal și link de conectare.</div>
-      </a>
-    </div>
-  </main>
+        <a class="card acard hub-card" href="admin-users.html?new=1">
+          <span class="hub-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
+          </span>
+          <h2>Adaugă un user nou</h2>
+          <div class="sub">Creează un cont de pacient — primește acces în portal și link de conectare.</div>
+        </a>
+      </div>
+    </main>
+  </div>
 
   <script src="assets/portal-data.js"></script>
   <script src="assets/admin-hub.js"></script>
