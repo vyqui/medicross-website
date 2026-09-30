@@ -82,7 +82,8 @@ await app.register(portalRoutes);
 await app.register(adminRoutes);
 
 /* The platform serves the portal's own pages — login.html, register.html,
-   portal.html, admin.html — plus exactly the assets they use, copied into
+   portal.html, admin.html, admin-users.html, admin-gdpr.html — plus exactly
+   the assets they use, copied into
    server/public/ (see server/README.md for the exact file list). This
    directory travels with the server everywhere it deploys, whereas the
    repository root does not: Railway's Root Directory setting means only

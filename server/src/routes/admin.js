@@ -455,4 +455,66 @@ export default async function adminRoutes(app) {
     if (rows.length === 0) return reply.code(404).send({ error: 'Lead inexistent.' });
     return rows[0];
   });
+
+  /* ---- GDPR travel-registration submissions (acord-gdpr-completare.html) -
+     these never go through an account — anyone can submit one — so they live
+     entirely outside the patients table. Listed here purely so staff can see
+     and open them from the console instead of only ever seeing them as an
+     e-mail. CNP is deliberately not selected: it was never stored in this
+     table in the first place (see migrations/003), only mailed and, if
+     configured, logged to the Sheet — this list doesn't change that. ---- */
+
+  app.get('/api/admin/gdpr-registrations', async () => {
+    const { rows } = await query(
+      `select id, name, email, phone, address, date_of_birth, procedure_category,
+              procedure_name, source_page, email_sent, pdf_storage_key is not null as has_pdf,
+              pdf_size_bytes, created_at
+         from gdpr_registrations
+        order by created_at desc
+        limit 1000`);
+    return {
+      registrations: rows.map((r) => ({
+        id: r.id,
+        name: r.name,
+        email: r.email,
+        phone: r.phone,
+        address: r.address,
+        dateOfBirth: r.date_of_birth,
+        procedureCategory: r.procedure_category,
+        procedureName: r.procedure_name,
+        sourcePage: r.source_page,
+        emailSent: r.email_sent,
+        hasPdf: r.has_pdf,
+        pdfSizeBytes: r.pdf_size_bytes,
+        createdAt: r.created_at,
+      })),
+    };
+  });
+
+  /* Same inline-vs-attachment convention as GET /api/documents/:id — a
+     browser tab can preview it, and ?download forces Save As. There is no
+     ownership check to make here beyond requireAdmin (already on the whole
+     router): unlike a patient's own documents, nothing about this record
+     belongs to a signed-in patient to begin with. */
+  app.get('/api/admin/gdpr-registrations/:id/pdf', async (request, reply) => {
+    const { rows } = await query(
+      'select name, pdf_storage_key from gdpr_registrations where id = $1', [request.params.id]);
+    const reg = rows[0];
+    if (!reg || !reg.pdf_storage_key) {
+      return reply.code(404).send({ error: 'PDF-ul nu este disponibil.' });
+    }
+    if (!await storage.exists(reg.pdf_storage_key)) {
+      request.log.error({ registrationId: request.params.id }, 'gdpr registration row has no PDF behind it');
+      return reply.code(410).send({ error: 'Fișierul nu mai este disponibil.' });
+    }
+
+    const filename = `acord-gdpr-${reg.name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.pdf`;
+    const disposition = request.query.download ? 'attachment' : 'inline';
+    reply
+      .header('Content-Type', 'application/pdf')
+      .header('Content-Disposition', `${disposition}; filename="${filename}"`)
+      .header('Cache-Control', 'private, no-store')
+      .header('X-Content-Type-Options', 'nosniff');
+    return reply.send(storage.open(reg.pdf_storage_key));
+  });
 }

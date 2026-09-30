@@ -79,7 +79,7 @@
       var next = /^[a-z0-9-]+\.html$/.test(params.get('next') || '') ? params.get('next') : null;
       var denied = params.get('denied') === '1';
       if (params.get('expired') === '1') document.getElementById('expired').hidden = false;
-      var ADMIN_ONLY = { 'admin.html': true };
+      var ADMIN_ONLY = { 'admin.html': true, 'admin-users.html': true, 'admin-gdpr.html': true };
 
       function homeFor(role) { return role === 'admin' ? 'admin.html' : 'portal.html'; }
       function destinationFor(role) {

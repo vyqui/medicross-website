@@ -287,6 +287,9 @@
   function createMagicLink(pid) {
     return request('POST', '/api/admin/patients/' + pid + '/magic-link');
   }
+  function listGdprRegistrations() {
+    return request('GET', '/api/admin/gdpr-registrations').then(function (res) { return res.registrations; });
+  }
   function addReferral(pid, name) {
     return request('POST', '/api/admin/patients/' + pid + '/referrals', { name: name })
       .then(function (p) { currentPatient = p; return p; }).catch(function () { return null; });
@@ -324,6 +327,7 @@
 
     setAction: setAction, setView: setView, discountBreakdown: discountBreakdown,
     verifyAction: verifyAction, createMagicLink: createMagicLink,
+    listGdprRegistrations: listGdprRegistrations,
     addReferral: addReferral, setReferralStatus: setReferralStatus, removeReferral: removeReferral,
     setUsedCode: setUsedCode,
 

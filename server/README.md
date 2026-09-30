@@ -33,6 +33,13 @@ Node 22+, Fastify, Postgres. No build step, no native modules.
   from a request body.
 - **Leads.** The contact forms currently open WhatsApp and record nothing. There
   is now a `POST /api/leads` endpoint that stores the enquiry first.
+- **Admin console, as three pages.** `admin.html` is a landing hub (three
+  cards); `admin-users.html` is the patient list + full detail panel (what
+  used to be the whole of `admin.html`); `admin-gdpr.html` lists everyone who
+  has accepted GDPR, whether through a portal account or only through
+  `acord-gdpr-completare.html`, with a link to preview/download the signed
+  PDF for the latter. See "GDPR travel-registration form" below for where
+  that PDF comes from.
 
 ## Running it locally
 
@@ -57,8 +64,8 @@ and lead capture. **Point it at a disposable database**, since it writes.
    this folder rather than the marketing site at the repository root.
 3. **Add a Postgres service** to the same project. Railway injects
    `DATABASE_URL` automatically — reference it rather than pasting a URL.
-4. **Add a Volume** and mount it at `/data`. Without one, uploaded documents are
-   deleted on every redeploy.
+4. **Add a Volume** and mount it at `/data`. Without one, uploaded documents —
+   and signed GDPR registration PDFs — are deleted on every redeploy.
 5. Set the remaining variables:
 
    | Variable | Value |
@@ -104,6 +111,8 @@ Everything is under `/api`. Session comes from the cookie; no tokens in URLs.
 | `POST` | `…/actions/:key/verify` | staff |
 | `POST`/`DELETE` | `…/documents[/:docId]` | staff |
 | `GET`/`PATCH` | `/api/admin/leads[/:id]` | staff |
+| `GET` | `/api/admin/gdpr-registrations` | staff |
+| `GET` | `…/:id/pdf` | staff |
 | `POST` | `/api/leads` | anyone, rate limited |
 | `POST` | `/api/gdpr-registration` | anyone, rate limited |
 | `GET` | `/api/config` | anyone |
@@ -118,11 +127,14 @@ than 403 to a patient, so probing them reveals nothing.
 marketing site) validates the submission — including a real Romanian CNP
 checksum — renders a PDF matching the old form's layout (`src/gdpr-pdf.js`,
 via a bundled DejaVu Sans font: pdfkit's built-in Helvetica mangles ă/â/î/ș/ț),
-e-mails it to `GDPR_NOTIFY_EMAIL` (`src/mailer.js`), and inserts a row into
-`gdpr_registrations`. The CNP and the signature image are never written to
-the database — they exist only in the emailed PDF (and, per explicit
-direction, the CNP is also sent to the Google Sheet below — the signature
-image itself still isn't, anywhere but the PDF).
+e-mails it to `GDPR_NOTIFY_EMAIL` (`src/mailer.js`), saves it to `src/storage.js`
+(the same disk/volume patient documents use — `pdf_storage_key` on the row),
+and inserts a row into `gdpr_registrations`. The CNP and the signature image
+are never written to the database — the PDF is the only place they exist
+outside the e-mail (and, per explicit direction, the CNP is also sent to the
+Google Sheet below — the signature image itself still isn't, anywhere but
+the PDF). Staff can browse these submissions and re-open that same PDF from
+`admin-gdpr.html`, via `GET /api/admin/gdpr-registrations/:id/pdf`.
 
 `src/mailer.js` sends via **Resend** (an HTTPS API call) if `RESEND_API_KEY`
 is set, otherwise via **SMTP** to the office@ mailbox directly. Resend is the

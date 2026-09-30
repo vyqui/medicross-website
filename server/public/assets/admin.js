@@ -12,7 +12,12 @@
     location.href = 'login.html';
   });
 
-  var currentId = MedicrossDB.patients()[0] && MedicrossDB.patients()[0].id;
+  // Arriving from the "GDPR Approved" list or another admin page can ask for
+  // a specific patient (?patient=<id>) instead of defaulting to the first
+  // row — falls back to the default when the id is missing or unknown.
+  var requestedId = new URLSearchParams(location.search).get('patient');
+  var requested = requestedId && MedicrossDB.patients().filter(function (p) { return p.id === requestedId; })[0];
+  var currentId = (requested || MedicrossDB.patients()[0]) && (requested || MedicrossDB.patients()[0]).id;
   if (currentId) await MedicrossDB.refreshCurrentPatient(currentId);
 
   /* ---------------- helpers ---------------- */
@@ -669,4 +674,22 @@
   buildCatalogSelect();
   buildHospitalSelect();
   renderAll();
+
+  if (requested) {
+    var selRow = document.querySelector('.ptbl tbody tr.sel');
+    if (selRow) selRow.scrollIntoView({ block: 'nearest' });
+  }
+
+  // Arriving from the hub's "Add a new user" card: open the collapsed "Cont
+  // nou" card and put the cursor in its first field instead of making
+  // someone hunt for it.
+  if (new URLSearchParams(location.search).get('new') === '1') {
+    var newCard = document.getElementById('newAcctCard');
+    if (newCard) {
+      newCard.open = true;
+      newCard.scrollIntoView({ block: 'start' });
+      var nameField = document.getElementById('naName');
+      if (nameField) nameField.focus();
+    }
+  }
 })();

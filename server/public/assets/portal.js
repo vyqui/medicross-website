@@ -138,7 +138,7 @@
         bar.className = 'admin-view-note';
         bar.innerHTML = 'Vizualizezi portalul pacientului ca <strong>administrator</strong>. ' +
           'Consimțămintele de marketing pot fi acordate sau retrase doar de pacient. ' +
-          '<a href="admin.html">Înapoi în consolă</a>';
+          '<a href="admin-users.html">Înapoi în consolă</a>';
         main.insertBefore(bar, main.firstChild);
       }
     }

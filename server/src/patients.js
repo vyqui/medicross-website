@@ -75,6 +75,7 @@ export async function listPatients() {
     sex: p.sex,
     referralCode: p.referral_code,
     gdprAccepted: p.gdpr_accepted,
+    gdprAcceptedAt: p.gdpr_accepted_at?.toISOString?.() ?? null,
     createdAt: p.created_at?.toISOString?.() ?? null,
     discountTotal: computeDiscount(
       p, actionsBy.get(p.id) ?? [], referralsBy.get(p.id) ?? []).total,

@@ -1,6 +1,7 @@
 import { query } from '../db.js';
 import { renderGdprRegistrationPdf } from '../gdpr-pdf.js';
 import { sendMail } from '../mailer.js';
+import * as storage from '../storage.js';
 
 /* The same procedure catalogue the platform's body map uses (assets/portal-
    data.js PROCEDURES), duplicated here in the one place on the server side
@@ -118,6 +119,18 @@ export default async function gdprRegistrationRoutes(app) {
 
     const pdfFilename = `acord-gdpr-${name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.pdf`;
 
+    /* Kept alongside the row so staff can re-open it later from the admin
+       console (see routes/admin.js) instead of digging through the office@
+       mailbox — same storage the patient's own uploaded documents use.
+       Best-effort: a disk hiccup here still lets the e-mail (the record of
+       truth) and the row go through. */
+    let pdfStorageKey = null;
+    try {
+      pdfStorageKey = await storage.put('gdpr-registrations', pdfBuffer);
+    } catch (err) {
+      request.log.error({ err }, 'failed to save the GDPR registration PDF to storage');
+    }
+
     let emailSent = false;
     try {
       await sendMail({
@@ -159,10 +172,11 @@ export default async function gdprRegistrationRoutes(app) {
 
     await query(
       `insert into gdpr_registrations
-         (name, email, phone, address, date_of_birth, procedure_category, procedure_name, source_page, email_sent)
-       values ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [name, email, phone, fullAddress,
-        dateOfBirth, procedure.category, procedure.label, sourcePage, emailSent]);
+         (name, email, phone, address, date_of_birth, procedure_category, procedure_name,
+          source_page, email_sent, pdf_storage_key, pdf_size_bytes)
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      [name, email, phone, fullAddress, dateOfBirth, procedure.category, procedure.label,
+        sourcePage, emailSent, pdfStorageKey, pdfStorageKey ? pdfBuffer.length : null]);
 
     try {
       await logToSheet({

@@ -117,6 +117,7 @@ export function serializePatientSummary(patient, discountTotal) {
     sex: patient.sex,
     referralCode: patient.referral_code,
     gdprAccepted: patient.gdpr_accepted,
+    gdprAcceptedAt: iso(patient.gdpr_accepted_at),
     discountTotal,
   };
 }
