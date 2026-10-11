@@ -37,8 +37,50 @@ body.lp {
 }
 
 /* ---- top mini-bar: just the logo, so the page isn't branding-less ---- */
-.lp-topbar { display: flex; justify-content: center; padding: 18px 0 6px; }
-.lp-topbar img { height: 30px; width: auto; }
+.lp-topbar { display: flex; justify-content: center; background: #fff; padding: 12px 0; box-shadow: 0 2px 14px -8px rgba(33,30,26,.2); position: relative; z-index: 20; }
+.lp-topbar img { height: 32px; width: auto; display: block; }
+
+/* ---- persistent floating WhatsApp button (desktop/tablet — phones get the sticky bar instead) ---- */
+.lp-wa-float {
+  display: none; position: fixed; right: 22px; bottom: 22px; z-index: 60;
+  width: 60px; height: 60px; border-radius: 50%; background: #25D366; color: #fff;
+  align-items: center; justify-content: center; box-shadow: 0 16px 34px -12px rgba(0,0,0,.5);
+  transition: transform .2s ease;
+}
+.lp-wa-float:hover { transform: translateY(-3px); }
+.lp-wa-float svg { width: 28px; height: 28px; }
+@media (min-width: 760px) { .lp-wa-float { display: flex; } }
+
+/* ---- expanded "who operates on you" bio block ---- */
+.lp-doctor-block { display: flex; gap: 20px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 26px; box-shadow: 0 24px 50px -36px rgba(33,30,26,.35); }
+.lp-doctor-block img { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; flex: none; background: #ECE6DF; border: 3px solid color-mix(in srgb, var(--brand) 18%, #fff); }
+.lp-doctor-block .lp-doctor-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 6px; }
+.lp-doctor-block h3 { font-family: "Newsreader", serif; font-weight: 600; font-size: 21px; line-height: 1.2; margin: 0 0 8px; }
+.lp-doctor-block p { font-size: 14px; line-height: 1.65; color: var(--muted); margin: 0; }
+@media (max-width: 560px) { .lp-doctor-block { flex-direction: column; text-align: center; } }
+
+/* ---- narrative story sections (replace the plain FAQ accordion) ---- */
+.lp-story { display: flex; flex-direction: column; gap: 46px; }
+.lp-story-row { display: flex; flex-direction: column; gap: 20px; align-items: center; }
+@media (min-width: 760px) {
+  .lp-story-row { flex-direction: row; gap: 40px; }
+  .lp-story-row.rev { flex-direction: row-reverse; }
+}
+.lp-story-img { flex: 0 0 auto; width: 100%; border-radius: 22px; overflow: hidden; box-shadow: 0 24px 50px -32px rgba(33,30,26,.4); aspect-ratio: 4/3; background: #ECE6DF; }
+@media (min-width: 760px) { .lp-story-img { flex: 0 0 40%; } }
+.lp-story-img img { width: 100%; height: 100%; object-fit: cover; }
+.lp-story-text { flex: 1 1 auto; }
+.lp-story-tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--brand); padding: 4px 11px; border-radius: 999px; margin-bottom: 10px; }
+.lp-story-text h3 { font-family: "Newsreader", serif; font-weight: 600; font-size: clamp(19px, 2.6vw, 24px); line-height: 1.22; margin: 0 0 10px; }
+.lp-story-text p { font-size: 14.5px; line-height: 1.72; color: var(--muted); margin: 0; }
+
+/* ---- FOMO / emotional conversion band (used mid-page and bottom-page) ---- */
+.lp-fomo { background: linear-gradient(135deg, var(--ink), #3a332c); color: #fff; border-radius: 26px; padding: 40px 26px; text-align: center; position: relative; overflow: hidden; }
+.lp-fomo::before { content: ""; position: absolute; top: -70px; left: -40px; width: 220px; height: 220px; border-radius: 50%; background: rgba(212,43,43,.28); }
+.lp-fomo .lp-fomo-tag { position: relative; display: inline-flex; align-items: center; gap: 6px; background: rgba(212,43,43,.2); color: #ff9c92; border: 1px solid rgba(212,43,43,.45); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 6px 14px; border-radius: 999px; margin-bottom: 16px; }
+.lp-fomo h2 { position: relative; font-family: "Newsreader", serif; font-weight: 600; font-size: clamp(24px, 5vw, 34px); line-height: 1.15; margin: 0 0 12px; }
+.lp-fomo p { position: relative; font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.78); max-width: 580px; margin: 0 auto 26px; }
+.lp-fomo .lp-cta { position: relative; }
 
 /* ---- urgency ribbon ---- */
 .lp-ribbon {
