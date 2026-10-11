@@ -1,0 +1,230 @@
+/* Shared stylesheet for standalone ad landing pages (oferta-*.html).
+   Self-contained on purpose: these pages don't load assets/styles.css or
+   assets/header.css — no site header/nav, single CTA, nothing to distract
+   from WhatsApp / the lead form. Tokens match assets/home.css so the pages
+   still look like the same brand. */
+
+:root {
+  --brand: #D42B2B;
+  --brand-dark: color-mix(in srgb, var(--brand) 82%, #000);
+  --brand-deep: color-mix(in srgb, var(--brand) 66%, #000);
+  --ink: #211E1A;
+  --muted: #6B655C;
+  --cream: #FBF7F1;
+  --line: rgba(33, 30, 26, .1);
+  --shirt: #E9A9A2;
+}
+
+* { box-sizing: border-box; }
+
+body.lp {
+  margin: 0;
+  background: #EDE7E1;
+  font-family: "Manrope", system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+}
+
+.lp a { color: inherit; text-decoration: none; }
+.lp-wrap { max-width: 1180px; margin: 0 auto; padding: 20px 20px 60px; }
+
+.lp-lift { transition: transform .25s ease, box-shadow .25s ease; }
+.lp-lift:hover { transform: translateY(-2px); }
+
+@keyframes lp-floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes lp-floaty2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@media (prefers-reduced-motion: reduce) {
+  .lp-float1, .lp-float2, .lp-float3 { animation: none !important; }
+}
+
+/* ---- top mini-bar: just the logo, so the page isn't branding-less ---- */
+.lp-topbar { display: flex; justify-content: center; padding: 18px 0 6px; }
+.lp-topbar img { height: 30px; width: auto; }
+
+/* ---- urgency ribbon ---- */
+.lp-ribbon {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--brand); color: #fff; font-weight: 700; font-size: 13px;
+  padding: 8px 16px; border-radius: 999px; margin: 0 auto 18px; width: fit-content;
+  box-shadow: 0 12px 26px -12px color-mix(in srgb, var(--brand) 60%, transparent);
+}
+
+/* ================= HERO ================= */
+.lp-hero {
+  position: relative; background: #fff; border-radius: 28px; overflow: hidden;
+  box-shadow: 0 40px 80px -40px rgba(33, 30, 26, .45);
+}
+@media (min-width: 760px) { .lp-hero { display: flex; align-items: stretch; } }
+
+.lp-hero-shirt {
+  position: relative; width: 100%; aspect-ratio: 16/10; background: var(--shirt); overflow: hidden;
+}
+.lp-hero-shirt > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+.lp-hero-shirt .lp-tex { position: absolute; inset: 0; background: repeating-linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.10) 12px, transparent 12px, transparent 24px); }
+@media (min-width: 760px) {
+  .lp-hero-shirt { order: 2; flex: 0 0 46%; aspect-ratio: auto; border-radius: 0 0 0 46% / 0 0 0 70%; }
+}
+@media (min-width: 980px) { .lp-hero-shirt { flex-basis: 50%; } }
+
+.lp-hero-content { position: relative; z-index: 5; padding: 30px 24px; }
+@media (min-width: 760px) { .lp-hero-content { order: 1; flex: 1 1 54%; } }
+.lp-eyebrow {
+  display: inline-flex; align-items: center; gap: 9px; font-size: 11.5px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 16px;
+}
+.lp-eyebrow::before { content: ""; width: 24px; height: 1px; background: var(--brand-dark); }
+
+.lp-h1 {
+  font-family: "Newsreader", serif; font-weight: 600; font-size: clamp(38px, 9vw, 60px);
+  line-height: .98; letter-spacing: -.02em; margin: 0 0 16px;
+}
+.lp-h1 em { font-style: italic; color: var(--brand); display: block; }
+
+.lp-lede { font-size: 16px; line-height: 1.6; color: var(--muted); margin: 0 0 24px; max-width: 460px; }
+
+.lp-cta {
+  display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: 16px;
+  padding: 8px 24px 8px 8px; border-radius: 999px; background: var(--brand); color: #fff;
+  box-shadow: 0 16px 34px -12px color-mix(in srgb, var(--brand) 60%, transparent);
+}
+.lp-cta .lp-cta-arrow {
+  width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.2);
+  display: flex; align-items: center; justify-content: center; font-size: 18px; flex: none;
+}
+
+.lp-stats { display: flex; gap: 22px; margin-top: 28px; }
+.lp-stat strong { display: block; font-family: "Newsreader", serif; font-weight: 600; font-size: 26px; color: var(--brand); }
+.lp-stat span { font-size: 12px; color: var(--muted); }
+.lp-stat-sep { width: 1px; background: var(--line); }
+
+.lp-doctors { margin-top: 20px; font-size: 13.5px; color: var(--muted); }
+.lp-doctors strong { color: var(--ink); }
+
+/* ---- WhatsApp chat overlay: nested inside .lp-hero-shirt, floats over the
+   image. Hidden below 760px — on a phone-width panel there's no room for it
+   without covering the whole photo, so it drops out of the flow instead. ---- */
+.lp-chat { display: none; }
+@media (min-width: 760px) {
+  .lp-hero-content { display: flex; flex-direction: column; justify-content: center; min-height: 420px; }
+  .lp-chat { display: block; }
+  .lp-chat-in {
+    position: absolute; left: 16px; top: 14%; z-index: 6; display: flex; align-items: flex-end; gap: 8px; max-width: 72%;
+  }
+  .lp-chat-in .bubble {
+    position: relative; background: #fff; border-radius: 12px 12px 12px 3px; padding: 9px 12px 7px;
+    box-shadow: 0 14px 30px -14px rgba(33,30,26,.4); max-width: 190px; font-size: 12.5px; line-height: 1.4;
+  }
+  .lp-chat-avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg,#c9b8a8,#a8917d); flex: none; }
+  .lp-chat-out {
+    position: absolute; left: 10%; top: 38%; z-index: 6; display: flex; align-items: flex-end; gap: 8px; max-width: 86%;
+  }
+  .lp-chat-out .bubble {
+    background: #DCF8C6; border-radius: 12px 12px 3px 12px; padding: 9px 12px 7px;
+    box-shadow: 0 14px 30px -14px rgba(33,30,26,.4); max-width: 230px; font-size: 12.5px; line-height: 1.4;
+  }
+  .lp-chat-out .bubble .who { font-size: 11px; font-weight: 700; color: #2b7a4b; margin-bottom: 2px; }
+  .lp-chat-avatar-m { width: 24px; height: 24px; border-radius: 50%; background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex: none; }
+  .lp-chat-voice {
+    position: absolute; left: 16px; bottom: 14px; z-index: 6; display: flex; align-items: center; gap: 10px;
+    background: #DCF8C6; border-radius: 12px; padding: 9px 13px; box-shadow: 0 14px 30px -14px rgba(33,30,26,.4);
+  }
+  .lp-chat-doc {
+    position: absolute; right: 16px; bottom: 14px; z-index: 6; background: #fff; border-radius: 16px; padding: 10px;
+    box-shadow: 0 20px 40px -18px rgba(33,30,26,.5); width: 108px; text-align: center;
+  }
+  .lp-chat-doc img { width: 100%; height: 64px; object-fit: cover; border-radius: 11px; margin-bottom: 8px; background: #ECE6DF; }
+  .lp-chat-doc .name { background: var(--brand); color: #fff; border-radius: 8px; padding: 5px 6px; font-size: 10px; font-weight: 700; line-height: 1.25; }
+}
+@media (min-width: 980px) { .lp-hero-content { padding: 48px 40px; } }
+
+/* ================= SECTION HEADINGS ================= */
+.lp-section { margin-top: 56px; }
+.lp-section-head { text-align: center; margin-bottom: 26px; }
+.lp-h2 { font-family: "Newsreader", serif; font-weight: 600; font-size: clamp(28px, 5vw, 40px); line-height: 1.08; letter-spacing: -.02em; margin: 0; }
+.lp-h2 em { font-style: italic; color: var(--brand); }
+
+/* ================= FORM ================= */
+.lp-form {
+  display: grid; grid-template-columns: 1fr; background: #fff; border-radius: 24px;
+  overflow: hidden; box-shadow: 0 34px 64px -38px rgba(33, 30, 26, .45);
+}
+@media (min-width: 820px) { .lp-form { grid-template-columns: 1fr 1fr; } }
+.lp-form-left { padding: 32px 26px; }
+.lp-form-right { padding: 30px 26px; background: var(--cream); }
+@media (min-width: 820px) { .lp-form-right { border-left: 1px solid var(--line); } }
+.lp-form-lede { font-size: 14.5px; line-height: 1.6; color: var(--muted); margin: 0 0 22px; }
+.lp-benefits { display: flex; flex-direction: column; gap: 12px; }
+.lp-benefit { display: flex; align-items: center; gap: 11px; font-size: 14px; }
+.lp-benefit .tick {
+  width: 24px; height: 24px; border-radius: 50%; background: color-mix(in srgb, var(--brand) 12%, #fff);
+  color: var(--brand); display: flex; align-items: center; justify-content: center; flex: none;
+}
+.lp-field-group { display: flex; flex-direction: column; gap: 11px; }
+.lp-field-row { display: flex; gap: 11px; flex-wrap: wrap; }
+.lp-field-row > * { flex: 1 1 160px; min-width: 0; }
+.lp-input, .lp-textarea {
+  width: 100%; padding: 14px 15px; border-radius: 12px; border: 1px solid var(--line);
+  font-size: 14.5px; background: #fff; font-family: inherit;
+}
+.lp-textarea { resize: vertical; }
+.lp-consent { display: flex; align-items: flex-start; gap: 9px; font-size: 12px; color: var(--muted); line-height: 1.5; cursor: pointer; }
+.lp-consent input { width: 16px; height: 16px; accent-color: var(--brand); margin-top: 1px; flex: none; }
+.lp-submit {
+  display: flex; align-items: center; justify-content: center; gap: 9px; font-weight: 700; font-size: 16px;
+  padding: 16px 0; border-radius: 13px; background: var(--brand); color: #fff; border: none; cursor: pointer;
+  box-shadow: 0 16px 32px -12px color-mix(in srgb, var(--brand) 60%, transparent); width: 100%;
+}
+.lp-form-note { text-align: center; font-size: 12px; color: #9a938a; }
+.lp-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.lp-form-status { font-size: 13.5px; font-weight: 700; text-align: center; display: none; padding: 10px; border-radius: 10px; }
+.lp-form-status.ok { display: block; background: #e8f5e9; color: #2b7a4b; }
+.lp-form-status.err { display: block; background: #fdeaea; color: var(--brand-dark); }
+
+/* ================= OFFER / COMBO CALLOUT ================= */
+.lp-callout {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 10%, #fff), #fff);
+  border: 1.5px solid color-mix(in srgb, var(--brand) 30%, var(--line));
+  border-radius: 22px; padding: 28px 26px; display: flex; flex-direction: column; gap: 10px;
+}
+.lp-callout .tag { display: inline-flex; width: fit-content; background: var(--brand); color: #fff; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; }
+.lp-callout h3 { font-family: "Newsreader", serif; font-weight: 600; font-size: 24px; margin: 4px 0 0; }
+.lp-callout p { font-size: 14.5px; line-height: 1.6; color: var(--muted); margin: 0; }
+
+/* ================= FAQ ================= */
+.lp-faq-list { display: flex; flex-direction: column; gap: 10px; }
+.lp-faq-list details { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 20px; }
+.lp-faq-list summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-weight: 700; font-size: 15.5px; list-style: none; cursor: pointer; }
+.lp-faq-list summary::-webkit-details-marker { display: none; }
+.lp-faq-list .faqx { color: var(--brand); font-size: 22px; transition: transform .25s ease; flex: none; }
+.lp-faq-list details[open] .faqx { transform: rotate(45deg); }
+.lp-faq-list p { font-size: 14.5px; line-height: 1.65; color: var(--muted); margin: 12px 0 0; }
+
+/* ================= WHATSAPP CTA BAND ================= */
+.lp-wa-band {
+  margin-top: 50px; background: linear-gradient(150deg, var(--brand), var(--brand-deep));
+  border-radius: 24px; padding: 42px 26px; text-align: center; color: #fff; position: relative; overflow: hidden;
+}
+.lp-wa-band h2 { font-family: "Newsreader", serif; font-weight: 600; font-size: clamp(26px, 5vw, 36px); line-height: 1.1; margin: 0 0 10px; }
+.lp-wa-band p { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.85); margin: 0 0 24px; }
+.lp-wa-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px; font-weight: 800; font-size: 17px;
+  padding: 18px 32px; border-radius: 999px; background: #25D366; color: #fff; box-shadow: 0 20px 44px -14px rgba(0,0,0,.45);
+}
+.lp-wa-note { margin-top: 16px; font-size: 13px; color: rgba(255,255,255,.75); }
+
+/* ---- disclaimer ---- */
+.lp-disclaimer { margin-top: 40px; font-size: 11.5px; line-height: 1.6; color: #9a938a; text-align: center; max-width: 640px; margin-left: auto; margin-right: auto; }
+
+/* ---- sticky mobile WhatsApp bar ---- */
+.lp-sticky {
+  display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; gap: 10px; padding: 10px 12px;
+  background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -8px 24px -16px rgba(33,30,26,.3);
+}
+.lp-sticky a {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: 14.5px;
+  padding: 13px 0; border-radius: 12px;
+}
+.lp-sticky .wa { background: #25D366; color: #fff; }
+.lp-sticky .form { background: var(--brand); color: #fff; }
+@media (min-width: 760px) { .lp-sticky { display: none; } }
+body.lp { padding-bottom: 0; }
+@media (max-width: 759px) { body.lp { padding-bottom: 68px; } }
