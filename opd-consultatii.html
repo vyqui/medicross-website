@@ -36,6 +36,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/styles.css" />
   <link rel="stylesheet" href="assets/header.css" />
+
+  <style>
+    html{scroll-behavior:smooth}.opd-hero{background:linear-gradient(130deg,#f2f8f8 0%,#fff 65%);padding:45px 0 68px}.opd-hero-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,0.95fr);align-items:start;gap:clamp(24px,4vw,70px)}.opd-hero-copy{padding-top:22px}.opd-kicker{color:#087b81;font:800 12px Manrope,sans-serif;letter-spacing:.12em}.opd-hero h1{color:#102e41;font:600 clamp(38px,4.4vw,66px)/1.06 Newsreader,serif;margin:17px 0 22px;letter-spacing:-.035em}.opd-hero h1 em{color:#bd3748;font-style:normal}.opd-hero-lead{font:400 17px/1.75 Manrope,sans-serif;color:#435865;max-width:590px}.opd-hero-lead strong{color:#173b4a}.opd-highlights{display:flex;gap:10px;flex-wrap:wrap;margin:23px 0}.opd-highlights span{background:#fff;padding:11px 13px;border:1px solid #dce8e8;border-radius:12px;color:#34515b;font-size:12px}.opd-highlights strong{font-size:15px;color:#0d5b62}.opd-hero-photo{position:relative;overflow:hidden;border-radius:20px;background:#d9e8e8;margin:16px 0 0}.opd-hero-photo img{display:block;width:100%;height:250px;object-fit:cover;object-position:center 40%}.opd-hero-photo span{position:absolute;bottom:0;left:0;right:0;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7));padding:24px 14px 12px;font-size:11px}.opd-hero-small{font-size:12px;color:#60747a;margin-top:12px;line-height:1.6}.opd-booking{padding:0;scroll-margin-top:90px}.opd-booking .contact-card{padding:30px!important;border:1px solid #dbe7e7!important;border-radius:22px!important;box-shadow:0 20px 50px rgba(19,57,67,.11)!important}.opd-booking .field{margin-bottom:13px}.opd-booking .field label{font-weight:700}.opd-booking input:not([type=radio]),.opd-booking select,.opd-booking textarea{width:100%;min-height:44px}.opd-booking button[type=submit]{min-height:52px;font-weight:800}.opd-doctor-image{position:relative;overflow:hidden}.opd-doctor-image img{width:100%;height:190px;object-fit:cover;display:block}.opd-doctor-image span{position:absolute;bottom:0;left:0;right:0;color:white;font-size:11px;padding:22px 10px 9px;background:linear-gradient(transparent,rgba(0,0,0,.7))}@media(max-width:860px){.opd-hero-layout{grid-template-columns:1fr}.opd-hero{padding:24px 0 40px}.opd-hero-copy{padding-top:0}.opd-hero-photo img{height:210px}.opd-booking .contact-card{padding:22px!important}}@media(max-width:480px){.opd-hero h1{font-size:40px}.opd-highlights{gap:6px}.opd-highlights span{padding:9px 10px}.opd-booking .form-row{display:block}}
+  </style>
+
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -148,116 +153,40 @@
     </div>
   </header>
 
-  <!-- ================= PAGE HERO ================= -->
-  <section class="page-hero">
-    <div class="container">
-      <div class="breadcrumbs">
-        <a href="/">Acasă</a> <span>›</span> <span>OPD</span>
+  <!-- ================= HERO + FORM ================= -->
+  <section class="opd-hero">
+    <div class="container opd-hero-layout">
+      <div class="opd-hero-copy">
+        <span class="opd-kicker">OPD MEDICROSS · DIN 20 OCTOMBRIE 2026</span>
+        <h1><span>CONSULTAȚIE</span> <em>GRATUITĂ</em> cu medici specialiști</h1>
+        <p class="opd-hero-lead"><strong>15 minute, 1 la 1, direct cu medicul.</strong> Discută despre opțiunile tale în <strong>ORL</strong> sau <strong>chirurgie plastică</strong>, fără costuri pentru consultație și fără obligația de a urma o intervenție.</p>
+        <div class="opd-highlights">
+          <span><strong>0 lei</strong> consultația</span>
+          <span><strong>4 medici</strong> specialiști</span>
+          <span><strong>15 min</strong> dedicate ție</span>
+        </div>
+        <div class="opd-hero-photo"><img src="materials/images/gynecologist-talking-with-young-female-patient-during-medical-consultation-modern-clinic-patient-with-gynecologist-during-consultation-gynecological-office_657921-141.avif" alt="Imagine ilustrativă a unei discuții între medic și pacient" loading="eager" fetchpriority="high"><span>Imagine ilustrativă · fotografiile medicilor OPD vor fi publicate ulterior</span></div>
+        <p class="opd-hero-small">Locurile depind de intervalele disponibile ale fiecărui medic. Ora și modalitatea consultației se confirmă individual de echipa Medicross.</p>
       </div>
-      <span class="eyebrow" style="color:var(--brand-soft)">Eveniment Medicross</span>
-      <h1>OPD — consultații gratuite, 1 la 1, de 15 minute</h1>
-      <p class="lead">Din <strong>20 octombrie 2026</strong>, îți poți rezerva o consultație individuală, gratuită, de 15 minute, direct cu unul dintre cei 3 medici ORL sau cu chirurgul plastician din echipa Medicross. Fără obligații — doar răspunsuri clare la întrebările tale.</p>
-      <div class="price-chip"><span>start</span><strong>20.10.2026</strong><span>Consultații 1:1 · 15 min · gratuit</span></div>
-      <div class="hero-ctas" style="margin-top:26px">
-        <a class="btn btn-primary" href="#rezervare">Rezervă-ți locul</a>
-        <a class="btn btn-outline" href="https://wa.me/40746992222" target="_blank" rel="noopener">Scrie-ne pe WhatsApp</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= CE ESTE OPD ================= -->
-  <section>
-    <div class="container" style="max-width:860px">
-      <h2 style="font-family:'Newsreader',serif;font-size:clamp(24px,3vw,32px);color:var(--navy);margin:38px 0 16px">Ce este OPD?</h2>
-      <p style="color:var(--muted);line-height:1.8;margin-bottom:16px">OPD este seria de zile de consultații gratuite organizată de Medicross, în care poți vorbi direct, individual, cu un medic specialist — fără aglomerație, fără prezentări de grup, doar 15 minute dedicate exclusiv situației tale. Scopul este simplu: să afli, de la sursă, dacă o intervenție ORL sau de chirurgie plastică este potrivită pentru tine și la ce să te aștepți.</p>
-      <p style="color:var(--muted);line-height:1.8">Locurile sunt limitate la numărul de intervale disponibile pentru fiecare medic. Modalitatea exactă (la clinică sau online) și intervalul orar se confirmă individual, după ce te înscrii — un consultant Medicross te contactează pentru a stabili ora potrivită.</p>
-    </div>
-  </section>
-
-  <!-- ================= ECHIPA ================= -->
-  <section style="padding-top:12px">
-    <div class="container">
-      <div class="center reveal">
-        <span class="eyebrow">Echipa de consultații</span>
-        <h2 style="font-family:'Newsreader',serif;font-size:clamp(24px,3vw,32px);color:var(--navy)">3 medici ORL &amp; un chirurg plastician</h2>
-        <p class="section-lead">Fotografiile medicilor se adaugă în curând — poți rezerva deja de acum consultația cu oricare dintre ei.</p>
-      </div>
-      <div class="proc-grid grid-4">
-        <div class="proc-card">
-          <img src="materials/images/placeholder-foto.png" alt="Dr. Șahin — foto în curând" />
-          <div class="pc-body">
-            <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
-            <h3 style="margin-top:6px">Dr. Șahin</h3>
-            <p>Membru al echipei de medici ORL din programul OPD Medicross. Detaliile complete despre pregătirea sa se adaugă în curând.</p>
-          </div>
-        </div>
-        <div class="proc-card">
-          <img src="materials/images/placeholder-foto.png" alt="Dr. Hasan Tanrıverdi O. — foto în curând" />
-          <div class="pc-body">
-            <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
-            <h3 style="margin-top:6px">Dr. Hasan Tanrıverdi O.</h3>
-            <p>Pregătire la Universitatea Ege și Universitatea Ankara, specializat în otologie și chirurgia urechii medii (timpanoplastie, stapedotomie), cu lucrări științifice publicate internațional.</p>
-          </div>
-        </div>
-        <div class="proc-card">
-          <img src="materials/images/placeholder-foto.png" alt="Op. Dr. Çağrı Demirbağlar — foto în curând" />
-          <div class="pc-body">
-            <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
-            <h3 style="margin-top:6px">Op. Dr. Çağrı Demirbağlar</h3>
-            <p>Expert în rinoplastie estetică și funcțională prin tehnica ultrasonică Piezo — minim invazivă, cu recuperare rapidă și rezultate naturale.</p>
-          </div>
-        </div>
-        <div class="proc-card">
-          <img src="materials/images/placeholder-foto.png" alt="Op. Dr. İkram Esen — foto în curând" />
-          <div class="pc-body">
-            <span class="eyebrow" style="font-size:11px">Chirurg plastician</span>
-            <h3 style="margin-top:6px">Op. Dr. İkram Esen</h3>
-            <p>Chirurg specializat în chirurgie estetică mamară, cu experiență în sute de proceduri. La OPD îți oferă o evaluare personalizată, gratuită.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= CUM FUNCȚIONEAZĂ ================= -->
-  <section>
-    <div class="container" style="max-width:860px">
-      <div class="center reveal">
-        <span class="eyebrow">Cum funcționează</span>
-        <h2 style="font-family:'Newsreader',serif;font-size:clamp(24px,3vw,32px);color:var(--navy)">3 pași simpli</h2>
-      </div>
-      <div class="proc-grid" style="grid-template-columns:repeat(3,1fr);margin-top:36px">
-        <div class="proc-card" style="padding:22px 22px 24px">
-          <h3>1. Rezervă-ți locul</h3>
-          <p>Alegi medicul, data și intervalul orar dorite, direct din formularul de mai jos.</p>
-        </div>
-        <div class="proc-card" style="padding:22px 22px 24px">
-          <h3>2. Primești confirmarea</h3>
-          <p>Un consultant Medicross te contactează pe WhatsApp cu ora exactă și modalitatea consultației.</p>
-        </div>
-        <div class="proc-card" style="padding:22px 22px 24px">
-          <h3>3. Vii la consultație</h3>
-          <p>15 minute, 1 la 1, direct cu medicul — întrebări, răspunsuri, fără presiune.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= REZERVARE ================= -->
-  <section id="rezervare" style="padding-bottom:60px">
-    <div class="container" style="max-width:640px">
+      
+  <div id="rezervare" class="opd-booking">
+    <div class="container" style="max-width:none;padding:0">
       <div class="contact-card" style="background:#fff;border:1px solid var(--line);border-radius:18px;padding:36px 34px;box-shadow:var(--shadow-soft)">
-        <h2 style="font-family:'Newsreader',serif;color:var(--navy);font-size:26px;margin-bottom:8px">Rezervă-ți locul la OPD</h2>
-        <p style="color:var(--muted);margin-bottom:22px">Completează formularul — este <strong style="color:var(--red)">gratuit</strong> și fără nicio obligație. Îți confirmăm intervalul orar pe WhatsApp.</p>
+        <h2 style="font-family:'Newsreader',serif;color:var(--navy);font-size:27px;margin-bottom:8px">Rezervă consultația gratuită</h2>
+        <p style="color:var(--muted);margin-bottom:22px">Completează formularul — este <strong style="color:var(--red)">gratuit</strong> și fără nicio obligație. Alegi preferințele, apoi un consultant confirmă disponibilitatea pe WhatsApp.</p>
         <form id="opdForm">
           <div class="field">
-            <label for="opd-doc">Cu cine vrei să vorbești</label>
+            <label for="opd-specialitate">Specialitatea dorită</label>
+            <select id="opd-specialitate" name="specialitate" required><option value="">Alege specialitatea…</option><option value="ORL">ORL</option><option value="Chirurgie plastică">Chirurgie plastică</option><option value="Am nevoie de recomandare">Nu sunt sigur(ă), am nevoie de recomandare</option></select>
+          </div>
+          <div class="field">
+            <label for="opd-doc">Medicul dorit</label>
             <select id="opd-doc" name="medicOpd" required>
               <option value="">Alege un medic…</option>
-              <option value="Dr. Șahin (ORL)">Dr. Șahin — Medic specialist ORL</option>
-              <option value="Dr. Hasan Tanrıverdi O. (ORL)">Dr. Hasan Tanrıverdi O. — Medic specialist ORL</option>
-              <option value="Op. Dr. Çağrı Demirbağlar (ORL)">Op. Dr. Çağrı Demirbağlar — Medic specialist ORL</option>
-              <option value="Op. Dr. İkram Esen (chirurgie plastică)">Op. Dr. İkram Esen — Chirurg plastician</option>
+              <option data-specialitate="ORL" value="Dr. Șahin (ORL)">Dr. Șahin — Medic specialist ORL</option>
+              <option data-specialitate="ORL" value="Dr. Hasan Tanrıverdi O. (ORL)">Dr. Hasan Tanrıverdi O. — Medic specialist ORL</option>
+              <option data-specialitate="ORL" value="Op. Dr. Çağrı Demirbağlar (ORL)">Op. Dr. Çağrı Demirbağlar — Medic specialist ORL</option>
+              <option data-specialitate="Chirurgie plastică" value="Op. Dr. İkram Esen (chirurgie plastică)">Op. Dr. İkram Esen — Chirurg plastician</option>
               <option value="Nu sunt sigur(ă) — mă ajutați voi">Nu sunt sigur(ă) — mă ajutați voi</option>
             </select>
           </div>
@@ -295,9 +224,89 @@
             <label for="opd-msg">Mesajul tău</label>
             <textarea id="opd-msg" name="mesaj" rows="3" placeholder="Descrie pe scurt ce te interesează (opțional)…"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;">Rezervă-ți locul prin WhatsApp</button>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Solicită consultația GRATUITĂ pe WhatsApp</button>
           <p class="note">Apăsând „Rezervă-ți locul", trimitem cererea ta pe WhatsApp către echipa Medicross, care îți confirmă ora exactă.</p>
         </form>
+      </div>
+    </div>
+  </div>
+    </div>
+  </section>
+
+  <!-- ================= CE ESTE OPD ================= -->
+  <section>
+    <div class="container" style="max-width:860px">
+      <h2 style="font-family:'Newsreader',serif;font-size:clamp(24px,3vw,32px);color:var(--navy);margin:38px 0 16px">Ce este OPD?</h2>
+      <p style="color:var(--muted);line-height:1.8;margin-bottom:16px">OPD este seria de zile de consultații gratuite organizată de Medicross, în care poți vorbi direct, individual, cu un medic specialist — fără aglomerație, fără prezentări de grup, doar 15 minute dedicate exclusiv situației tale. Scopul este simplu: să afli, de la sursă, dacă o intervenție ORL sau de chirurgie plastică este potrivită pentru tine și la ce să te aștepți.</p>
+      <p style="color:var(--muted);line-height:1.8">Locurile sunt limitate la numărul de intervale disponibile pentru fiecare medic. Modalitatea exactă (la clinică sau online) și intervalul orar se confirmă individual, după ce te înscrii — un consultant Medicross te contactează pentru a stabili ora potrivită.</p>
+    </div>
+  </section>
+
+  <!-- ================= ECHIPA ================= -->
+  <section style="padding-top:12px">
+    <div class="container">
+      <div class="center reveal">
+        <span class="eyebrow">Echipa de consultații</span>
+        <h2 style="font-family:'Newsreader',serif;font-size:clamp(24px,3vw,32px);color:var(--navy)">3 medici ORL &amp; un chirurg plastician</h2>
+        <p class="section-lead">Alege specialitatea sau medicul dorit. Fotografiile oficiale ale medicilor vor fi adăugate în curând.</p>
+      </div>
+      <div class="proc-grid grid-4">
+        <div class="proc-card">
+          <div class="opd-doctor-image"><img src="materials/images/cat-orl.webp" alt="Imagine ilustrativă pentru specialitatea ORL" loading="lazy" /><span>Fotografia medicului va fi adăugată</span></div>
+          <div class="pc-body">
+            <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
+            <h3 style="margin-top:6px">Dr. Șahin</h3>
+            <p>Membru al echipei de medici ORL din programul OPD Medicross. Detaliile complete despre pregătirea sa se adaugă în curând.</p>
+          </div>
+        </div>
+        <div class="proc-card">
+          <div class="opd-doctor-image"><img src="materials/images/cat-orl.webp" alt="Imagine ilustrativă pentru specialitatea ORL" loading="lazy" /><span>Fotografia medicului va fi adăugată</span></div>
+          <div class="pc-body">
+            <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
+            <h3 style="margin-top:6px">Dr. Hasan Tanrıverdi O.</h3>
+            <p>Pregătire la Universitatea Ege și Universitatea Ankara, specializat în otologie și chirurgia urechii medii (timpanoplastie, stapedotomie), cu lucrări științifice publicate internațional.</p>
+          </div>
+        </div>
+        <div class="proc-card">
+          <div class="opd-doctor-image"><img src="materials/images/cat-orl.webp" alt="Imagine ilustrativă pentru specialitatea ORL" loading="lazy" /><span>Fotografia medicului va fi adăugată</span></div>
+          <div class="pc-body">
+            <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
+            <h3 style="margin-top:6px">Op. Dr. Çağrı Demirbağlar</h3>
+            <p>Expert în rinoplastie estetică și funcțională prin tehnica ultrasonică Piezo — minim invazivă, cu recuperare rapidă și rezultate naturale.</p>
+          </div>
+        </div>
+        <div class="proc-card">
+          <div class="opd-doctor-image"><img src="materials/images/cat-chirurgie-estetica-plastica.webp" alt="Imagine ilustrativă pentru specialitatea chirurgie plastică" loading="lazy" /><span>Fotografia medicului va fi adăugată</span></div>
+          <div class="pc-body">
+            <span class="eyebrow" style="font-size:11px">Chirurg plastician</span>
+            <h3 style="margin-top:6px">Op. Dr. İkram Esen</h3>
+            <p>Chirurg specializat în chirurgie estetică mamară, cu experiență în sute de proceduri. La OPD îți oferă o evaluare personalizată, gratuită.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CUM FUNCȚIONEAZĂ ================= -->
+  <section>
+    <div class="container" style="max-width:860px">
+      <div class="center reveal">
+        <span class="eyebrow">Cum funcționează</span>
+        <h2 style="font-family:'Newsreader',serif;font-size:clamp(24px,3vw,32px);color:var(--navy)">3 pași simpli</h2>
+      </div>
+      <div class="proc-grid" style="grid-template-columns:repeat(3,1fr);margin-top:36px">
+        <div class="proc-card" style="padding:22px 22px 24px">
+          <h3>1. Rezervă-ți locul</h3>
+          <p>Alegi specialitatea, medicul și intervalul preferat direct în formularul din primul ecran.</p>
+        </div>
+        <div class="proc-card" style="padding:22px 22px 24px">
+          <h3>2. Primești confirmarea</h3>
+          <p>Un consultant Medicross te contactează pe WhatsApp cu ora exactă și modalitatea consultației.</p>
+        </div>
+        <div class="proc-card" style="padding:22px 22px 24px">
+          <h3>3. Vii la consultație</h3>
+          <p>15 minute, 1 la 1, direct cu medicul — întrebări, răspunsuri, fără presiune.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -412,5 +421,14 @@
 
     <script src="assets/site.js"></script>
   <script src="assets/header.js"></script>
+
+  <script>
+    (function(){
+      var s=document.getElementById('opd-specialitate'),d=document.getElementById('opd-doc'),date=document.getElementById('opd-data');
+      if(s&&d){s.addEventListener('change',function(){d.value='';Array.from(d.options).forEach(function(o){if(o.dataset.specialitate)o.hidden=!!s.value&&s.value!=='Am nevoie de recomandare'&&o.dataset.specialitate!==s.value;});});}
+      if(date){var ro=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bucharest',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());if(/^\d{4}-\d{2}-\d{2}$/.test(ro)){date.min=ro>'2026-10-20'?ro:'2026-10-20';if(date.value<date.min)date.value=date.min;}}
+    })();
+  </script>
+
 </body>
 </html>
