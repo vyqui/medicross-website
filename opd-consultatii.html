@@ -82,6 +82,35 @@
 
 @media(max-width:900px){.opd3 ~ section .proc-grid,.opd3 ~ section .proc-grid.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px}.opd3 ~ section .proc-card{min-width:0}}
 @media(max-width:600px){.opd3 ~ section .proc-grid,.opd3 ~ section .proc-grid.grid-4{grid-template-columns:minmax(0,1fr)!important}.opd3 ~ section .container{width:calc(100% - 32px);max-width:100%}.opd3 ~ section .proc-card{width:100%;min-width:0}.opd3 ~ section .proc-card img{max-width:100%;object-fit:cover}.opd3 ~ section h2{overflow-wrap:break-word}}
+
+.opd-doctors-selector{grid-column:1/-1;min-width:0;padding:22px 0 7px}
+.opd-selector-heading{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px}
+.opd-selector-eyebrow{font:800 11px/1.5 Manrope,sans-serif;letter-spacing:.12em;color:#a02a42}
+.opd-selector-heading h2{font:600 clamp(27px,3vw,38px)/1.15 Newsreader,serif;color:#183849;margin:5px 0}
+.opd-selector-heading p{font:400 13px/1.6 Manrope,sans-serif;color:#60717a;margin:0}
+.opd-carousel-actions{display:flex;gap:8px;flex:none}
+.opd-carousel-actions button{width:40px;height:40px;border:1px solid #b9ced0;border-radius:50%;background:#fff;color:#244959;font:700 26px/1 Manrope,sans-serif;cursor:pointer}
+.opd-doctors-track{display:flex;gap:13px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;padding:4px 3px 12px;overscroll-behavior-x:contain}
+.opd-doctor-choice{flex:0 0 clamp(220px,26%,290px);min-width:0;text-align:left;border:2px solid #d7e2e5;border-radius:16px;background:#fff;padding:0;overflow:hidden;scroll-snap-align:start;cursor:pointer;transition:border-color .18s,transform .18s}
+.opd-doctor-choice[aria-pressed=true]{border-color:#bd3547;box-shadow:0 6px 19px rgba(173,45,68,.13)}
+.opd-doctor-choice:hover{transform:translateY(-2px)}
+.opd-choice-photo{display:block;position:relative;background:#cddcdd}
+.opd-choice-photo img{width:100%;height:120px;object-fit:cover;display:block}
+.opd-choice-photo small{position:absolute;bottom:5px;left:8px;background:#132b38b8;color:#fff;padding:3px 6px;border-radius:4px;font-size:9px}
+.opd-choice-copy{display:flex;flex-direction:column;gap:6px;padding:13px}
+.opd-choice-copy strong{color:#163848;font:800 16px/1.3 Manrope,sans-serif;min-height:42px}
+.opd-choice-specialty{font:700 10px Manrope,sans-serif;letter-spacing:.08em;color:#ad354a;text-transform:uppercase}
+.opd-choice-day{font:800 13px Manrope,sans-serif;color:#244959}
+.opd-choice-cap{font:500 11px Manrope,sans-serif;color:#687c86}
+.opd-choice-action{font:800 12px Manrope,sans-serif;color:#ac3348;margin-top:4px}
+.opd-schedule-preview{display:grid;grid-template-columns:1fr;gap:6px;background:#eaf2f3;border:1px solid #d4e4e5;border-radius:13px;padding:14px 16px;margin-top:9px;font:500 12px/1.55 Manrope,sans-serif;color:#536975}
+.opd-schedule-preview>strong{font-size:15px;color:#1c4352}
+#opd-schedule-dates{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.opd-date-btn{border:1px solid #bfd3d7;border-radius:9px;background:white;color:#23495a;font:700 12px Manrope,sans-serif;padding:9px 11px;cursor:pointer}
+.opd-date-btn[aria-pressed=true]{border-color:#b92f48;background:#fff0f2;color:#9e263f}
+@media(max-width:900px){.opd-doctors-selector{order:2;grid-column:1/-1;padding:2px 0}.opd3-formcard{order:3}.opd-selector-heading{align-items:start}.opd-doctor-choice{flex-basis:240px}}
+@media(max-width:520px){.opd-selector-heading h2{font-size:27px}.opd-selector-heading p{font-size:12px}.opd-doctor-choice{flex-basis:76%;max-width:260px}.opd-carousel-actions button{width:34px;height:34px}.opd-choice-photo img{height:115px}.opd-schedule-preview{padding:12px}.opd-date-btn{flex:1 1 30%;min-width:84px}}
+
 </style>
 </head>
 <body>
@@ -213,14 +242,24 @@
           <div class="opd3-trust"><span><strong>0 lei</strong> consultația</span><span><strong>15 minute</strong> 1 la 1</span><span><strong>4 medici</strong> specialiști</span></div>
         </div>
       </div>
+<div class="opd-doctors-selector" aria-label="Selectează medicul și consultă programul săptămânal">
+  <div class="opd-selector-heading"><div><span class="opd-selector-eyebrow">PROGRAM SĂPTĂMÂNAL · CONSULTAȚII ONLINE</span><h2>Alege medicul pentru consultația gratuită</h2><p>Apasă pe un medic pentru a vedea următoarele date programate și a completa automat formularul.</p></div><div class="opd-carousel-actions"><button type="button" id="opd-prev" aria-label="Medicul anterior">‹</button><button type="button" id="opd-next" aria-label="Medicul următor">›</button></div></div>
+  <div class="opd-doctors-track" id="opd-doctors-track" tabindex="0">
+    <button type="button" class="opd-doctor-choice" data-doctor="sahin" aria-pressed="false"><span class="opd-choice-photo"><img src="materials/images/cat-orl.webp" alt="Imagine ilustrativă pentru ORL" loading="lazy"><small>Imagine ilustrativă</small></span><span class="opd-choice-copy"><span class="opd-choice-specialty">ORL</span><strong>Prof. Dr. Şahin Ulu</strong><span class="opd-choice-day">Sâmbătă · 16:00–18:00</span><span class="opd-choice-cap">Maximum 8 pacienți / sesiune</span><span class="opd-choice-action">Vezi datele și selectează →</span></span></button>
+<button type="button" class="opd-doctor-choice" data-doctor="ikram" aria-pressed="false"><span class="opd-choice-photo"><img src="materials/images/cat-chirurgie-estetica-plastica.webp" alt="Imagine ilustrativă pentru Chirurgie plastică" loading="lazy"><small>Imagine ilustrativă</small></span><span class="opd-choice-copy"><span class="opd-choice-specialty">Chirurgie plastică</span><strong>Op. Dr. İkram Esen</strong><span class="opd-choice-day">Joi · 19:00–20:00</span><span class="opd-choice-cap">Maximum 4 pacienți / sesiune</span><span class="opd-choice-action">Vezi datele și selectează →</span></span></button>
+<button type="button" class="opd-doctor-choice" data-doctor="hasan" aria-pressed="false"><span class="opd-choice-photo"><img src="materials/images/cat-orl.webp" alt="Imagine ilustrativă pentru ORL" loading="lazy"><small>Imagine ilustrativă</small></span><span class="opd-choice-copy"><span class="opd-choice-specialty">ORL</span><strong>Op. Dr. Hasan Tanrıverdi</strong><span class="opd-choice-day">Miercuri · 18:00–19:00</span><span class="opd-choice-cap">Maximum 4 pacienți / sesiune</span><span class="opd-choice-action">Vezi datele și selectează →</span></span></button>
+<button type="button" class="opd-doctor-choice" data-doctor="cagri" aria-pressed="false"><span class="opd-choice-photo"><img src="materials/images/cat-orl.webp" alt="Imagine ilustrativă pentru ORL" loading="lazy"><small>Imagine ilustrativă</small></span><span class="opd-choice-copy"><span class="opd-choice-specialty">ORL</span><strong>Op. Dr. Çağrı Demirbağlar</strong><span class="opd-choice-day">Marți · 19:00–20:00</span><span class="opd-choice-cap">Maximum 4 pacienți / sesiune</span><span class="opd-choice-action">Vezi datele și selectează →</span></span></button>
+  </div>
+  <div class="opd-schedule-preview" id="opd-schedule-preview" aria-live="polite"><strong>Selectează un medic</strong><span>Vei vedea următoarele 3 date din programul săptămânal. Disponibilitatea efectivă se confirmă cu echipa Medicross.</span><div id="opd-schedule-dates"></div></div>
+</div>
       <div class="opd3-formcard" id="rezervare">
         <h2>Rezervă consultația gratuită</h2>
         <p class="opd3-sub">Alege specialitatea, medicul și intervalul preferat. Echipa Medicross confirmă disponibilitatea pe WhatsApp. <strong>Înscrierea nu implică niciun cost.</strong></p>
         <form id="opdForm" class="opd3-form">
           <div class="opd3-field"><label for="opd-specialitate">Specialitatea dorită</label><select id="opd-specialitate" name="specialitate" required><option value="">Selectează specialitatea</option><option value="ORL">ORL</option><option value="Chirurgie plastică">Chirurgie plastică</option><option value="Am nevoie de recomandare">Nu sunt sigur(ă) – am nevoie de recomandare</option></select></div>
-          <div class="opd3-field"><label for="opd-doc">Medicul dorit</label><select id="opd-doc" name="medicOpd" required><option value="">Selectează medicul</option><option data-specialitate="ORL" value="Dr. Șahin (ORL)">Dr. Șahin – ORL</option><option data-specialitate="ORL" value="Dr. Hasan Tanrıverdi O. (ORL)">Dr. Hasan Tanrıverdi O. – ORL</option><option data-specialitate="ORL" value="Op. Dr. Çağrı Demirbağlar (ORL)">Op. Dr. Çağrı Demirbağlar – ORL</option><option data-specialitate="Chirurgie plastică" value="Op. Dr. İkram Esen (chirurgie plastică)">Op. Dr. İkram Esen – Chirurgie plastică</option><option value="Nu sunt sigur(ă) — mă ajutați voi">Ajutați-mă să aleg medicul</option></select></div>
-          <div class="opd3-field"><label for="opd-data">Data preferată</label><input id="opd-data" name="data" type="date" min="2026-10-20" value="2026-10-20" required></div>
-          <fieldset class="opd3-time"><legend>Intervalul orar preferat</legend><div class="opd3-time-options"><label><input type="radio" name="interval" value="Dimineața (9:00–12:00)" checked><span>Dimineața</span></label><label><input type="radio" name="interval" value="După-amiaza (12:00–16:00)"><span>După-amiaza</span></label><label><input type="radio" name="interval" value="Seara (16:00–19:00)"><span>Seara</span></label></div></fieldset>
+          <div class="opd3-field"><label for="opd-doc">Medicul dorit</label><select id="opd-doc" name="medicOpd" required><option value="">Alege medicul</option><option data-doctor="sahin" data-specialitate="ORL" value="Prof. Dr. Şahin Ulu">Prof. Dr. Şahin Ulu – ORL</option><option data-doctor="ikram" data-specialitate="Chirurgie plastică" value="Op. Dr. İkram Esen">Op. Dr. İkram Esen – Chirurgie plastică</option><option data-doctor="hasan" data-specialitate="ORL" value="Op. Dr. Hasan Tanrıverdi">Op. Dr. Hasan Tanrıverdi – ORL</option><option data-doctor="cagri" data-specialitate="ORL" value="Op. Dr. Çağrı Demirbağlar">Op. Dr. Çağrı Demirbağlar – ORL</option><option value="Am nevoie de recomandare">Ajutați-mă să aleg medicul</option></select></div>
+          <div class="opd3-field"><label for="opd-data">Data preferată</label><select id="opd-data" name="data" required><option value="">Alege medicul pentru datele programate</option></select></div>
+          <div class="opd3-field"><label for="opd-interval">Ora preferată (intervale de 15 minute)</label><select id="opd-interval" name="interval" required><option value="">Alege mai întâi un medic</option></select></div>
           <div class="opd3-fields-2"><div class="opd3-field"><label for="opd-nume">Nume și prenume</label><input id="opd-nume" name="nume" type="text" autocomplete="name" placeholder="Numele tău" required></div><div class="opd3-field"><label for="opd-tel">Telefon / WhatsApp</label><input id="opd-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" placeholder="07xx xxx xxx" required></div></div>
           <div class="opd3-field"><label for="opd-msg">Ce ai dori să discuți? (opțional)</label><textarea id="opd-msg" name="mesaj" rows="2" placeholder="Spune-ne pe scurt ce te interesează"></textarea></div>
           <button type="submit" class="opd3-submit">Solicită consultația GRATUITĂ pe WhatsApp →</button>
@@ -416,13 +455,85 @@ ecialist — fără aglomerație, fără prezentări de grup, doar 15 minute ded
     <script src="assets/site.js"></script>
   <script src="assets/header.js"></script>
 
-  <script>
-    (function(){
-      var s=document.getElementById('opd-specialitate'),d=document.getElementById('opd-doc'),date=document.getElementById('opd-data');
-      if(s&&d){s.addEventListener('change',function(){d.value='';Array.from(d.options).forEach(function(o){if(o.dataset.specialitate)o.hidden=!!s.value&&s.value!=='Am nevoie de recomandare'&&o.dataset.specialitate!==s.value;});});}
-      if(date){var ro=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bucharest',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());if(/^\d{4}-\d{2}-\d{2}$/.test(ro)){date.min=ro>'2026-10-20'?ro:'2026-10-20';if(date.value<date.min)date.value=date.min;}}
-    })();
-  </script>
+<script>
+(function(){
+  const schedules={
+    sahin:{name:"Prof. Dr. Şahin Ulu",specialty:"ORL",weekday:6,start:16,end:18,capacity:8},
+    ikram:{name:"Op. Dr. İkram Esen",specialty:"Chirurgie plastică",weekday:4,start:19,end:20,capacity:4},
+    hasan:{name:"Op. Dr. Hasan Tanrıverdi",specialty:"ORL",weekday:3,start:18,end:19,capacity:4},
+    cagri:{name:"Op. Dr. Çağrı Demirbağlar",specialty:"ORL",weekday:2,start:19,end:20,capacity:4}
+  };
+  const doctor=document.getElementById("opd-doc"),specialty=document.getElementById("opd-specialitate"),date=document.getElementById("opd-data"),hour=document.getElementById("opd-interval");
+  const cards=[...document.querySelectorAll(".opd-doctor-choice")],track=document.getElementById("opd-doctors-track");
+  const preview=document.getElementById("opd-schedule-preview"),dates=document.getElementById("opd-schedule-dates");
+  let current=null;
+  function bucharestNow(){
+    const p={};new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Bucharest",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).forEach(x=>p[x.type]=x.value);
+    return {day:new Date(Date.UTC(+p.year,+p.month-1,+p.day)),minute:+p.hour*60+(+p.minute)};
+  }
+  const iso=d=>d.toISOString().slice(0,10);
+  function upcoming(s){
+    const now=bucharestNow(),first=new Date(Math.max(now.day.getTime(),Date.UTC(2026,9,20))),out=[];
+    for(let i=0;i<40&&out.length<3;i++){
+      const d=new Date(first.getTime()+i*86400000);
+      if(d.getUTCDay()!==s.weekday)continue;
+      if(d.getTime()===now.day.getTime()&&now.minute>=s.end*60)continue;
+      out.push(d);
+    }
+    return out;
+  }
+  function slots(s,day){
+    hour.innerHTML='<option value="">Selectează ora preferată</option>';
+    const now=bucharestNow(),sameDay=day===iso(now.day);
+    for(let m=s.start*60;m<s.end*60;m+=15){
+      if(sameDay&&m<=now.minute)continue;
+      const fmt=n=>String(Math.floor(n/60)).padStart(2,"0")+":"+String(n%60).padStart(2,"0");
+      const o=document.createElement("option");o.value=fmt(m)+"–"+fmt(m+15);o.textContent=o.value;hour.appendChild(o);
+    }
+  }
+  function selectDay(day){
+    date.value=day;
+    if(current)slots(schedules[current],day);
+    dates.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.date===day)));
+  }
+  function selectDoctor(id,scroll){
+    current=schedules[id]?id:null;
+    cards.forEach(card=>card.setAttribute("aria-pressed",String(card.dataset.doctor===id)));
+    if(!current){
+      date.innerHTML='<option value="">Alege mai întâi medicul</option>';
+      hour.innerHTML='<option value="">Alege mai întâi medicul</option>';
+      dates.replaceChildren();
+      preview.querySelector("strong").textContent="Selectează un medic";
+      return;
+    }
+    const s=schedules[current];specialty.value=s.specialty;doctor.value=s.name;
+    const upcomingDates=upcoming(s);
+    date.replaceChildren();dates.replaceChildren();
+    upcomingDates.forEach(d=>{
+      const val=iso(d),label=new Intl.DateTimeFormat("ro-RO",{timeZone:"UTC",weekday:"short",day:"numeric",month:"short"}).format(d);
+      const option=document.createElement("option");option.value=val;option.textContent=label;date.appendChild(option);
+      const b=document.createElement("button");b.type="button";b.className="opd-date-btn";b.dataset.date=val;b.textContent=label;b.addEventListener("click",()=>selectDay(val));dates.appendChild(b);
+    });
+    preview.querySelector("strong").textContent=s.name+" · "+String(s.start).padStart(2,"0")+":00–"+String(s.end).padStart(2,"0")+":00";
+    const detail=preview.querySelector("span");detail.textContent="Maximum "+s.capacity+" pacienți pe sesiune. Date recurente, supuse confirmării; nu indică locuri libere în timp real.";
+    if(upcomingDates.length)selectDay(iso(upcomingDates[0]));
+    if(scroll){const card=cards.find(x=>x.dataset.doctor===id);if(card)card.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});}
+  }
+  cards.forEach(card=>card.addEventListener("click",()=>selectDoctor(card.dataset.doctor,true)));
+  doctor.addEventListener("change",()=>selectDoctor(doctor.selectedOptions[0]?.dataset.doctor||null,false));
+  specialty.addEventListener("change",()=>{
+    doctor.value="";
+    [...doctor.options].forEach(o=>{if(o.dataset.specialitate)o.hidden=!!specialty.value&&specialty.value!=="Am nevoie de recomandare"&&o.dataset.specialitate!==specialty.value});
+    selectDoctor(null,false);
+  });
+  date.addEventListener("change",()=>{if(current)selectDay(date.value)});
+  document.getElementById("opd-prev")?.addEventListener("click",()=>track.scrollBy({left:-265,behavior:"smooth"}));
+  document.getElementById("opd-next")?.addEventListener("click",()=>track.scrollBy({left:265,behavior:"smooth"}));
+  const consultForm=document.getElementById("opdForm");
+  consultForm?.addEventListener("submit",e=>{if(!current){e.preventDefault();doctor.focus();doctor.setCustomValidity("Te rugăm să selectezi un medic pentru a vedea datele disponibile.");doctor.reportValidity();setTimeout(()=>doctor.setCustomValidity(""),1000)}},true);
+  selectDoctor(null,false);
+})();
+</script>
 
 </body>
 </html>
