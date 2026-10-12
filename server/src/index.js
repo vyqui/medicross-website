@@ -6,7 +6,9 @@ import multipart from '@fastify/multipart';
 import rateLimit from '@fastify/rate-limit';
 import fastifyStatic from '@fastify/static';
 
-import { pool } from './db.js';
+import { pool, transaction } from './db.js';
+import { sendMail } from './mailer.js';
+import offerLeadRoutes from './offer-leads.js';
 import { migrate } from './migrate.js';
 import { loadSession, purgeExpiredSessions, purgeExpiredMagicLinks, SESSION_COOKIE } from './auth.js';
 import * as storage from './storage.js';
@@ -76,6 +78,7 @@ app.get('/health', async () => {
 
 await app.register(authRoutes);
 await app.register(publicRoutes);
+await app.register(offerLeadRoutes, { pool, transaction, sendMail });
 await app.register(gdprRegistrationRoutes);
 await app.register(documentRoutes);
 await app.register(portalRoutes);

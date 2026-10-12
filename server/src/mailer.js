@@ -39,13 +39,14 @@ function getSmtpTransport() {
   return transport;
 }
 
-async function sendViaResend({ to, subject, text, attachments }) {
+async function sendViaResend({ to, subject, text, attachments, idempotencyKey }) {
   const from = process.env.RESEND_FROM || process.env.SMTP_FROM || process.env.SMTP_USER;
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       'Content-Type': 'application/json',
+      ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}),
     },
     body: JSON.stringify({
       from,

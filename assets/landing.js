@@ -46,8 +46,11 @@
   // ---- lead form → WhatsApp handoff (same pattern as the main site) ----
   var form = document.querySelector('[data-lp-form]');
   if (form) {
-    form.addEventListener('submit', function (ev) {
+    var requestId = null;
+    var sending = false;
+    form.addEventListener('submit', async function (ev) {
       ev.preventDefault();
+      if (sending) return;
       var status = form.querySelector('[data-lp-status]');
       var setStatus = function (cls, text) {
         if (!status) return;
@@ -67,6 +70,37 @@
       var consent = form.querySelector('[data-lp-consent]');
       if (consent && !consent.checked) {
         setStatus('err', 'Te rugăm bifează acordul pentru a fi contactat(ă).');
+        return;
+      }
+
+      if (form.hasAttribute('data-offer-lead')) {
+        var submit = form.querySelector('[type="submit"]');
+        sending = true;
+        submit.disabled = true;
+        requestId = requestId || crypto.randomUUID();
+        setStatus('', 'Se trimite cererea…');
+        try {
+          var response = await fetch('https://platforma.tratamente-turcia.ro/api/offer-leads', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ requestId: requestId, offer: form.getAttribute('data-offer-lead'),
+              name: data.nume, phone: data.telefon, email: data.email || '', message: data.mesaj || '',
+              marketingConsent: data.marketing_consent === 'da',
+              weight: data.f1 || '', height: data.f2 || '', website: data.website || '',
+              consent: consent.checked, tracking: stored }),
+            signal: AbortSignal.timeout(20000)
+          });
+          var result = await response.json();
+          if (!response.ok || result.ok !== true) throw new Error('submit_failed');
+          setStatus('ok', 'Mulțumim! Cererea ta a fost înregistrată. Un consultant te va contacta în maximum 24 de ore.');
+          fireLead('form');
+          form.reset();
+          requestId = null;
+        } catch (_) {
+          setStatus('err', 'Nu am putut confirma trimiterea. Datele au rămas completate; încearcă din nou sau contactează-ne pe WhatsApp.');
+        } finally {
+          sending = false;
+          submit.disabled = false;
+        }
         return;
       }
 
