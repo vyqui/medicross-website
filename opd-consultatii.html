@@ -271,7 +271,7 @@
   </section>
 
 ecialist — fără aglomerație, fără prezentări de grup, doar 15 minute dedicate exclusiv situației tale. Scopul este simplu: să afli, de la sursă, dacă o intervenție ORL sau de chirurgie plastică este potrivită pentru tine și la ce să te aștepți.</p>
-      <p style="color:var(--muted);line-height:1.8">Locurile sunt limitate la numărul de intervale disponibile pentru fiecare medic. Modalitatea exactă (la clinică sau online) și intervalul orar se confirmă individual, după ce te înscrii — un consultant Medicross te contactează pentru a stabili ora potrivită.</p>
+      <p style="color:var(--muted);line-height:1.8">Locurile sunt limitate la numărul de intervale disponibile pentru fiecare medic. Modalitatea consultației online și ora exactă se confirmă individual, după ce te înscrii — un consultant Medicross te contactează pentru a stabili ora potrivită.</p>
     </div>
   </section>
 
@@ -288,7 +288,7 @@ ecialist — fără aglomerație, fără prezentări de grup, doar 15 minute ded
           <div class="opd-doctor-image"><img src="materials/images/cat-orl.webp" alt="Imagine ilustrativă pentru specialitatea ORL" loading="lazy" /><span>Fotografia medicului va fi adăugată</span></div>
           <div class="pc-body">
             <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
-            <h3 style="margin-top:6px">Dr. Șahin</h3>
+            <h3 style="margin-top:6px">Prof. Dr. Şahin Ulu</h3>
             <p>Membru al echipei de medici ORL din programul OPD Medicross. Detaliile complete despre pregătirea sa se adaugă în curând.</p>
           </div>
         </div>
@@ -296,7 +296,7 @@ ecialist — fără aglomerație, fără prezentări de grup, doar 15 minute ded
           <div class="opd-doctor-image"><img src="materials/images/cat-orl.webp" alt="Imagine ilustrativă pentru specialitatea ORL" loading="lazy" /><span>Fotografia medicului va fi adăugată</span></div>
           <div class="pc-body">
             <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
-            <h3 style="margin-top:6px">Dr. Hasan Tanrıverdi O.</h3>
+            <h3 style="margin-top:6px">Op. Dr. Hasan Tanrıverdi</h3>
             <p>Pregătire la Universitatea Ege și Universitatea Ankara, specializat în otologie și chirurgia urechii medii (timpanoplastie, stapedotomie), cu lucrări științifice publicate internațional.</p>
           </div>
         </div>
@@ -357,12 +357,12 @@ ecialist — fără aglomerație, fără prezentări de grup, doar 15 minute ded
           <div class="faq-a"><div class="faq-a-inner"><p>Da. Consultația de 15 minute este complet gratuită și fără nicio obligație de a continua cu o intervenție.</p></div></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q" aria-expanded="false"><span>Consultația este la clinică sau online?</span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span></button>
-          <div class="faq-a"><div class="faq-a-inner"><p>Depinde de disponibilitate și de numărul de înscrieri — îți confirmăm modalitatea exactă atunci când stabilim intervalul orar, pe WhatsApp.</p></div></div>
+          <button class="faq-q" aria-expanded="false"><span>Cum se desfășoară consultația online?</span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span></button>
+          <div class="faq-a"><div class="faq-a-inner"><p>Consultația se desfășoară online. Echipa Medicross îți confirmă ora și detaliile de conectare prin WhatsApp, după verificarea disponibilității.</p></div></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false"><span>Cu ce medic vorbesc?</span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span></button>
-          <div class="faq-a"><div class="faq-a-inner"><p>Alegi direct, din formular, cu care dintre cei 4 medici vrei să vorbești — Dr. Șahin, Dr. Hasan Tanrıverdi O., Op. Dr. Çağrı Demirbağlar (toți trei ORL) sau Op. Dr. İkram Esen (chirurgie plastică). Dacă nu ești sigur(ă), echipa Medicross te ajută să alegi.</p></div></div>
+          <div class="faq-a"><div class="faq-a-inner"><p>Alegi direct, din formular, cu care dintre cei 4 medici vrei să vorbești — Prof. Dr. Şahin Ulu, Op. Dr. Hasan Tanrıverdi, Op. Dr. Çağrı Demirbağlar (toți trei ORL) sau Op. Dr. İkram Esen (chirurgie plastică). Dacă nu ești sigur(ă), echipa Medicross te ajută să alegi.</p></div></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false"><span>De când pot rezerva?</span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span></button>
@@ -530,7 +530,7 @@ ecialist — fără aglomerație, fără prezentări de grup, doar 15 minute ded
   document.getElementById("opd-prev")?.addEventListener("click",()=>track.scrollBy({left:-265,behavior:"smooth"}));
   document.getElementById("opd-next")?.addEventListener("click",()=>track.scrollBy({left:265,behavior:"smooth"}));
   const consultForm=document.getElementById("opdForm");
-  consultForm?.addEventListener("submit",e=>{if(!current){e.preventDefault();doctor.focus();doctor.setCustomValidity("Te rugăm să selectezi un medic pentru a vedea datele disponibile.");doctor.reportValidity();setTimeout(()=>doctor.setCustomValidity(""),1000)}},true);
+  consultForm?.addEventListener("submit",e=>{if(!current){e.preventDefault();e.stopImmediatePropagation();doctor.focus();doctor.setCustomValidity("Te rugăm să selectezi un medic pentru a vedea datele disponibile.");doctor.reportValidity();setTimeout(()=>doctor.setCustomValidity(""),1000)}},true);
   selectDoctor(null,false);
 })();
 </script>
