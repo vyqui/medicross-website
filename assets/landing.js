@@ -76,6 +76,7 @@
         'Bună ziua! Vreau detalii despre oferta ' + service + '.',
         'Nume: ' + data.nume,
         'Telefon: ' + data.telefon,
+        ...(data.email ? ['Email: ' + data.email] : []),
       ];
       if (data.f1label && data.f1) lines.push(data.f1label + ': ' + data.f1);
       if (data.f2label && data.f2) lines.push(data.f2label + ': ' + data.f2);
