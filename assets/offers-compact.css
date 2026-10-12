@@ -31,7 +31,7 @@ body.lp-offer-compact { font-size: 18px; }
 .lp-offer-compact .lp-bonus-brief { display: block; margin-top: 16px; padding: 12px 14px; border-radius: 12px; background: var(--cream); color: var(--brand-dark); font-size: 15px; font-weight: 700; line-height: 1.5; }
 .lp-offer-compact .lp-detail-content { display: grid; grid-template-columns: 1fr 190px; gap: 24px; align-items: center; padding-top: 12px; }
 .lp-offer-compact .lp-detail-content p { margin: 0; }
-.lp-offer-compact .lp-detail-content .lp-story-img { width: 100%; box-shadow: none; border-radius: 12px; }
+.lp-offer-compact .lp-detail-content .lp-story-img { width: 100%; height: 167.5px; aspect-ratio: auto; box-shadow: none; border-radius: 12px; }
 .lp-offer-compact .lp-field-label { font-size: 15px; font-weight: 700; margin-bottom: -5px; }
 .lp-offer-compact #form, .lp-offer-compact details { scroll-margin-top: 16px; }
 .lp-offer-compact summary:focus-visible, .lp-offer-compact a:focus-visible { outline: 3px solid var(--brand); outline-offset: 4px; }
@@ -51,7 +51,7 @@ body.lp-offer-compact { font-size: 18px; }
   .lp-offer-compact .lp-ribbon { font-size: 13px; padding: 6px 10px; margin-bottom: 12px; }
   .lp-offer-compact .lp-hero { display: flex; flex-direction: column; border-radius: 20px; }
   .lp-offer-compact .lp-hero-content { order: 0; padding: 20px; }
-  .lp-offer-compact .lp-hero-shirt { order: 1; height: 150px; aspect-ratio: auto; }
+  .lp-offer-compact .lp-hero-shirt { order: 1; height: 175px; aspect-ratio: auto; }
   .lp-offer-compact .lp-hero-shirt > img { object-position: 50% 19%; }
   .lp-offer-compact .lp-eyebrow { font-size: 12px; letter-spacing: .08em; margin-bottom: 10px; }
   .lp-offer-compact .lp-h1 { font-size: calc(clamp(32px, 9vw, 40px) + 2px); margin-bottom: 14px; }
@@ -78,7 +78,7 @@ body.lp-offer-compact { font-size: 18px; }
   .lp-offer-compact .lp-faq-list details { padding: 14px 16px; }
   .lp-offer-compact .lp-faq-list summary { min-height: 28px; font-size: 16px; }
   .lp-offer-compact .lp-detail-content { grid-template-columns: 1fr; gap: 12px; }
-  .lp-offer-compact .lp-detail-content .lp-story-img { height: 140px; aspect-ratio: auto; }
+  .lp-offer-compact .lp-detail-content .lp-story-img { height: 165px; aspect-ratio: auto; }
   .lp-offer-compact .lp-form-left, .lp-offer-compact .lp-form-right { padding: 20px; }
   .lp-offer-compact .lp-form-lede { margin-bottom: 0; font-size: 15px; }
   .lp-offer-compact .lp-input, .lp-offer-compact .lp-textarea { font-size: 18px; padding: 12px; }
