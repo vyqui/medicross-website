@@ -59,6 +59,7 @@ function toWhatsAppOPD(fields) {
   }
   const lines = [
     'Bună ziua! Vreau să-mi rezerv locul la OPD — consultații gratuite 1:1.',
+    'Specialitate: ' + (fields.specialitate || '-'),
     'Medic dorit: ' + (fields.medicOpd || '-'),
     'Data preferată: ' + dataRo,
     'Interval orar: ' + (fields.interval || '-'),
