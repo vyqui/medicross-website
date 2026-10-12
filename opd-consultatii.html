@@ -180,35 +180,39 @@
       <div class="center reveal">
         <span class="eyebrow">Echipa de consultații</span>
         <h2 style="font-family:'Newsreader',serif;font-size:clamp(24px,3vw,32px);color:var(--navy)">3 medici ORL &amp; un chirurg plastician</h2>
-        <p class="section-lead">Numele și fotografiile medicilor se confirmă în curând — locurile se pot rezerva deja de acum.</p>
+        <p class="section-lead">Fotografiile medicilor se adaugă în curând — poți rezerva deja de acum consultația cu oricare dintre ei.</p>
       </div>
       <div class="proc-grid grid-4">
         <div class="proc-card">
-          <img src="materials/images/placeholder-foto.png" alt="Medic ORL — foto în curând" />
+          <img src="materials/images/placeholder-foto.png" alt="Dr. Șahin — foto în curând" />
           <div class="pc-body">
-            <h3>Medic ORL</h3>
-            <p>Consultație 1:1, 15 minute, pentru afecțiuni și intervenții ORL.</p>
+            <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
+            <h3 style="margin-top:6px">Dr. Șahin</h3>
+            <p>Membru al echipei de medici ORL din programul OPD Medicross. Detaliile complete despre pregătirea sa se adaugă în curând.</p>
           </div>
         </div>
         <div class="proc-card">
-          <img src="materials/images/placeholder-foto.png" alt="Medic ORL — foto în curând" />
+          <img src="materials/images/placeholder-foto.png" alt="Dr. Hasan Tanrıverdi O. — foto în curând" />
           <div class="pc-body">
-            <h3>Medic ORL</h3>
-            <p>Consultație 1:1, 15 minute, pentru afecțiuni și intervenții ORL.</p>
+            <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
+            <h3 style="margin-top:6px">Dr. Hasan Tanrıverdi O.</h3>
+            <p>Pregătire la Universitatea Ege și Universitatea Ankara, specializat în otologie și chirurgia urechii medii (timpanoplastie, stapedotomie), cu lucrări științifice publicate internațional.</p>
           </div>
         </div>
         <div class="proc-card">
-          <img src="materials/images/placeholder-foto.png" alt="Medic ORL — foto în curând" />
+          <img src="materials/images/placeholder-foto.png" alt="Op. Dr. Çağrı Demirbağlar — foto în curând" />
           <div class="pc-body">
-            <h3>Medic ORL</h3>
-            <p>Consultație 1:1, 15 minute, pentru afecțiuni și intervenții ORL.</p>
+            <span class="eyebrow" style="font-size:11px">Medic specialist ORL</span>
+            <h3 style="margin-top:6px">Op. Dr. Çağrı Demirbağlar</h3>
+            <p>Expert în rinoplastie estetică și funcțională prin tehnica ultrasonică Piezo — minim invazivă, cu recuperare rapidă și rezultate naturale.</p>
           </div>
         </div>
         <div class="proc-card">
-          <img src="materials/images/placeholder-foto.png" alt="Chirurg plastician — foto în curând" />
+          <img src="materials/images/placeholder-foto.png" alt="Op. Dr. İkram Esen — foto în curând" />
           <div class="pc-body">
-            <h3>Chirurg plastician</h3>
-            <p>Consultație 1:1, 15 minute, pentru intervenții de chirurgie plastică și estetică.</p>
+            <span class="eyebrow" style="font-size:11px">Chirurg plastician</span>
+            <h3 style="margin-top:6px">Op. Dr. İkram Esen</h3>
+            <p>Chirurg specializat în chirurgie estetică mamară, cu experiență în sute de proceduri. La OPD îți oferă o evaluare personalizată, gratuită.</p>
           </div>
         </div>
       </div>
@@ -225,7 +229,7 @@
       <div class="proc-grid" style="grid-template-columns:repeat(3,1fr);margin-top:36px">
         <div class="proc-card" style="padding:22px 22px 24px">
           <h3>1. Rezervă-ți locul</h3>
-          <p>Completează formularul de mai jos cu specialitatea dorită și intervalul preferat.</p>
+          <p>Alegi medicul, data și intervalul orar dorite, direct din formularul de mai jos.</p>
         </div>
         <div class="proc-card" style="padding:22px 22px 24px">
           <h3>2. Primești confirmarea</h3>
@@ -246,6 +250,37 @@
         <h2 style="font-family:'Newsreader',serif;color:var(--navy);font-size:26px;margin-bottom:8px">Rezervă-ți locul la OPD</h2>
         <p style="color:var(--muted);margin-bottom:22px">Completează formularul — este <strong style="color:var(--red)">gratuit</strong> și fără nicio obligație. Îți confirmăm intervalul orar pe WhatsApp.</p>
         <form id="opdForm">
+          <div class="field">
+            <label for="opd-doc">Cu cine vrei să vorbești</label>
+            <select id="opd-doc" name="medicOpd" required>
+              <option value="">Alege un medic…</option>
+              <option value="Dr. Șahin (ORL)">Dr. Șahin — Medic specialist ORL</option>
+              <option value="Dr. Hasan Tanrıverdi O. (ORL)">Dr. Hasan Tanrıverdi O. — Medic specialist ORL</option>
+              <option value="Op. Dr. Çağrı Demirbağlar (ORL)">Op. Dr. Çağrı Demirbağlar — Medic specialist ORL</option>
+              <option value="Op. Dr. İkram Esen (chirurgie plastică)">Op. Dr. İkram Esen — Chirurg plastician</option>
+              <option value="Nu sunt sigur(ă) — mă ajutați voi">Nu sunt sigur(ă) — mă ajutați voi</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="opd-data">Data preferată</label>
+              <input id="opd-data" name="data" type="date" min="2026-10-20" value="2026-10-20" required />
+            </div>
+            <div class="field">
+              <label>Interval orar</label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;flex:1;min-width:120px">
+                  <input type="radio" name="interval" value="Dimineața (9:00–12:00)" checked style="accent-color:var(--red)" />Dimineața
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;flex:1;min-width:120px">
+                  <input type="radio" name="interval" value="După-amiaza (12:00–16:00)" style="accent-color:var(--red)" />După-amiaza
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;flex:1;min-width:120px">
+                  <input type="radio" name="interval" value="Seara (16:00–19:00)" style="accent-color:var(--red)" />Seara
+                </label>
+              </div>
+            </div>
+          </div>
           <div class="form-row">
             <div class="field">
               <label for="opd-nume">Nume și prenume</label>
@@ -257,23 +292,11 @@
             </div>
           </div>
           <div class="field">
-            <label for="opd-spec">Specialitate dorită</label>
-            <select id="opd-spec" name="specialitateOpd">
-              <option>Medic ORL</option>
-              <option>Chirurgie plastică</option>
-              <option>Nu sunt sigur(ă) — mă ajutați voi</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="opd-interval">Interval orar preferat</label>
-            <input id="opd-interval" name="interval" type="text" placeholder="Ex: dimineața, după-amiaza, o anumită zi…" />
-          </div>
-          <div class="field">
             <label for="opd-msg">Mesajul tău</label>
-            <textarea id="opd-msg" name="mesaj" rows="4" placeholder="Descrie pe scurt ce te interesează (opțional)…"></textarea>
+            <textarea id="opd-msg" name="mesaj" rows="3" placeholder="Descrie pe scurt ce te interesează (opțional)…"></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="width:100%;">Rezervă-ți locul prin WhatsApp</button>
-          <p class="note">Apăsând „Rezervă-ți locul", mesajul se deschide în WhatsApp către echipa noastră — cel mai rapid mod de a primi confirmarea.</p>
+          <p class="note">Apăsând „Rezervă-ți locul", trimitem cererea ta pe WhatsApp către echipa Medicross, care îți confirmă ora exactă.</p>
         </form>
       </div>
     </div>
@@ -297,7 +320,7 @@
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false"><span>Cu ce medic vorbesc?</span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span></button>
-          <div class="faq-a"><div class="faq-a-inner"><p>Alegi specialitatea dorită (ORL sau chirurgie plastică) în formular, iar echipa Medicross te programează cu medicul disponibil potrivit pentru situația ta.</p></div></div>
+          <div class="faq-a"><div class="faq-a-inner"><p>Alegi direct, din formular, cu care dintre cei 4 medici vrei să vorbești — Dr. Șahin, Dr. Hasan Tanrıverdi O., Op. Dr. Çağrı Demirbağlar (toți trei ORL) sau Op. Dr. İkram Esen (chirurgie plastică). Dacă nu ești sigur(ă), echipa Medicross te ajută să alegi.</p></div></div>
         </div>
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false"><span>De când pot rezerva?</span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg></span></button>
