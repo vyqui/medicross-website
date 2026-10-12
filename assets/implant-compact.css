@@ -9,6 +9,14 @@
 .lp-implant-compact #form, .lp-implant-compact details { scroll-margin-top: 16px; }
 .lp-implant-compact summary:focus-visible, .lp-implant-compact a:focus-visible { outline: 3px solid var(--brand); outline-offset: 4px; }
 .lp-implant-compact .lp-sticky { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+.lp-implant-compact .lp-package-icons { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; padding: 0; margin: 0 0 18px; list-style: none; }
+.lp-implant-compact .lp-package-icons li { display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; padding: 10px 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--cream); }
+.lp-implant-compact .lp-package-icons svg { width: 28px; height: 28px; color: var(--brand); flex: none; }
+.lp-implant-compact .lp-package-icons span { font-size: 10px; font-weight: 700; line-height: 1.35; }
+.lp-implant-compact .lp-year-end { font-size: 16px; line-height: 1.65; margin-bottom: 10px; }
+.lp-implant-compact .lp-year-end strong { color: var(--ink); }
+.lp-implant-compact .lp-offer-condition { margin: 0 0 18px; font-size: 11px; line-height: 1.5; color: var(--muted); }
+.lp-implant-compact .lp-hero .lp-cta { color: #fff; }
 @media (max-width: 759px) {
   .lp-implant-compact .lp-topbar { padding: 8px 0; }
   .lp-implant-compact .lp-topbar img { height: 27px; }
@@ -24,6 +32,12 @@
   .lp-implant-compact .lp-stat span { font-size: 11px; }
   .lp-implant-compact .lp-included { font-size: 13px; line-height: 1.55; }
   .lp-implant-compact .lp-lede { font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
+  .lp-implant-compact .lp-year-end { font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
+  .lp-implant-compact .lp-package-icons { gap: 5px; margin-bottom: 16px; }
+  .lp-implant-compact .lp-package-icons li { padding: 9px 3px; border-radius: 9px; }
+  .lp-implant-compact .lp-package-icons svg { width: 25px; height: 25px; }
+  .lp-implant-compact .lp-package-icons span { font-size: 9px; overflow-wrap: anywhere; }
+  .lp-implant-compact .lp-sticky a { font-size: 13px; }
   .lp-implant-compact .lp-hero .lp-cta { width: 100%; font-size: 14px; padding-right: 12px; }
   .lp-implant-compact .lp-bonus-brief { margin-top: 12px; padding: 9px 10px; font-size: 12px; }
   .lp-implant-compact .lp-section { margin-top: 24px; }
