@@ -33,7 +33,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/landing.css" />
   <link rel="stylesheet" href="assets/offers-compact.css" />
-  <style>.lp-deadline-strip{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 14px;margin:12px 0 16px;border:1px solid #e6c4b6;border-radius:12px;background:#fff2e9;color:#7c3023;font:600 13px/1.5 Manrope,sans-serif;text-align:center}.lp-deadline-strip strong{font-weight:800;font-size:16px;font-variant-numeric:tabular-nums}@media(max-width:540px){.lp-deadline-strip{padding:9px;font-size:12px}.lp-deadline-strip strong{font-size:14px}}</style>
+  <style>
+    .lp-newsbar{position:relative;z-index:20;width:100%;overflow:hidden;background:#b91f2f;color:#fff;font:700 14px/1.4 Manrope,sans-serif}
+    .lp-newsbar-track{display:flex;width:max-content;min-width:200%;animation:lp-news-scroll 17s linear infinite;align-items:center}
+    .lp-newsbar-group{display:flex;align-items:center;justify-content:space-around;flex:none;min-width:50%;gap:52px;padding:11px 28px;white-space:nowrap}
+    .lp-newsbar strong{font-weight:800;color:#fff}
+    @keyframes lp-news-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @media(max-width:600px){.lp-newsbar{font-size:12px}.lp-newsbar-group{gap:32px;padding:9px 18px}.lp-newsbar-track{animation-duration:13s}}
+    @media(prefers-reduced-motion:reduce){.lp-newsbar-track{animation:none;width:100%;min-width:0}.lp-newsbar-group{min-width:100%;justify-content:center;white-space:normal;text-align:center}.lp-newsbar-group[aria-hidden="true"]{display:none}}
+  </style>
 </head>
 <body class="lp lp-offer-compact">
   <!-- Google Tag Manager (noscript) -->
@@ -45,10 +53,16 @@
     <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.44-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2m0 1.8a8.2 8.2 0 016.6 13.1 8.2 8.2 0 01-10.9 2.3l-.4-.2-3 .8.8-2.9-.2-.4A8.2 8.2 0 0112 3.8"/></svg>
   </a>
 
+  <div class="lp-newsbar" data-offer-deadline aria-label="Oferta este valabilă până la 31 decembrie 2026">
+    <div class="lp-newsbar-track">
+      <div class="lp-newsbar-group"><span>OFERTĂ LIMITATĂ · Valabilă până la <strong>31.12.2026</strong> · <strong data-days-left>Se calculează zilele rămase</strong></span><span>GASTRIC SLEEVE · <strong>2.000€ ALL-INCLUSIVE</strong> · Rezervă evaluarea</span></div>
+      <div class="lp-newsbar-group" aria-hidden="true"><span>OFERTĂ LIMITATĂ · Valabilă până la <strong>31.12.2026</strong> · <strong data-days-left>Se calculează zilele rămase</strong></span><span>GASTRIC SLEEVE · <strong>2.000€ ALL-INCLUSIVE</strong> · Rezervă evaluarea</span></div>
+    </div>
+  </div>
   <div class="lp-topbar"><img src="materials/images/medicross-logo.png" alt="Medicross" /></div>
 
   <div class="lp-wrap" id="top">
-    <div class="lp-ribbon">★ Ofertă valabilă până la 31 decembrie 2026</div>
+
 
     <!-- ================= HERO ================= -->
     <div class="lp-hero">
@@ -84,7 +98,6 @@
         <h1 class="lp-h1"><em>Gastric Sleeve</em>în Turcia</h1>
         <p class="lp-offer-condition" style="font-weight:700">Micșorarea stomacului · Pachet all-inclusive</p>
         <p class="lp-offer-condition"><strong>2.000€ ALL-INCLUSIVE — doar pentru programări confirmate până la 31 decembrie 2026.</strong></p>
-        <div class="lp-deadline-strip" data-offer-deadline role="status">Oferta este valabilă până la <strong>31.12.2026</strong> · <strong data-days-left>Se calculează...</strong></div>
         <div class="lp-stats">
           <div class="lp-stat"><strong>2.000€</strong><span><strong>pachet all-inclusive</strong></span></div>
           <div class="lp-stat-sep"></div>
@@ -188,11 +201,11 @@
   <script src="assets/offers-compact.js"></script>
   <script>
     (function(){
-      var el=document.querySelector('[data-offer-deadline]'), out=el&&el.querySelector('[data-days-left]');if(!out)return;
+      var el=document.querySelector('[data-offer-deadline]'), outs=el&&el.querySelectorAll('[data-days-left]');if(!outs||!outs.length)return;
       function refresh(){
         var p={};new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Bucharest',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value});
         var left=Math.round((Date.UTC(2026,11,31)-Date.UTC(+p.year,+p.month-1,+p.day))/86400000);
-        out.textContent=left>0?left+(left===1?' zi rămasă':' zile rămase'):left===0?'Ultima zi a ofertei':'Oferta a expirat';
+        outs.forEach(function(out){out.textContent=left>0?left+(left===1?' zi rămasă':' zile rămase'):left===0?'Ultima zi a ofertei':'Oferta a expirat';});
         if(left<0)el.textContent='Oferta a expirat la 31.12.2026.';
       }
       refresh();document.addEventListener('visibilitychange',function(){if(!document.hidden)refresh()});
