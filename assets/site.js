@@ -52,12 +52,18 @@ function toWhatsApp(fields) {
 
 // OPD booking form (opd-consultatii.html) → WhatsApp handoff
 function toWhatsAppOPD(fields) {
+  let dataRo = fields.data || '-';
+  if (fields.data) {
+    const [y, m, d] = fields.data.split('-');
+    if (y && m && d) dataRo = `${d}.${m}.${y}`;
+  }
   const lines = [
-    'Bună ziua! Vreau să mă înscriu la OPD — consultații gratuite 1:1 (20 octombrie 2026).',
+    'Bună ziua! Vreau să-mi rezerv locul la OPD — consultații gratuite 1:1.',
+    'Medic dorit: ' + (fields.medicOpd || '-'),
+    'Data preferată: ' + dataRo,
+    'Interval orar: ' + (fields.interval || '-'),
     'Nume: ' + (fields.nume || '-'),
     'Telefon: ' + (fields.telefon || '-'),
-    'Specialitate dorită: ' + (fields.specialitateOpd || '-'),
-    fields.interval ? 'Interval preferat: ' + fields.interval : null,
     fields.mesaj ? 'Mesaj: ' + fields.mesaj : null
   ].filter(Boolean);
   window.open('https://wa.me/40746992222?text=' + encodeURIComponent(lines.join('\n')), '_blank');
