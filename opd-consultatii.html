@@ -250,17 +250,17 @@
       </div>
       <div class="opd-booking-body">
         <div>
-          <div class="opd-step-label">1 · Alege medicul</div>
+          <div class="opd-step-label">1 · Alege medicul <span class="opd-required" aria-label="obligatoriu">*</span></div>
           <div class="opd-doc-rows" data-opd-doc-rows></div>
         </div>
 
         <div data-opd-schedule style="display:none">
           <div>
-            <div class="opd-step-label">2 · Alege data</div>
+            <div class="opd-step-label">2 · Alege data <span class="opd-required" aria-label="obligatoriu">*</span></div>
             <div class="opd-dates" data-opd-dates></div>
           </div>
           <div style="margin-top:22px">
-            <div class="opd-step-label">3 · Ora preferată <span class="soft">(intervale de 15 min)</span></div>
+            <div class="opd-step-label">3 · Ora preferată <span class="opd-required" aria-label="obligatoriu">*</span> <span class="soft">(intervale de 15 min)</span></div>
             <div class="opd-slots" data-opd-slots></div>
             <div class="opd-cap-note" data-opd-cap-note></div>
           </div>
@@ -268,12 +268,12 @@
         <div class="opd-help-box" data-opd-help style="display:none">Nicio problemă. Spune-ne pe scurt ce te interesează, iar un consultant Medicross îți recomandă medicul potrivit și îți propune o oră.</div>
 
         <div>
-          <div class="opd-step-label">4 · Datele tale</div>
+          <div class="opd-step-label">4 · Datele tale <span class="opd-required" aria-label="obligatoriu">*</span></div>
           <div class="opd-contact-row">
-            <input class="opd-input" data-opd-name type="text" placeholder="Nume și prenume" />
-            <input class="opd-input" data-opd-phone type="tel" placeholder="Telefon / WhatsApp" />
+            <input class="opd-input" data-opd-name type="text" placeholder="Nume și prenume *" aria-label="Nume și prenume, obligatoriu" required />
+            <input class="opd-input" data-opd-phone type="tel" placeholder="Telefon / WhatsApp *" aria-label="Telefon / WhatsApp, obligatoriu" required />
           </div>
-          <input class="opd-input" data-opd-email type="email" placeholder="Email" />
+          <input class="opd-input" data-opd-email type="email" placeholder="Email *" aria-label="Email, obligatoriu" required />
           <textarea class="opd-textarea" data-opd-note rows="2" placeholder="Ce ai dori să discuți? (opțional)"></textarea>
         </div>
 
@@ -283,9 +283,9 @@
         </div>
 
         <div>
-          <button type="button" class="opd-submit" data-opd-email-submit style="width:100%;border:0;cursor:pointer;justify-content:center">Trimite solicitarea gratuită →</button>
+          <button type="button" class="opd-submit opd-submit-email" data-opd-email-submit style="width:100%;border:0;cursor:pointer;justify-content:center">Trimite solicitarea gratuită →</button>
           <div data-opd-send-status role="status" aria-live="polite" style="font-size:13px;margin:10px 0;line-height:1.5"></div>
-          <a href="#" target="_blank" rel="noopener" class="opd-submit" data-opd-submit style="margin-top:10px;display:flex;justify-content:center">
+          <a href="#" target="_blank" rel="noopener" class="opd-submit opd-submit-whatsapp" data-opd-submit style="margin-top:10px;display:flex;justify-content:center">
             <svg viewBox="0 0 24 24" width="21" fill="#fff" style="flex:none"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.44-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12 2C6.48 2 2 6.48 2 12c0 1.77.46 3.43 1.27 4.88L2 22l5.25-1.24A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
             Solicită consultația GRATUITĂ pe WhatsApp →
           </a>

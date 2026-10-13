@@ -131,3 +131,12 @@
   .opd-page-has-sticky { padding-bottom: 76px; }
   .opd-page-has-sticky .wa-float { display: none; }
 }
+
+/* OPD booking: distinct delivery channels and required fields */
+.opd-required { color: #D42B2B; font-weight: 800; margin-left: 2px; }
+.opd-submit-email, .opd-submit-email.ready { background: #D42B2B; color: #fff; box-shadow: 0 12px 26px -14px rgba(212,43,43,.55); }
+.opd-submit-email:hover:not(:disabled) { background: #B72222; }
+.opd-submit-email:disabled { background: #D42B2B; color: #fff; cursor: default; opacity: 1; transform: none; }
+.opd-submit-whatsapp, .opd-submit-whatsapp.ready { background: #168B58; color: #fff; box-shadow: 0 12px 26px -14px rgba(22,139,88,.45); }
+.opd-submit-whatsapp:hover { background: #117247; }
+.opd-submit-email:focus-visible, .opd-submit-whatsapp:focus-visible { outline: 3px solid #1C3045; outline-offset: 3px; }
