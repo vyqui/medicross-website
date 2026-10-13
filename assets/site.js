@@ -49,31 +49,3 @@ function toWhatsApp(fields) {
     toWhatsApp(data);
   });
 });
-
-// OPD booking form (opd-consultatii.html) → WhatsApp handoff
-function toWhatsAppOPD(fields) {
-  let dataRo = fields.data || '-';
-  if (fields.data) {
-    const [y, m, d] = fields.data.split('-');
-    if (y && m && d) dataRo = `${d}.${m}.${y}`;
-  }
-  const lines = [
-    'Bună ziua! Vreau să-mi rezerv locul la OPD — consultații gratuite 1:1.',
-    'Specialitate: ' + (fields.specialitate || '-'),
-    'Medic dorit: ' + (fields.medicOpd || '-'),
-    'Data preferată: ' + dataRo,
-    'Interval orar: ' + (fields.interval || '-'),
-    'Nume: ' + (fields.nume || '-'),
-    'Telefon: ' + (fields.telefon || '-'),
-    fields.mesaj ? 'Mesaj: ' + fields.mesaj : null
-  ].filter(Boolean);
-  window.open('https://wa.me/40746992222?text=' + encodeURIComponent(lines.join('\n')), '_blank');
-}
-const opdForm = document.getElementById('opdForm');
-if (opdForm) {
-  opdForm.addEventListener('submit', ev => {
-    ev.preventDefault();
-    const data = Object.fromEntries(new FormData(opdForm).entries());
-    toWhatsAppOPD(data);
-  });
-}
