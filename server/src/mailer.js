@@ -49,7 +49,7 @@ async function sendViaResend({ to, subject, text, attachments }) {
     },
     body: JSON.stringify({
       from,
-      to: [to],
+      to: Array.isArray(to) ? to : [to],
       subject,
       text,
       attachments: (attachments ?? []).map((a) => ({

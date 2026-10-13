@@ -149,6 +149,9 @@
   const emailInput = document.querySelector('[data-opd-email]');
   const noteInput = document.querySelector('[data-opd-note]');
   const submitLink = document.querySelector('[data-opd-submit]');
+  const emailSubmit = document.querySelector('[data-opd-email-submit]');
+  const sendStatus = document.querySelector('[data-opd-send-status]');
+  let sendingEmail = false;
   const errorEl = document.querySelector('[data-opd-error]');
 
   function pickDoc(id) { state.doc = id; state.dateIdx = 0; state.slot = null; state.tried = false; renderBooking(); syncCards(); syncSticky(); }
@@ -262,6 +265,47 @@
       track('generate_lead', { doctor_id: state.doc });
     });
   }
+
+
+  if (emailSubmit) emailSubmit.addEventListener('click', async () => {
+    if (sendingEmail) return;
+    state.tried = true;
+    const { ok } = renderBooking();
+    const doc = DOCS.find(d => d.id === state.doc);
+    if (!ok || (doc && !state.slot)) {
+      if (sendStatus) sendStatus.textContent = doc && !state.slot ? 'Selectează mai întâi ora preferată.' : 'Completează câmpurile obligatorii.';
+      return;
+    }
+    const dates = doc ? datesFor(doc) : [];
+    const picked = doc ? dates[state.dateIdx] : null;
+    const date = picked ? [picked.getFullYear(), String(picked.getMonth() + 1).padStart(2, '0'), String(picked.getDate()).padStart(2, '0')].join('-') : '';
+    sendingEmail = true;
+    emailSubmit.disabled = true;
+    emailSubmit.textContent = 'Se trimite solicitarea...';
+    if (sendStatus) sendStatus.textContent = '';
+    try {
+      const response = await fetch('https://platforma.tratamente-turcia.ro/api/opd-consultatii', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          doctorId: state.doc, date, time: state.slot || '',
+          name: state.name.trim(), phone: state.phone.trim(),
+          email: state.email.trim(), note: state.note.trim(), website: '',
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.ok) throw new Error(data.error || 'Eroare de trimitere.');
+      if (sendStatus) sendStatus.textContent = 'Solicitarea a fost transmisă. Echipa Medicross te va contacta pentru confirmare.';
+      emailSubmit.textContent = 'Solicitare transmisă';
+      track('generate_lead', { doctor_id: state.doc });
+    } catch (err) {
+      if (sendStatus) sendStatus.textContent = err.message || 'Trimiterea a eșuat. Încearcă din nou sau folosește WhatsApp.';
+      emailSubmit.disabled = false;
+      emailSubmit.textContent = 'Trimite solicitarea';
+    } finally {
+      sendingEmail = false;
+    }
+  });
 
   // ---- doctors grid "book" buttons ----
   document.querySelectorAll('[data-opd-book]').forEach(btn => {
