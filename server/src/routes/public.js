@@ -66,29 +66,28 @@ export default async function publicRoutes(app) {
         (doctorId !== 'help' && (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^\d{2}:\d{2}$/.test(time)))) {
       return reply.code(400).send({ error: 'Verifică datele introduse și încearcă din nou.' });
     }
-    const text = [
-      'Solicitare nouă de consultație online OPD Medicross',
-      '',
-      'Medic: ' + doctors[doctorId],
-      'Data preferată: ' + (date || 'De stabilit'),
-      'Ora preferată: ' + (time || 'De stabilit'),
-      'Nume: ' + name,
-      'Telefon: ' + phone,
-      'Email pacient: ' + email,
-      'Mesaj: ' + (note || '—'),
-      '',
-      'Sursa: https://www.tratamente-turcia.ro/opd-consultatii',
-      'Solicitarea necesită confirmarea disponibilității de către echipa Medicross.',
-    ].join('\n');
+
+    const doctor = doctors[doctorId];
+    const dateReadable = date ? new Intl.DateTimeFormat('ro-RO', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(date + 'T12:00:00Z')) : 'de stabilit';
+    const appointment = date && time ? dateReadable + ', ora ' + time : 'data și ora vor fi stabilite de echipa Medicross';
+    const safe = value => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
+    const wrap = (heading, content, footer) => '<!doctype html><html lang="ro"><head><meta charset="utf-8"></head><body style="background:#f4f6f8;margin:0;padding:24px;font-family:Arial,sans-serif;color:#203047"><div style="max-width:580px;margin:auto;background:white;border-radius:14px;overflow:hidden;border:1px solid #e5e8ed"><div style="height:6px;background:#d42b2b"></div><div style="padding:30px"><div style="font-size:12px;font-weight:bold;letter-spacing:1px;color:#bd2525">MEDICROSS | CONSULTAȚII ONLINE</div><h1 style="font-size:23px;margin:18px 0 24px">' + heading + '</h1>' + content + '</div><div style="padding:18px 30px;background:#f8f9fb;font-size:12px;color:#677489;line-height:1.6">' + footer + '</div></div></body></html>';
+    const detail = (label, value) => '<tr><td style="padding:10px 14px 10px 0;color:#718096;vertical-align:top;font-size:13px">' + label + '</td><td style="padding:10px 0;font-size:14px;font-weight:600">' + safe(value) + '</td></tr>';
+    const internalText = ['Solicitare consultație online Medicross', 'Medic: ' + doctor, '', 'Nume: ' + name, 'Data preferată: ' + (date || 'De stabilit'), 'Ora preferată: ' + (time || 'De stabilit'), '', 'Telefon: ' + phone, 'Email pacient: ' + email, 'Mesaj: ' + (note || '—'), '', 'Sursa: https://www.tratamente-turcia.ro/opd-consultatii', 'Solicitarea necesită confirmarea disponibilității de către echipa Medicross.'].join('\n');
+    const internalHtml = wrap('Solicitare nouă de consultație', '<p style="padding:16px;background:#fff3f1;border-radius:9px"><strong>Medic: ' + safe(doctor) + '</strong></p><table style="width:100%;border-collapse:collapse">' + detail('Nume', name) + detail('Data preferată', date || 'De stabilit') + detail('Ora preferată', time || 'De stabilit') + detail('Telefon', phone) + detail('Email pacient', email) + detail('Mesaj', note || '—') + '</table><p style="font-size:12px;margin-top:22px">Sursa: <a href="https://www.tratamente-turcia.ro/opd-consultatii">Pagina OPD Consultații</a></p>', 'Solicitarea necesită confirmarea disponibilității de către echipa Medicross.');
+    const patientText = ['Bună ziua, ' + name + '!', '', 'Solicitarea dumneavoastră de consultație online Medicross a fost înregistrată.', 'Medic: ' + doctor, 'Data și ora solicitate: ' + appointment, '', 'Echipa Medicross vă va contacta pentru confirmarea disponibilității și detaliile consultației.', 'Dacă doriți să anulați solicitarea, vă rugăm să răspundeți la acest email.', '', 'Cu respect,', 'Echipa Medicross'].join('\n');
+    const patientHtml = wrap('Solicitarea a fost înregistrată', '<p>Bună ziua, <strong>' + safe(name) + '</strong>!</p><p>Am înregistrat solicitarea dumneavoastră pentru o consultație online.</p><div style="background:#f4f6f8;border-radius:10px;padding:18px"><p style="margin:0 0 8px;color:#68768a;font-size:13px">Medic</p><strong>' + safe(doctor) + '</strong><p style="margin:18px 0 8px;color:#68768a;font-size:13px">Data și ora solicitate</p><strong>' + safe(appointment) + '</strong></div><p style="line-height:1.6">Echipa Medicross vă va contacta pentru confirmarea disponibilității și detaliile de conectare.</p><p style="line-height:1.6">Dacă doriți să anulați solicitarea, vă rugăm să răspundeți la acest email.</p><p>Cu respect,<br><strong>Echipa Medicross</strong></p>', 'Tratamente Turcia by Medicross');
     try {
-      await sendMail({
-        to: ['office@tratamente-turcia.ro', 'victorgeorgescu22@gmail.com'],
-        subject: 'OPD Medicross — solicitare consultație — ' + doctors[doctorId],
-        text,
-      });
+      await sendMail({ to: ['office@tratamente-turcia.ro', 'victorgeorgescu22@gmail.com'], subject: 'Solicitare consultație online Medicross', text: internalText, html: internalHtml });
     } catch (err) {
-      request.log.error({ err }, 'OPD email delivery failed');
+      request.log.error({ err }, 'OPD internal notification failed');
       return reply.code(502).send({ error: 'Solicitarea nu a putut fi transmisă. Încearcă din nou sau folosește WhatsApp.' });
+    }
+    try {
+      await sendMail({ to: email, subject: 'Medicross — solicitarea dumneavoastră a fost înregistrată', text: patientText, html: patientHtml, replyTo: 'office@tratamente-turcia.ro' });
+    } catch (err) {
+      request.log.error({ err }, 'OPD patient confirmation failed');
+      return reply.code(200).send({ ok: true, warning: 'Solicitarea a ajuns la echipa Medicross, dar emailul de confirmare nu a putut fi trimis.' });
     }
     return reply.code(200).send({ ok: true });
   });
