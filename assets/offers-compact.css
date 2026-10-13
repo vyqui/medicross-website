@@ -1,0 +1,90 @@
+/* Shared compact style for the gastric sleeve and breast implant offers. */
+body.lp-offer-compact { font-size: 18px; }
+.lp-offer-compact .lp-h1 { font-size: calc(clamp(38px, 9vw, 60px) + 2px); }
+.lp-offer-compact .lp-stat strong { font-size: 28px; }
+.lp-offer-compact .lp-stat span { font-size: 14px; }
+.lp-offer-compact .lp-eyebrow { font-size: 13.5px; }
+.lp-offer-compact .lp-ribbon { font-size: 15px; }
+.lp-offer-compact .lp-doctor-block h3 { font-size: 23px; }
+.lp-offer-compact .lp-doctor-block p { font-size: 16px; }
+.lp-offer-compact .lp-doctor-eyebrow { font-size: 13px; }
+.lp-offer-compact .lp-h2 { font-size: calc(clamp(28px, 5vw, 40px) + 2px); }
+.lp-offer-compact .lp-faq-list summary { font-size: 17.5px; }
+.lp-offer-compact .lp-faq-list p { font-size: 16.5px; }
+.lp-offer-compact .lp-form-lede { font-size: 16.5px; }
+.lp-offer-compact .lp-input, .lp-offer-compact .lp-textarea { font-size: 16.5px; }
+.lp-offer-compact .lp-consent { font-size: 14px; }
+.lp-offer-compact .lp-submit { font-size: 18px; }
+.lp-offer-compact .lp-form-note { font-size: 14px; }
+.lp-offer-compact .lp-form-status { font-size: 15.5px; }
+.lp-offer-compact .lp-disclaimer { font-size: 13.5px; }
+.lp-offer-compact .lp-cta { font-size: 18px; }
+.lp-offer-compact .lp-wa-band h2 { font-size: calc(clamp(26px, 5vw, 36px) + 2px); }
+.lp-offer-compact .lp-wa-band p { font-size: 17px; }
+.lp-offer-compact .lp-wa-btn { font-size: 19px; }
+.lp-offer-compact .lp-wa-note { font-size: 15px; }
+.lp-offer-compact .lp-chat-in .bubble, .lp-offer-compact .lp-chat-out .bubble { font-size: 14.5px; }
+.lp-offer-compact .lp-chat-out .bubble .who { font-size: 13px; }
+.lp-offer-compact .lp-chat-doc .name { font-size: 12px; }
+.lp-offer-compact .lp-stats { margin: 0 0 14px; }
+.lp-offer-compact .lp-included { font-size: 16px; line-height: 1.6; margin: 0 0 12px; font-weight: 700; }
+.lp-offer-compact .lp-bonus-brief { display: block; margin-top: 16px; padding: 12px 14px; border-radius: 12px; background: var(--cream); color: var(--brand-dark); font-size: 15px; font-weight: 700; line-height: 1.5; }
+.lp-offer-compact .lp-detail-content { display: grid; grid-template-columns: 1fr 190px; gap: 24px; align-items: center; padding-top: 12px; }
+.lp-offer-compact .lp-detail-content p { margin: 0; }
+.lp-offer-compact .lp-detail-content .lp-story-img { width: 100%; height: 167.5px; aspect-ratio: auto; box-shadow: none; border-radius: 12px; }
+.lp-offer-compact .lp-field-label { font-size: 15px; font-weight: 700; margin-bottom: -5px; }
+.lp-offer-compact #form, .lp-offer-compact details { scroll-margin-top: 16px; }
+.lp-offer-compact summary:focus-visible, .lp-offer-compact a:focus-visible { outline: 3px solid var(--brand); outline-offset: 4px; }
+.lp-offer-compact .lp-sticky { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+.lp-offer-compact .lp-package-icons { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; padding: 0; margin: 0 0 18px; list-style: none; }
+.lp-offer-compact .lp-package-icons li { display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; padding: 10px 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--cream); }
+.lp-offer-compact .lp-package-icons svg { width: 28px; height: 28px; color: var(--brand); flex: none; }
+.lp-offer-compact .lp-package-icons span { font-size: 12px; font-weight: 700; line-height: 1.35; }
+.lp-offer-compact .lp-year-end { font-size: 18px; line-height: 1.65; margin-bottom: 10px; }
+.lp-offer-compact .lp-year-end strong { color: var(--ink); }
+.lp-offer-compact .lp-offer-condition { margin: 0 0 18px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.lp-offer-compact .lp-hero .lp-cta { color: #fff; }
+@media (max-width: 759px) {
+  .lp-offer-compact .lp-topbar { padding: 8px 0; }
+  .lp-offer-compact .lp-topbar img { height: 27px; }
+  .lp-offer-compact .lp-wrap { padding: 12px 14px 24px; }
+  .lp-offer-compact .lp-ribbon { font-size: 13px; padding: 6px 10px; margin-bottom: 12px; }
+  .lp-offer-compact .lp-hero { display: flex; flex-direction: column; border-radius: 20px; }
+  .lp-offer-compact .lp-hero-content { order: 0; padding: 20px; }
+  .lp-offer-compact .lp-hero-shirt { order: 1; height: 175px; aspect-ratio: auto; }
+  .lp-offer-compact .lp-hero-shirt > img { object-position: 50% 19%; }
+  .lp-offer-compact .lp-eyebrow { font-size: 12px; letter-spacing: .08em; margin-bottom: 10px; }
+  .lp-offer-compact .lp-h1 { font-size: calc(clamp(32px, 9vw, 40px) + 2px); margin-bottom: 14px; }
+  .lp-offer-compact .lp-stat strong { font-size: 31px; }
+  .lp-offer-compact .lp-stat span { font-size: 13px; }
+  .lp-offer-compact .lp-included { font-size: 15px; line-height: 1.55; }
+  .lp-offer-compact .lp-lede { font-size: 15px; line-height: 1.5; margin-bottom: 16px; }
+  .lp-offer-compact .lp-year-end { font-size: 16px; line-height: 1.6; margin-bottom: 10px; }
+  .lp-offer-compact .lp-package-icons { gap: 5px; margin-bottom: 16px; }
+  .lp-offer-compact .lp-package-icons li { padding: 9px 3px; border-radius: 9px; }
+  .lp-offer-compact .lp-package-icons svg { width: 25px; height: 25px; }
+  .lp-offer-compact .lp-package-icons span { font-size: 11px; overflow-wrap: anywhere; }
+  .lp-offer-compact .lp-sticky a { font-size: 15px; }
+  .lp-offer-compact .lp-hero .lp-cta { width: 100%; font-size: 16px; padding-right: 12px; }
+  .lp-offer-compact .lp-bonus-brief { margin-top: 12px; padding: 9px 10px; font-size: 14px; }
+  .lp-offer-compact .lp-section { margin-top: 24px; }
+  .lp-offer-compact .lp-doctor-block { flex-direction: row; text-align: left; gap: 12px; padding: 16px; border-radius: 16px; }
+  .lp-offer-compact .lp-doctor-block img { width: 52px; height: 52px; }
+  .lp-offer-compact .lp-doctor-block h3 { font-size: 22px; margin-bottom: 5px; }
+  .lp-offer-compact .lp-doctor-block p { font-size: 14px; line-height: 1.5; }
+  .lp-offer-compact .lp-doctor-eyebrow { font-size: 11px; }
+  .lp-offer-compact .lp-section-head { margin-bottom: 14px; }
+  .lp-offer-compact .lp-h2 { font-size: 29px; }
+  .lp-offer-compact .lp-faq-list details { padding: 14px 16px; }
+  .lp-offer-compact .lp-faq-list summary { min-height: 28px; font-size: 16px; }
+  .lp-offer-compact .lp-detail-content { grid-template-columns: 1fr; gap: 12px; }
+  .lp-offer-compact .lp-detail-content .lp-story-img { height: 165px; aspect-ratio: auto; }
+  .lp-offer-compact .lp-form-left, .lp-offer-compact .lp-form-right { padding: 20px; }
+  .lp-offer-compact .lp-form-lede { margin-bottom: 0; font-size: 15px; }
+  .lp-offer-compact .lp-input, .lp-offer-compact .lp-textarea { font-size: 18px; padding: 12px; }
+  .lp-offer-compact .lp-offer-secondary { display: none; }
+  .lp-offer-compact .lp-disclaimer { margin-top: 24px; }
+}
+
+.lp-offer-compact .lp-input-group { display: flex; flex-direction: column; gap: 9px; }
+.lp-offer-compact .lp-sticky a { min-width: 0; padding-left: 8px; padding-right: 8px; text-align: center; }

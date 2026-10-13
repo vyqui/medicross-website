@@ -76,10 +76,12 @@
         'Bună ziua! Vreau detalii despre oferta ' + service + '.',
         'Nume: ' + data.nume,
         'Telefon: ' + data.telefon,
+        ...(data.email ? ['Email: ' + data.email] : []),
       ];
       if (data.f1label && data.f1) lines.push(data.f1label + ': ' + data.f1);
       if (data.f2label && data.f2) lines.push(data.f2label + ': ' + data.f2);
       if (data.mesaj) lines.push('Mesaj: ' + data.mesaj);
+      lines.push('Consimțământ marketing e-mail: ' + (data.marketing_consent === 'da' ? 'DA, acordat explicit' : 'NU'));
       var tracking = trackingSummary();
       if (tracking) lines.push('(' + tracking + ')');
 
