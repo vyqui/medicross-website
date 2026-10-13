@@ -39,7 +39,7 @@ function getSmtpTransport() {
   return transport;
 }
 
-async function sendViaResend({ to, subject, text, attachments }) {
+async function sendViaResend({ to, subject, text, html, replyTo, attachments }) {
   const from = process.env.RESEND_FROM || process.env.SMTP_FROM || process.env.SMTP_USER;
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -52,6 +52,8 @@ async function sendViaResend({ to, subject, text, attachments }) {
       to: Array.isArray(to) ? to : [to],
       subject,
       text,
+      ...(html ? { html } : {}),
+      ...(replyTo ? { reply_to: replyTo } : {}),
       attachments: (attachments ?? []).map((a) => ({
         filename: a.filename,
         content: a.content.toString('base64'),
@@ -66,9 +68,9 @@ async function sendViaResend({ to, subject, text, attachments }) {
   }
 }
 
-async function sendViaSmtp({ to, subject, text, attachments }) {
+async function sendViaSmtp({ to, subject, text, html, replyTo, attachments }) {
   const from = process.env.SMTP_FROM || process.env.SMTP_USER;
-  await getSmtpTransport().sendMail({ from, to, subject, text, attachments });
+  await getSmtpTransport().sendMail({ from, to, subject, text, html, replyTo, attachments });
 }
 
 export async function sendMail(message) {
