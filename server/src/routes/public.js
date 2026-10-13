@@ -84,11 +84,12 @@ export default async function publicRoutes(app) {
       request.log.error({ err }, 'OPD internal notification failed');
       return reply.code(502).send({ error: 'Solicitarea nu a putut fi transmisă. Încearcă din nou sau folosește WhatsApp.' });
     }
+    let patientEmailWarning = null;
     try {
       await sendMail({ to: email, subject: 'Medicross — solicitarea dumneavoastră a fost înregistrată', text: patientText, html: patientHtml, replyTo: 'office@tratamente-turcia.ro' });
     } catch (err) {
       request.log.error({ err }, 'OPD patient confirmation failed');
-      return reply.code(200).send({ ok: true, warning: 'Solicitarea a ajuns la echipa Medicross, dar emailul de confirmare nu a putut fi trimis.' });
+      patientEmailWarning = 'Solicitarea a ajuns la echipa Medicross, dar emailul de confirmare nu a putut fi trimis.';
     }
     /* Optional Google Sheets synchronization. Email success never depends on Sheets. */
     if (process.env.OPD_SHEET_WEBHOOK_URL && process.env.OPD_SHEET_WEBHOOK_SECRET) {
@@ -113,7 +114,7 @@ export default async function publicRoutes(app) {
         request.log.error({ err }, 'OPD spreadsheet synchronization failed');
       }
     }
-    return reply.code(200).send({ ok: true });
+    return reply.code(200).send({ ok: true, ...(patientEmailWarning ? { warning: patientEmailWarning } : {}) });
   });
 
   /* One source of truth for the amounts, so the portal renders what the server
