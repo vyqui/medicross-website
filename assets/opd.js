@@ -158,11 +158,17 @@
   function bookFromCard(id) { pickDoc(id); scrollToBooking(); track('select_doctor', { doctor_id: id }); }
 
   if (docRowsEl) {
-    const rows = DOCS.map(d => ({ id: d.id, name: d.name, sub: d.spec + ' · ' + d.dayName + ' ' + d.start + '–' + d.end }));
+    const doctorPhotos = {
+      ulu: 'materials/images/dr-sahin-ulu.webp',
+      esen: 'materials/images/dr-ikram-esen.webp',
+      tanriverdi: 'materials/images/dr-hasan-tanriverdi.webp',
+      demirbaglar: 'materials/images/dr-cagri-demirbaglar.webp',
+    };
+    const rows = DOCS.map(d => ({ id: d.id, name: d.name, sub: d.spec + ' · ' + d.dayName + ' ' + d.start + '–' + d.end, photo: doctorPhotos[d.id] }));
     rows.push({ id: 'help', name: 'Ajutați-mă să aleg medicul', sub: 'Nu sunt sigur(ă) — am nevoie de recomandare' });
     docRowsEl.innerHTML = rows.map(r => `
       <button type="button" class="opd-doc-row" data-opd-row="${r.id}">
-        <span class="opd-doc-av">${r.id === 'help' ? '?' : esc(initials(r.name))}</span>
+        <span class="opd-doc-av">${r.photo ? `<img src="${r.photo}" alt="" loading="lazy" decoding="async" />` : '?'}</span>
         <span class="opd-doc-text"><span class="nm">${esc(r.name)}</span><span class="sb">${esc(r.sub)}</span></span>
         <span class="opd-doc-radio"><span></span></span>
       </button>`).join('');
