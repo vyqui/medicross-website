@@ -1,4 +1,5 @@
 import { query } from '../db.js';
+import crypto from 'node:crypto';
 import { sendMail } from '../mailer.js';
 import { ACTION_REWARD, REFERRAL_OPERATED, CODE_USED, SOCIAL_MAX } from '../discounts.js';
 
@@ -88,6 +89,29 @@ export default async function publicRoutes(app) {
     } catch (err) {
       request.log.error({ err }, 'OPD patient confirmation failed');
       return reply.code(200).send({ ok: true, warning: 'Solicitarea a ajuns la echipa Medicross, dar emailul de confirmare nu a putut fi trimis.' });
+    }
+    /* Optional Google Sheets synchronization. Email success never depends on Sheets. */
+    if (process.env.OPD_SHEET_WEBHOOK_URL && process.env.OPD_SHEET_WEBHOOK_SECRET) {
+      const row = {
+        secret: process.env.OPD_SHEET_WEBHOOK_SECRET,
+        requestId: 'OPD-' + crypto.randomUUID(),
+        receivedAt: new Date().toISOString(),
+        name, email, phone, doctor, date, time, note,
+        source: 'https://www.tratamente-turcia.ro/opd-consultatii',
+      };
+      try {
+        const response = await fetch(process.env.OPD_SHEET_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(row),
+          signal: AbortSignal.timeout(10000),
+        });
+        if (!response.ok) throw new Error('Sheet webhook HTTP ' + response.status);
+        const receipt = await response.json();
+        if (!receipt.ok) throw new Error('Sheet webhook rejected request');
+      } catch (err) {
+        request.log.error({ err }, 'OPD spreadsheet synchronization failed');
+      }
     }
     return reply.code(200).send({ ok: true });
   });
