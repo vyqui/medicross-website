@@ -1,0 +1,130 @@
+/* opd-consultatii.html — doctor-card hero + native booking widget.
+   Tokens match the design handoff: red #D42B2B / dark #B31F1F / deep #9E1717. */
+
+.opd-hero { position: relative; overflow: hidden; padding: clamp(28px, 5vw, 56px) clamp(14px, 4vw, 44px) clamp(36px, 6vw, 64px); }
+.opd-hero::before { content: ""; position: absolute; top: -120px; right: -140px; width: 460px; height: 460px; border-radius: 50%; background: radial-gradient(circle, rgba(212,43,43,.13), rgba(212,43,43,0) 70%); pointer-events: none; }
+.opd-hero::after { content: ""; position: absolute; bottom: -160px; left: -120px; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(circle, rgba(46,107,240,.09), rgba(46,107,240,0) 70%); pointer-events: none; }
+
+@keyframes opd-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(212,43,43,.45); } 50% { box-shadow: 0 0 0 7px rgba(212,43,43,0); } }
+.opd-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #B31F1F; margin-bottom: 16px; }
+.opd-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: #D42B2B; animation: opd-pulse 2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .opd-eyebrow .dot { animation: none; } }
+
+.opd-hero-intro { position: relative; max-width: 640px; margin: 0 auto 30px; text-align: center; }
+.opd-hero-intro h1 { font-family: "Newsreader", serif; font-weight: 600; font-size: clamp(32px, 6vw, 56px); line-height: 1.02; letter-spacing: -.025em; margin: 0 0 14px; }
+.opd-hero-intro h1 em { font-style: italic; color: #D42B2B; }
+.opd-hero-intro p { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: #6B655C; margin: 0 auto; max-width: 480px; }
+
+/* ---- carousel ---- */
+.opd-rail-wrap { position: relative; max-width: 1200px; margin: 0 auto; }
+.opd-rail { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 26px calc(50% - min(39vw, 150px)) 16px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.opd-rail::-webkit-scrollbar { display: none; }
+.opd-card-wrap { flex: none; width: min(78vw, 300px); scroll-snap-align: center; transform: scale(.92); opacity: .62; transition: transform .45s cubic-bezier(.22,.7,.2,1), opacity .45s ease; }
+.opd-card-wrap.active { transform: scale(1); opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .opd-card-wrap { transition: none; transform: none !important; opacity: 1 !important; } }
+.opd-card { position: relative; aspect-ratio: 3/4.1; border-radius: 26px; overflow: hidden; box-shadow: 0 30px 50px -28px rgba(33,30,26,.55); }
+.opd-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.opd-card-price { position: absolute; top: 14px; left: 14px; z-index: 2; font-size: 11.5px; font-weight: 800; padding: 7px 12px; border-radius: 999px; background: rgba(255,255,255,.92); color: #211E1A; }
+.opd-card-sel { position: absolute; top: 14px; right: 14px; z-index: 2; display: none; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 800; padding: 7px 12px; border-radius: 999px; background: #D42B2B; color: #fff; }
+.opd-card-wrap.selected .opd-card-sel { display: inline-flex; }
+.opd-card-btn { position: absolute; inset: 0; z-index: 1; border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; text-align: left; font-family: inherit; width: 100%; }
+.opd-card-overlay { display: block; width: 100%; box-sizing: border-box; padding: 80px 18px 18px; background: linear-gradient(180deg, rgba(20,12,12,0), rgba(20,12,12,.86) 52%); color: #fff; }
+.opd-card-spec { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; background: #D42B2B; margin-bottom: 10px; }
+.opd-card-name { display: block; font-family: "Newsreader", serif; font-weight: 600; font-size: 25px; line-height: 1.1; }
+.opd-card-when { display: block; font-size: 13px; color: rgba(255,255,255,.78); margin-top: 5px; }
+.opd-card-cta { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding: 12px 16px; border-radius: 14px; background: #fff; color: #B31F1F; font-weight: 800; font-size: 14px; }
+
+.opd-dots { display: flex; justify-content: center; gap: 7px; }
+.opd-dot { height: 8px; width: 8px; border-radius: 8px; border: 0; padding: 0; cursor: pointer; background: rgba(33,30,26,.2); transition: width .3s ease, background .3s ease; }
+.opd-dot.active { width: 24px; background: #D42B2B; }
+.opd-rail-hint { text-align: center; font-size: 12.5px; color: #9a938a; margin-top: 12px; }
+
+/* ---- countdown ---- */
+.opd-countdown { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 16px 18px; background: #211E1A; color: #FBF7F1; border-radius: 18px; max-width: 620px; margin: 24px auto 0; }
+.opd-countdown-label { font-size: 13px; line-height: 1.4; color: rgba(251,247,241,.75); flex: 1; min-width: 150px; }
+.opd-countdown-units { display: flex; gap: 8px; }
+.opd-countdown-unit { text-align: center; min-width: 52px; }
+.opd-countdown-unit .n { font-family: "Newsreader", serif; font-weight: 600; font-size: 28px; line-height: 1; color: #FF6B5E; }
+.opd-countdown-unit .u { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: rgba(251,247,241,.6); margin-top: 4px; }
+
+/* ---- booking card ---- */
+.opd-booking { scroll-margin-top: 20px; max-width: 620px; margin: 40px auto 0; background: #fff; border-radius: 28px; box-shadow: 0 40px 80px -36px rgba(33,30,26,.45), 0 0 0 1px rgba(33,30,26,.06); overflow: hidden; }
+.opd-booking-head { padding: 22px 24px 18px; background: linear-gradient(150deg, #D42B2B, #9E1717); color: #fff; }
+.opd-booking-head-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.opd-booking-head h2 { font-family: "Newsreader", serif; font-weight: 600; font-size: 26px; line-height: 1.1; margin: 0; }
+.opd-booking-progress-chip { flex: none; font-size: 11.5px; font-weight: 800; padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.18); }
+.opd-booking-bars { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-top: 14px; }
+.opd-booking-bars span { height: 4px; border-radius: 4px; background: rgba(255,255,255,.28); transition: background .3s ease; }
+.opd-booking-bars span.done { background: #fff; }
+.opd-booking-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 22px; }
+.opd-step-label { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #9a938a; margin-bottom: 10px; }
+.opd-step-label .soft { text-transform: none; letter-spacing: 0; font-weight: 600; }
+
+.opd-doc-rows { display: flex; flex-direction: column; gap: 8px; }
+.opd-doc-row { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 11px 13px; border-radius: 15px; cursor: pointer; border: 1.5px solid rgba(33,30,26,.12); background: #fff; transition: border-color .2s ease, background .2s ease; font-family: inherit; }
+.opd-doc-row.selected { border-color: #D42B2B; background: #FDF1EF; }
+.opd-doc-av { flex: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; background: #F3EEE7; color: #6B655C; }
+.opd-doc-row.selected .opd-doc-av { background: #D42B2B; color: #fff; }
+.opd-doc-text { flex: 1; min-width: 0; line-height: 1.3; }
+.opd-doc-text .nm { display: block; font-weight: 800; font-size: 14.5px; color: #211E1A; }
+.opd-doc-text .sb { display: block; font-size: 12.5px; color: #6B655C; }
+.opd-doc-radio { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(33,30,26,.12); display: flex; align-items: center; justify-content: center; }
+.opd-doc-row.selected .opd-doc-radio { border-color: #D42B2B; }
+.opd-doc-radio span { width: 10px; height: 10px; border-radius: 50%; background: transparent; }
+.opd-doc-row.selected .opd-doc-radio span { background: #D42B2B; }
+
+.opd-dates { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+.opd-date-btn { padding: 11px 6px; border-radius: 14px; cursor: pointer; text-align: center; border: 1.5px solid rgba(33,30,26,.12); background: #fff; color: #211E1A; transition: all .2s ease; font-family: inherit; }
+.opd-date-btn.selected { border-color: #D42B2B; background: #D42B2B; color: #fff; }
+.opd-date-btn .dow { display: block; font-size: 11.5px; font-weight: 700; }
+.opd-date-btn .day { display: block; font-family: "Newsreader", serif; font-weight: 600; font-size: 22px; line-height: 1.1; margin-top: 2px; }
+
+.opd-slots { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
+.opd-slot-btn { padding: 10px 4px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 14px; border: 1.5px solid rgba(33,30,26,.12); background: #fff; color: #211E1A; transition: all .2s ease; font-family: inherit; }
+.opd-slot-btn.selected { border-color: #D42B2B; background: #D42B2B; color: #fff; }
+.opd-cap-note { font-size: 12px; color: #9a938a; margin-top: 8px; }
+
+.opd-help-box { padding: 14px 16px; border-radius: 14px; background: #ECF1F7; color: #2B3A4E; font-size: 13.5px; line-height: 1.5; }
+
+.opd-contact-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,180px), 1fr)); gap: 8px; }
+.opd-input, .opd-textarea { width: 100%; box-sizing: border-box; padding: 14px 15px; border-radius: 12px; border: 1.5px solid rgba(33,30,26,.14); font-size: 15px; outline: none; background: #fff; color: #211E1A; font-family: inherit; }
+.opd-input.err, .opd-textarea.err { border-color: #D42B2B; }
+.opd-textarea { resize: vertical; margin-top: 8px; }
+.opd-input + .opd-input { margin-top: 8px; }
+
+.opd-summary { display: none; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; background: #FBF7F1; border: 1px dashed rgba(212,43,43,.4); font-size: 13.5px; line-height: 1.45; color: #211E1A; }
+.opd-summary.show { display: flex; }
+
+.opd-submit { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 18px 16px; border-radius: 16px; font-weight: 800; font-size: 16px; color: #fff; background: #C9A8A4; box-shadow: 0 18px 34px -14px rgba(212,43,43,.6); transition: transform .2s ease, background .2s ease; text-align: center; width: 100%; box-sizing: border-box; }
+.opd-submit.ready { background: #D42B2B; }
+.opd-submit:hover { transform: translateY(-2px); }
+.opd-error { font-size: 13px; font-weight: 700; color: #B31F1F; margin-top: 10px; text-align: center; display: none; }
+.opd-error.show { display: block; }
+.opd-fineprint { font-size: 12px; line-height: 1.55; color: #9a938a; margin: 12px 0 0; text-align: center; }
+
+/* ---- doctors grid ---- */
+.opd-doc-card { display: flex; flex-direction: column; background: #fff; border: 1px solid rgba(33,30,26,.09); border-radius: 24px; overflow: hidden; }
+.opd-doc-card-photo { position: relative; aspect-ratio: 4/4.2; background: #ECF1F7; }
+.opd-doc-card-photo img { width: 100%; height: 100%; object-fit: cover; }
+.opd-doc-card-spec { position: absolute; top: 12px; left: 12px; font-size: 11.5px; font-weight: 800; padding: 6px 11px; border-radius: 999px; background: #fff; color: #B31F1F; box-shadow: 0 6px 14px -8px rgba(33,30,26,.4); }
+.opd-doc-card-body { padding: 20px 20px 22px; display: flex; flex-direction: column; flex: 1; }
+.opd-doc-card-body h3 { font-family: "Newsreader", serif; font-weight: 600; font-size: 23px; line-height: 1.15; margin: 0 0 6px; }
+.opd-doc-card-when { font-size: 13px; font-weight: 700; color: #2B3A4E; margin-bottom: 10px; }
+.opd-doc-card-bio { font-size: 14px; line-height: 1.55; color: #6B655C; margin: 0 0 18px; flex: 1; }
+.opd-doc-card-btn { padding: 13px 16px; border-radius: 999px; border: 1.5px solid #D42B2B; background: #fff; color: #D42B2B; font-weight: 800; font-size: 14px; cursor: pointer; transition: background .2s ease, color .2s ease; font-family: inherit; }
+.opd-doc-card-btn:hover { background: #D42B2B; color: #fff; }
+
+/* ---- mobile sticky bar ---- */
+.opd-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: flex; gap: 8px; padding: 12px 14px; background: rgba(251,247,241,.94); backdrop-filter: blur(12px); border-top: 1px solid rgba(33,30,26,.1); box-shadow: 0 -10px 30px -16px rgba(33,30,26,.4); }
+.opd-sticky-inner { flex: 1; max-width: 1200px; margin: 0 auto; display: flex; gap: 8px; align-items: center; }
+.opd-sticky-text { flex: 1; min-width: 0; font-size: 13px; line-height: 1.3; color: #211E1A; }
+.opd-sticky-text strong { display: block; }
+.opd-sticky-text span { color: #6B655C; }
+.opd-sticky-phone { flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 14px; background: #fff; border: 1px solid rgba(33,30,26,.14); color: #211E1A; }
+.opd-sticky-book { flex: none; height: 48px; padding: 0 22px; display: flex; align-items: center; border-radius: 14px; background: #D42B2B; color: #fff; font-weight: 800; font-size: 15px; }
+@media (min-width: 760px) { .opd-sticky { display: none; } }
+/* the sticky bar replaces the site-wide floating WhatsApp button on phones — both at once is redundant */
+@media (max-width: 759px) {
+  .opd-page-has-sticky { padding-bottom: 76px; }
+  .opd-page-has-sticky .wa-float { display: none; }
+}
