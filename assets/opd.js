@@ -23,9 +23,17 @@
   function initials(n) { return n.replace(/^(Prof\.|Op\.)\s*Dr\.\s*/, '').split(' ').map(w => w[0]).slice(0, 2).join(''); }
   function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
+  // Keep three future consultation dates, rolling over at midnight in Romania.
+  function bucharestDateKey() {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Europe/Bucharest', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).format(new Date());
+  }
   function datesFor(d) {
-    const today = new Date(); today.setHours(0, 0, 0, 0);
-    let x = new Date(Math.max(START.getTime(), today.getTime()));
+    const [year, month, day] = bucharestDateKey().split('-').map(Number);
+    // Dates shown are strictly after today: on 22 Oct, 22 Oct leaves the list.
+    const tomorrow = new Date(year, month - 1, day + 1);
+    let x = new Date(Math.max(START.getTime(), tomorrow.getTime()));
     while (x.getDay() !== d.dow) x.setDate(x.getDate() + 1);
     const out = [];
     for (let i = 0; i < 3; i++) { out.push(new Date(x)); x.setDate(x.getDate() + 7); }
@@ -176,6 +184,31 @@
       btn.addEventListener('click', () => { pickDoc(btn.getAttribute('data-opd-row')); });
     });
   }
+
+  let currentCalendarDay = bucharestDateKey();
+  function refreshDatesOnDayChange() {
+    const nextDay = bucharestDateKey();
+    if (nextDay === currentCalendarDay) return;
+    const doc = DOCS.find(d => d.id === state.doc);
+    const oldDates = doc ? datesForPreviousDay(doc, currentCalendarDay) : [];
+    const selectedDate = oldDates[state.dateIdx];
+    currentCalendarDay = nextDay;
+    if (doc) {
+      const upcoming = datesFor(doc);
+      const retained = selectedDate && upcoming.findIndex(date => date.getTime() === selectedDate.getTime());
+      state.dateIdx = retained >= 0 ? retained : 0;
+      state.slot = retained >= 0 ? state.slot : null;
+    }
+    renderBooking();
+  }
+  function datesForPreviousDay(doc, dayKey) {
+    const [year, month, day] = dayKey.split('-').map(Number);
+    let x = new Date(Math.max(START.getTime(), new Date(year, month - 1, day + 1).getTime()));
+    while (x.getDay() !== doc.dow) x.setDate(x.getDate() + 1);
+    return [new Date(x), new Date(x.setDate(x.getDate() + 7)), new Date(x.setDate(x.getDate() + 7))];
+  }
+  window.setInterval(refreshDatesOnDayChange, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshDatesOnDayChange(); });
 
   function renderBooking() {
     const doc = DOCS.find(d => d.id === state.doc) || null;
