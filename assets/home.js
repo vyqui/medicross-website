@@ -5,17 +5,14 @@ document.documentElement.classList.add('js');
 
 // ---- hero operation switcher ----
 const OPS = [
-  { title: 'Rinoplastie',       img: 'materials/images/portret_rinoplastie_01_close-up.webp',                    price: '2.600€', info: 'Spitalizare, hotel, transferuri, translator român și asistență completă.', href: 'rinoplastie' },
-  { title: 'Implant mamar',     img: 'materials/images/implant_mamar-silicon-masura-potrivita.webp',            price: '3.000€', info: 'Implanturi Mentor (Johnson & Johnson), în spitale de top din Turcia.',    href: 'interventii-mamare' },
-  { title: 'Gastric Sleeve',    img: 'materials/images/gastric-sleeve-tratamente-turcia-3.png',                  price: '1.900€', info: 'Spitalizare, hotel, nutriționist, translator român și asistență completă.', href: 'gastric-sleeve' },
-  { title: 'Transplant de păr', img: 'materials/images/transplant_de_par_turcia_vip_1920x1440.webp',             price: '1.500€', info: 'Tehnici FUE Sapphire, DHI și FUT, cu hotel, transferuri și translator român.', href: 'transplant-de-par' },
-  { title: 'BBL',               img: 'materials/images/brazilian-butt-lift-bbl-tratamente-turcia.png',           price: '3.000€', info: 'Remodelare cu grăsime proprie, realizată de chirurgi esteticieni de top.', href: 'brazilian-butt-lift' },
+  { title: 'Rinoplastie',       img: 'materials/images/portret_rinoplastie_01_close-up.webp' },
+  { title: 'Implant mamar',     img: 'materials/images/implant_mamar-silicon-masura-potrivita.webp' },
+  { title: 'Gastric Sleeve',    img: 'materials/images/gastric-sleeve-tratamente-turcia-3.png' },
+  { title: 'Transplant de păr', img: 'materials/images/transplant_de_par_turcia_vip_1920x1440.webp' },
+  { title: 'BBL',               img: 'materials/images/brazilian-butt-lift-bbl-tratamente-turcia.png' },
 ];
 const lcImg = document.getElementById('lcImg');
 const lcTitle = document.getElementById('lcTitle');
-const lcPrice = document.getElementById('lcPrice');
-const lcInfo = document.getElementById('lcInfo');
-const lcLink = document.getElementById('lcLink');
 const chips = Array.from(document.querySelectorAll('.lc-chip'));
 let currentOp = 0, autoPaused = false;
 
@@ -25,9 +22,6 @@ function setOp(i) {
   lcImg.style.opacity = '0';
   setTimeout(() => { lcImg.src = op.img; lcImg.alt = op.title; lcImg.style.opacity = '1'; }, 160);
   lcTitle.textContent = op.title;
-  lcPrice.textContent = op.price;
-  lcInfo.textContent = op.info;
-  lcLink.href = op.href;
   chips.forEach((c, idx) => c.classList.toggle('active', idx === i));
 }
 chips.forEach(c => c.addEventListener('click', () => { autoPaused = true; setOp(+c.dataset.op); }));
