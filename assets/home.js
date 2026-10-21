@@ -38,6 +38,9 @@ if (leadCard) {
     e.preventDefault();
     const name = (document.getElementById('lcName').value || '').trim();
     const phone = (document.getElementById('lcPhone').value || '').trim();
+    if (window.MedicrossLead) window.MedicrossLead.send({
+      name, phone, procedure: OPS[currentOp].title, formType: 'homepage-card'
+    });
     const lines = [
       'Bună ziua! Doresc o opinie medicală gratuită.',
       'Nume: ' + (name || '-'),

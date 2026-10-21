@@ -86,6 +86,17 @@
       if (tracking) lines.push('(' + tracking + ')');
 
       fireLead('form');
+      if (window.MedicrossLead) {
+        var extra = [];
+        if (data.f1label && data.f1) extra.push(data.f1label + ': ' + data.f1);
+        if (data.f2label && data.f2) extra.push(data.f2label + ': ' + data.f2);
+        if (data.mesaj) extra.push(data.mesaj);
+        window.MedicrossLead.send({
+          name: data.nume, phone: data.telefon, email: data.email, procedure: service,
+          message: extra.join(' | '), marketingConsent: data.marketing_consent === 'da',
+          formType: 'oferta:' + location.pathname.replace(/^\//, '')
+        });
+      }
       setStatus('ok', 'Mulțumim! Se deschide WhatsApp — trimite mesajul pre-completat ca să ajungă direct la echipa noastră.');
       window.open('https://wa.me/' + waNumber + '?text=' + encodeURIComponent(lines.join('\n')), '_blank');
       form.reset();
