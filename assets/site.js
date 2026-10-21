@@ -46,6 +46,10 @@ function toWhatsApp(fields) {
   form.addEventListener('submit', ev => {
     ev.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
+    if (window.MedicrossLead) window.MedicrossLead.send({
+      name: data.nume, phone: data.telefon, email: data.email,
+      procedure: data.specialitate, message: data.mesaj, formType: id
+    });
     toWhatsApp(data);
   });
 });

@@ -1,21 +1,32 @@
 import { query } from '../db.js';
 import crypto from 'node:crypto';
 import { sendMail } from '../mailer.js';
+import { postToSheet } from '../sheet.js';
 import { ACTION_REWARD, REFERRAL_OPERATED, CODE_USED, SOCIAL_MAX } from '../discounts.js';
 
 /* Unauthenticated routes. The lead endpoint is the one the marketing site
    calls, so it is the only cross-origin POST the platform accepts. */
 export default async function publicRoutes(app) {
-  /* Until now every contact form called window.open('wa.me/…') and the enquiry
-     existed nowhere unless the visitor also pressed send inside WhatsApp. */
+  /* Every site form that hands the visitor over to WhatsApp (contact, hero card,
+     offer pages) posts here first, so the enquiry is recorded even if the
+     WhatsApp message is never sent. Stored in Postgres and mirrored to the
+     "Leads" tab of the Google Sheet; either one is enough for the lead to count. */
   app.post('/api/leads', {
     config: { rateLimit: { max: 20, timeWindow: '10 minutes' } },
   }, async (request, reply) => {
     const body = request.body ?? {};
+    if (typeof body !== 'object' || Array.isArray(body)) return reply.code(400).send({ error: 'Cerere invalidă.' });
 
-    const name = String(body.name ?? '').trim().slice(0, 200);
-    const phone = String(body.phone ?? '').trim().slice(0, 60);
-    const email = String(body.email ?? '').trim().slice(0, 200);
+    const clip = (value, max) => String(value ?? '').trim().slice(0, max);
+    const name = clip(body.name, 200);
+    const phone = clip(body.phone, 60);
+    const email = clip(body.email, 200);
+    const procedure = clip(body.procedure, 200);
+    const message = clip(body.message, 4000);
+    const sourcePage = clip(body.sourcePage, 300);
+    const formType = clip(body.formType, 80);
+    const campaign = clip(body.campaign, 500);
+    const marketingConsent = body.marketingConsent === true ? 'DA' : 'NU';
 
     /* A lead with no way to reach the person back is not a lead. */
     if (!phone && !email) {
@@ -26,16 +37,30 @@ export default async function publicRoutes(app) {
        so the bot has no signal that it was rejected. */
     if (String(body.website ?? '').trim()) return { ok: true };
 
-    const { rows } = await query(
-      `insert into leads (name, phone, email, procedure, message, source_page)
-       values ($1, $2, $3, $4, $5, $6) returning id, created_at`,
-      [name, phone, email,
-        String(body.procedure ?? '').trim().slice(0, 200),
-        String(body.message ?? '').trim().slice(0, 4000),
-        String(body.sourcePage ?? '').trim().slice(0, 300)]);
+    let leadId = null;
+    try {
+      const { rows } = await query(
+        `insert into leads (name, phone, email, procedure, message, source_page)
+         values ($1, $2, $3, $4, $5, $6) returning id, created_at`,
+        [name, phone, email, procedure, message, sourcePage]);
+      leadId = rows[0].id;
+    } catch (err) {
+      request.log.error({ err }, 'lead insert failed');
+    }
 
-    request.log.info({ leadId: rows[0].id, procedure: body.procedure }, 'lead captured');
-    return reply.code(201).send({ ok: true, id: rows[0].id });
+    const sheetOk = await postToSheet({
+      kind: 'lead',
+      requestId: 'LEAD-' + (leadId ?? crypto.randomUUID()),
+      receivedAt: new Date().toISOString(),
+      name, phone, email, procedure, message,
+      source: sourcePage, formType, campaign, marketingConsent,
+    }, request.log);
+
+    if (!leadId && !sheetOk) {
+      return reply.code(503).send({ error: 'Cererea nu a putut fi înregistrată. Folosește WhatsApp.' });
+    }
+    request.log.info({ leadId, procedure, formType, sheetOk }, 'lead captured');
+    return reply.code(201).send({ ok: true, ...(leadId ? { id: leadId } : {}) });
   });
 
 
@@ -92,28 +117,12 @@ export default async function publicRoutes(app) {
       patientEmailWarning = 'Solicitarea a ajuns la echipa Medicross, dar emailul de confirmare nu a putut fi trimis.';
     }
     /* Optional Google Sheets synchronization. Email success never depends on Sheets. */
-    if (process.env.OPD_SHEET_WEBHOOK_URL && process.env.OPD_SHEET_WEBHOOK_SECRET) {
-      const row = {
-        secret: process.env.OPD_SHEET_WEBHOOK_SECRET,
-        requestId: 'OPD-' + crypto.randomUUID(),
-        receivedAt: new Date().toISOString(),
-        name, email, phone, doctor, date, time, note,
-        source: 'https://www.tratamente-turcia.ro/opd-consultatii',
-      };
-      try {
-        const response = await fetch(process.env.OPD_SHEET_WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(row),
-          signal: AbortSignal.timeout(10000),
-        });
-        if (!response.ok) throw new Error('Sheet webhook HTTP ' + response.status);
-        const receipt = await response.json();
-        if (!receipt.ok) throw new Error('Sheet webhook rejected request');
-      } catch (err) {
-        request.log.error({ err }, 'OPD spreadsheet synchronization failed');
-      }
-    }
+    await postToSheet({
+      requestId: 'OPD-' + crypto.randomUUID(),
+      receivedAt: new Date().toISOString(),
+      name, email, phone, doctor, date, time, note,
+      source: 'https://www.tratamente-turcia.ro/opd-consultatii',
+    }, request.log);
     return reply.code(200).send({ ok: true, ...(patientEmailWarning ? { warning: patientEmailWarning } : {}) });
   });
 
