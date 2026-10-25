@@ -121,22 +121,6 @@
     if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 16, behavior: REDUCED_MOTION ? 'auto' : 'smooth' });
   }
 
-  // ---- countdown ----
-  const cdWrap = document.querySelector('[data-opd-countdown]');
-  function renderCountdown() {
-    if (!cdWrap) return;
-    const diff = Math.max(0, START.getTime() - Date.now());
-    const d = Math.floor(diff / 864e5), h = Math.floor(diff / 36e5) % 24, m = Math.floor(diff / 6e4) % 60;
-    cdWrap.querySelector('[data-cd-d]').textContent = d;
-    cdWrap.querySelector('[data-cd-h]').textContent = h;
-    cdWrap.querySelector('[data-cd-m]').textContent = m;
-    cdWrap.querySelector('[data-cd-label]').textContent = diff > 0
-      ? 'Primele consultații încep pe 20 octombrie. Locurile se ocupă în ordinea înscrierii.'
-      : 'Consultațiile au început — rezervă următorul interval liber.';
-  }
-  renderCountdown();
-  setInterval(renderCountdown, 30000);
-
   // ---- sticky bar ----
   function syncSticky() {
     const note = document.querySelector('[data-opd-sticky-note]');
