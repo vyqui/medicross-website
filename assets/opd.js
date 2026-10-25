@@ -3,13 +3,13 @@
 
 (function () {
   const DOCS = [
-    { id: 'ulu', name: 'Prof. Dr. Şahin Ulu', spec: 'ORL', dayName: 'Sâmbătă', dow: 6, start: '16:00', end: '18:00', max: 8,
+    { id: 'ulu', name: 'Prof. Dr. Şahin Ulu', spec: 'ORL', dayName: 'Sâmbătă', dow: 6, start: '17:00', end: '19:00', max: 8,
       bio: 'Membru al echipei de medici ORL din programul OPD Medicross. Detaliile complete despre pregătirea sa se adaugă în curând.' },
-    { id: 'esen', name: 'Op. Dr. İkram Esen', spec: 'Chirurgie plastică', dayName: 'Joi', dow: 4, start: '19:00', end: '20:00', max: 4,
+    { id: 'esen', name: 'Op. Dr. İkram Esen', spec: 'Chirurgie plastică', dayName: 'Joi', dow: 4, start: '20:00', end: '21:00', max: 4,
       bio: 'Chirurg specializat în chirurgie estetică mamară, cu experiență în sute de proceduri. La OPD îți oferă o evaluare personalizată, gratuită.' },
-    { id: 'tanriverdi', name: 'Op. Dr. Hasan Tanrıverdi', spec: 'ORL', dayName: 'Miercuri', dow: 3, start: '18:00', end: '19:00', max: 4,
+    { id: 'tanriverdi', name: 'Op. Dr. Hasan Tanrıverdi', spec: 'ORL', dayName: 'Miercuri', dow: 3, start: '19:00', end: '20:00', max: 4,
       bio: 'Pregătire la Universitatea Ege și Universitatea Ankara, specializat în otologie și chirurgia urechii medii (timpanoplastie, stapedotomie), cu lucrări științifice publicate internațional.' },
-    { id: 'demirbaglar', name: 'Op. Dr. Çağrı Demirbağlar', spec: 'ORL', dayName: 'Marți', dow: 2, start: '19:00', end: '20:00', max: 4,
+    { id: 'demirbaglar', name: 'Op. Dr. Çağrı Demirbağlar', spec: 'ORL', dayName: 'Marți', dow: 2, start: '20:00', end: '21:00', max: 4,
       bio: 'Expert în rinoplastie estetică și funcțională prin tehnica ultrasonică Piezo — minim invazivă, cu recuperare rapidă și rezultate naturale.' }
   ];
   const START = new Date(2026, 9, 20);
