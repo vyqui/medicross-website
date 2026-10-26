@@ -209,3 +209,6 @@ body.rn { margin: 0; background: #FBF7F1; color: #211E1A; font-family: Manrope, 
 .rn-combo .rn-btn { flex: none; padding: 15px 24px; background: #D42B2B; color: #fff; font-size: 15px; }
 .rn-combo .rn-btn:hover { color: #fff; background: #B31F1F; }
 .rn-aidisc { max-width: 1200px; margin: 10px auto 0; font-size: 12px; line-height: 1.6; color: #9a938a; text-wrap: pretty; }
+
+.rn-ba-static { margin: 0; border-radius: 22px; overflow: hidden; background: #2E2A25; }
+.rn-ba-static img { display: block; width: 100%; height: auto; }
