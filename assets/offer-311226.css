@@ -1,4 +1,4 @@
-/* oferta-rinoplastie-311226.html — standalone ad landing page (Rinoplastie all-inclusive).
+/* Shared by oferta-rinoplastie-311226, oferta-gastric-sleeve-311226 and oferta-implant-mamar-311226 (year-end all-inclusive offers).
    Scoped under .rn so nothing leaks into the shared site styles. */
 html { scroll-behavior: smooth; }
 body.rn { margin: 0; background: #FBF7F1; color: #211E1A; font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; padding-bottom: 84px; }
@@ -195,3 +195,17 @@ body.rn { margin: 0; background: #FBF7F1; color: #211E1A; font-family: Manrope, 
   .rn-marquee, .rn-bar-dot { animation: none; }
   .rn-btn-red, .rn-faq-plus, .rn-slide { transition: none; }
 }
+
+/* extras used by the gastric sleeve / implant mamar pages */
+.rn-fine { font-size: 12.5px; line-height: 1.5; color: #6B655C; margin: 16px 0 0; max-width: 540px; }
+.rn-doc-photo.noimg { display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #ECF1F7, #D9E3EE); }
+.rn-doc-photo.noimg span { font-family: Newsreader, serif; font-weight: 600; font-size: clamp(54px, 8vw, 92px); color: #2B3A4E; letter-spacing: -.02em; opacity: .85; }
+.rn-doc-photo img.top { object-position: 50% 12%; }
+.rn-ba-quote { margin: 8px 0 0; font-size: 13px; line-height: 1.55; color: rgba(251,247,241,.72); }
+.rn-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rn-combo { max-width: 1200px; margin: clamp(28px, 4vw, 44px) auto 0; padding: clamp(22px, 3vw, 32px); border-radius: 24px; background: #FDF1EF; border: 1px solid rgba(212,43,43,.18); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 28px; }
+.rn-combo h3 { font-family: Newsreader, serif; font-weight: 600; font-size: clamp(24px, 3vw, 32px); line-height: 1.1; margin: 0 0 8px; }
+.rn-combo p { margin: 0; font-size: 15px; line-height: 1.6; color: #6B655C; max-width: 640px; }
+.rn-combo .rn-btn { flex: none; padding: 15px 24px; background: #D42B2B; color: #fff; font-size: 15px; }
+.rn-combo .rn-btn:hover { color: #fff; background: #B31F1F; }
+.rn-aidisc { max-width: 1200px; margin: 10px auto 0; font-size: 12px; line-height: 1.6; color: #9a938a; text-wrap: pretty; }
