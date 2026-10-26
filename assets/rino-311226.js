@@ -83,6 +83,21 @@
     a.addEventListener('click', function () { track('contact', 'whatsapp'); });
   });
 
+  // ---------- hero carousel: one image at a time, 1.5 s each, looping ----------
+  var hero = document.querySelector('[data-hero-carousel]');
+  if (hero && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    var slides = hero.querySelectorAll('.rn-slide'), cur = 0;
+    // load the other photos up front so a slide never appears blank mid-loop
+    slides.forEach(function (img) { img.loading = 'eager'; });
+    if (slides.length > 1) {
+      setInterval(function () {
+        slides[cur].classList.remove('on');
+        cur = (cur + 1) % slides.length;
+        slides[cur].classList.add('on');
+      }, 1500);
+    }
+  }
+
   // ---------- before / after sliders (pointer + keyboard) ----------
   document.querySelectorAll('[data-ba]').forEach(function (box) {
     var before = box.querySelector('[data-ba-before]'), line = box.querySelector('[data-ba-line]');

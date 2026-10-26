@@ -47,6 +47,8 @@ body.rn { margin: 0; background: #FBF7F1; color: #211E1A; font-family: Manrope, 
 .rn-hero-media { position: relative; }
 .rn-hero-photo { position: relative; aspect-ratio: 4/4.6; border-radius: 32px; overflow: hidden; background: #E7DCD3; box-shadow: 0 40px 80px -40px rgba(33,30,26,.55); }
 .rn-hero-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.rn-slide { opacity: 0; transition: opacity .35s ease; }
+.rn-slide.on { opacity: 1; }
 .rn-hero-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(20,12,12,.55)); }
 .rn-cd { position: absolute; left: clamp(-10px, -2vw, -24px); bottom: 22px; background: #fff; border-radius: 20px; padding: 14px 16px; box-shadow: 0 24px 44px -20px rgba(33,30,26,.5); max-width: calc(100% - 24px); z-index: 2; }
 .rn-cd-lbl { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #B31F1F; margin-bottom: 8px; }
@@ -191,5 +193,5 @@ body.rn { margin: 0; background: #FBF7F1; color: #211E1A; font-family: Manrope, 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .rn-marquee, .rn-bar-dot { animation: none; }
-  .rn-btn-red, .rn-faq-plus { transition: none; }
+  .rn-btn-red, .rn-faq-plus, .rn-slide { transition: none; }
 }
