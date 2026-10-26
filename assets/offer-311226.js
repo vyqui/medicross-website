@@ -1,4 +1,4 @@
-// oferta-rinoplastie-311226.html — offer config, countdown, before/after sliders, lead form.
+// oferta-*-311226.html — shared by the three year-end offer pages: offer config, countdown, before/after sliders, lead form.
 // No framework, no build step — same approach as assets/landing.js.
 (function () {
   window.dataLayer = window.dataLayer || [];
@@ -9,6 +9,9 @@
   var END = new Date(body.getAttribute('data-offer-end') || '').getTime();
   var END_LABEL = body.getAttribute('data-offer-end-label') || '';
   var END_SHORT = body.getAttribute('data-offer-end-short') || '';
+  var SERVICE = body.getAttribute('data-service') || '';
+  var WA_OFFER = body.getAttribute('data-wa-offer') || SERVICE;
+  var PAGE = location.pathname.replace(/^\//, '').replace(/\.html$/, '');
   var BASE_WA = 'https://wa.me/40746992222?text=';
 
   function setAll(sel, text) {
@@ -17,6 +20,8 @@
   setAll('[data-o-price]', PRICE);
   if (END_LABEL) setAll('[data-o-end]', END_LABEL);
   if (END_SHORT) setAll('[data-o-end-short]', END_SHORT);
+  var END_DATE = body.getAttribute('data-offer-end-date') || '';
+  if (END_DATE) setAll('[data-o-enddate]', END_DATE);
 
   var expired = false;
   function applyOfferState() {
@@ -57,14 +62,14 @@
     }
     if (typeof window.fbq === 'function') window.fbq('track', event === 'generate_lead' ? 'Lead' : 'Contact');
   }
-  window.dataLayer.push({ event: 'view_content', content_name: 'oferta-rinoplastie-311226' });
+  window.dataLayer.push({ event: 'view_content', content_name: PAGE });
   if (typeof window.fbq === 'function') window.fbq('track', 'ViewContent');
 
   // ---------- WhatsApp links ----------
   function waMessage(extra) {
     var lines = [expired
-      ? 'Bună ziua! Sunt interesat(ă) de rinoplastie all-inclusive și aș dori prețul și datele disponibile.'
-      : 'Bună ziua! Sunt interesat(ă) de oferta de rinoplastie all-inclusive la ' + PRICE + '.'];
+      ? 'Bună ziua! Sunt interesat(ă) de ' + WA_OFFER + ' și aș dori prețul și datele disponibile.'
+      : 'Bună ziua! Sunt interesat(ă) de oferta de ' + WA_OFFER + ' la ' + PRICE + '.'];
     if (extra && extra.name) lines.push('Nume: ' + extra.name);
     if (extra && extra.when) lines.push('Perioada dorită: ' + extra.when);
     var t = trackingSummary();
@@ -159,15 +164,19 @@
       if (msg) return;
 
       var when = f.perioada.value;
+      var extras = [];
+      form.querySelectorAll('[data-extra]').forEach(function (el) {
+        if (el.value.trim()) extras.push(el.getAttribute('data-extra') + ': ' + el.value.trim());
+      });
       btn.disabled = true;
       track('generate_lead', 'form');
       if (window.MedicrossLead) {
         window.MedicrossLead.send({
           name: name, phone: phone, email: email,
-          procedure: 'Rinoplastie ' + PRICE + ' all-inclusive',
-          message: [when ? 'Perioada dorită: ' + when : '', 'Acord prelucrare date: ' + new Date().toISOString(), 'Pagina: ' + location.href].filter(Boolean).join(' | '),
+          procedure: SERVICE + ' ' + PRICE + ' all-inclusive',
+          message: [when ? 'Perioada dorită: ' + when : ''].concat(extras, ['Acord prelucrare date: ' + new Date().toISOString(), 'Pagina: ' + location.href]).filter(Boolean).join(' | '),
           marketingConsent: false,
-          formType: 'oferta:oferta-rinoplastie-311226'
+          formType: 'oferta:' + PAGE
         });
       }
       sentBox.querySelector('[data-rn-first]').textContent = name.split(/\s+/)[0];
