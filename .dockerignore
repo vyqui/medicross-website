@@ -1,0 +1,9 @@
+.git
+.wrangler
+node_modules
+# platform API is a separate Railway service; internal tooling and docs are never served
+server
+tools
+*.md
+wrangler.jsonc
+.assetsignore
