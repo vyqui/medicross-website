@@ -1,5 +1,6 @@
 /* Google Sheets delivery through the Apps Script web app (integrations/opd-google-sheet.gs).
-   Same webhook for OPD requests and general leads; the row's `kind` picks the tab.
+   Same webhook for OPD requests and general leads; the row's `kind` picks the destination
+   (OPD tab, or the separate "Medicross - Website Leads" spreadsheet for leads).
    Never throws: callers must not depend on Sheets being reachable. */
 export function sheetConfigured() {
   return Boolean(process.env.OPD_SHEET_WEBHOOK_URL && process.env.OPD_SHEET_WEBHOOK_SECRET);

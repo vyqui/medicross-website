@@ -4,11 +4,15 @@
  * Deploy as Web app: Execute as Me; Access: Anyone.
  * Store URL and the same secret in Railway (never commit them).
  *
- * One webhook, two tabs:
- *   - OPD consultation requests (no `kind`)  -> tab "OPD Requests" (must already exist)
- *   - general website leads (kind = "lead")  -> tab "Leads" (created automatically)
+ * One webhook, two destinations:
+ *   - OPD consultation requests (no `kind`)  -> tab "OPD Requests" of this spreadsheet
+ *   - every other website form (kind = "lead") -> tab "Leads" of the separate
+ *     "Medicross - Website Leads" spreadsheet (LEADS_SPREADSHEET_ID below; the
+ *     tab is created there if missing). Writing to another spreadsheet needs a
+ *     one-time re-authorization when you deploy this version.
  * After editing this file: Deploy > Manage deployments > edit > New version.
  */
+const LEADS_SPREADSHEET_ID = '1SuCrbm3wEOOSOck8kZ-PGDwqlYwGUHSgUpjx0Mb8qYM';
 const LEADS_HEADERS = [
   'Request ID', 'Received at', 'Name', 'Phone', 'Email', 'Procedure', 'Message',
   'Source page', 'Form', 'Campaign / UTM', 'Marketing consent', 'Status', 'Notes',
@@ -22,7 +26,7 @@ function doPost(e) {
     const expected = PropertiesService.getScriptProperties().getProperty('OPD_WEBHOOK_SECRET');
     if (!expected || data.secret !== expected) return json_({ok:false,error:'unauthorized'});
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    if (data.kind === 'lead') return appendLead_(ss, data);
+    if (data.kind === 'lead') return appendLead_(SpreadsheetApp.openById(LEADS_SPREADSHEET_ID), data);
     return appendOpd_(ss, data);
   } catch (error) {
     console.error(error);
