@@ -229,6 +229,7 @@ body.home a.btn-ghost { color: var(--ink); }
 .cat .cc { position: absolute; left: 24px; bottom: 22px; right: 20px; z-index: 1; color: #fff; }
 .cat .cc .idx { font-size: 13px; font-weight: 700; opacity: .8; }
 .cat .cc h3 { font-family: var(--font-display); font-weight: 600; font-size: 26px; line-height: 1.05; margin-top: 4px; }
+.cat .cc .sub { font-size: 13.5px; font-weight: 600; line-height: 1.35; margin-top: 6px; opacity: .92; }
 
 /* ===================== TRUST MARQUEE ===================== */
 .trust { padding: 30px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
