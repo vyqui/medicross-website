@@ -49,9 +49,6 @@
   try { stored = JSON.parse(sessionStorage.getItem('lp_tracking') || '{}'); } catch (e) {}
   TRACKED.forEach(function (k) { var v = params.get(k); if (v) stored[k] = v; });
   try { sessionStorage.setItem('lp_tracking', JSON.stringify(stored)); } catch (e) {}
-  function trackingSummary() {
-    return TRACKED.filter(function (k) { return stored[k]; }).map(function (k) { return k + '=' + stored[k]; }).join('&');
-  }
 
   function track(event, method) {
     var payload = { event: event, lead_method: method };
@@ -72,8 +69,6 @@
       : 'Bună ziua! Sunt interesat(ă) de oferta de ' + WA_OFFER + ' la ' + PRICE + '.'];
     if (extra && extra.name) lines.push('Nume: ' + extra.name);
     if (extra && extra.when) lines.push('Perioada dorită: ' + extra.when);
-    var t = trackingSummary();
-    if (t) lines.push('(' + t + ')');
     return lines.join('\n');
   }
   function refreshWa(extra) {

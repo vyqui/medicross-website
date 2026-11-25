@@ -18,12 +18,6 @@
     try { sessionStorage.setItem('lp_tracking', JSON.stringify(stored)); } catch (e) {}
   }
 
-  function trackingSummary() {
-    var parts = TRACKED.filter(function (k) { return stored[k]; })
-      .map(function (k) { return k + '=' + stored[k]; });
-    return parts.join('&');
-  }
-
   function fireLead(method) {
     window.dataLayer.push({ event: 'generate_lead', lead_method: method, ...stored });
     if (typeof window.gtag === 'function') {
@@ -35,8 +29,6 @@
   document.querySelectorAll('[data-wa-msg]').forEach(function (a) {
     var number = a.getAttribute('data-wa-number') || '40746992222';
     var msg = a.getAttribute('data-wa-msg');
-    var tracking = trackingSummary();
-    if (tracking) msg += ' (' + tracking + ')';
     a.setAttribute('href', 'https://wa.me/' + number + '?text=' + encodeURIComponent(msg));
   });
   document.querySelectorAll('[data-wa-track]').forEach(function (a) {
@@ -82,8 +74,6 @@
       if (data.f2label && data.f2) lines.push(data.f2label + ': ' + data.f2);
       if (data.mesaj) lines.push('Mesaj: ' + data.mesaj);
       lines.push('Consimțământ marketing e-mail: ' + (data.marketing_consent === 'da' ? 'DA, acordat explicit' : 'NU'));
-      var tracking = trackingSummary();
-      if (tracking) lines.push('(' + tracking + ')');
 
       fireLead('form');
       if (window.MedicrossLead) {
